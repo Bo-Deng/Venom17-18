@@ -32,7 +32,8 @@ public class TrollbotTeleOp extends OpMode {
             startLMotor(gamepad1.left_stick_y);
         }
         else {
-            stopMotor();
+            motorBL.setPower(0);
+            motorFL.setPower(0);
         }
 
         if (Math.abs(gamepad1.right_stick_y) > .1) {
@@ -40,7 +41,8 @@ public class TrollbotTeleOp extends OpMode {
             startRMotor(gamepad1.right_stick_y);
         }
         else {
-            stopMotor();
+            motorBR.setPower(0);
+            motorFR.setPower(0);
         }
 
     }
