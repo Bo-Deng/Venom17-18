@@ -59,9 +59,7 @@ public class VuforiaTest extends LinearOpMode {
 
         waitForStart();
 
-        DbgLog.error("BEFORE ACTIVATION");
         beacons.activate();
-        DbgLog.error("AFTER ACTIVATION");
 
         while (opModeIsActive()) {
             for (VuforiaTrackable beac : beacons) {
