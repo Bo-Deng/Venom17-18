@@ -42,9 +42,9 @@ public class TrollbotTeleOp extends OpMode {
         }
         if (Math.abs(gamepad1.left_stick_y) > .1 && Math.abs(gamepad1.left_stick_x) > .1)
         {
-            double x = gamepad1.left_stick_x;
-            double y = gamepad1.left_stick_y;
-            double r = Math.pow(Math.pow(x,2) + Math.pow(y ,2), 1/2);
+            double x = gamepad1.left_stick_y;
+            double y = gamepad1.left_stick_x;
+            double r = gamepad1.right_stick_x;
             double max = Math.abs(Math.max(Math.abs(r), Math.max(Math.abs(x), Math.abs(y))));
             motorFL.setPower((x + y + r) / max);
             motorFR.setPower((x - y - r) / max);
