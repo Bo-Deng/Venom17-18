@@ -7,7 +7,6 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.CameraCalibration;
@@ -49,11 +48,8 @@ public class VuforiaTest extends LinearOpMode {
         VuforiaLocalizer localizer = ClassFactory.createVuforiaLocalizer(params);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
-        VuforiaTrackables beacons = localizer.loadTrackablesFromAsset("FTC_2016-17");
-        beacons.get(0).setName("Wheels");
-        beacons.get(1).setName("Tools");
-        beacons.get(2).setName("Lego");
-        beacons.get(3).setName("Gears");
+        VuforiaTrackables beacons = localizer.loadTrackablesFromAsset("RelicVuMark");
+        beacons.get(0).setName("img");
 
         VuforiaTrackableDefaultListener wheels = (VuforiaTrackableDefaultListener) beacons.get(0).getListener();
 
