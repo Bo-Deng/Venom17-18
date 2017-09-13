@@ -25,6 +25,9 @@ public class TrollbotTeleOp extends OpMode {
         motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        telemetry.addData("init ", "completed");
+        telemetry.update();
     }
     @Override
     public void loop() {
@@ -70,8 +73,8 @@ public class TrollbotTeleOp extends OpMode {
     }
 
     public void startMotor(double Speed) {
-        motorFL.setPower(-Speed);
-        motorBL.setPower(-Speed);
+        motorFL.setPower(Speed);
+        motorBL.setPower(Speed);
         motorFR.setPower(Speed);
         motorBR.setPower(Speed);
     }
