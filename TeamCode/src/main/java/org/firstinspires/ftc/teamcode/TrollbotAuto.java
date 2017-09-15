@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
 
 /**
@@ -24,37 +27,90 @@ public class TrollbotAuto extends LinearOpMode {
 
         waitForStart();
 
-        moveMotor(1, 3000);
+        /*
 
-        turn(1, 1000);
+        //This is where the phone would detect the jewel and then the servo would hit the right one.
 
-        moveMotor(1, 3000);
+        //Then it would scan the Vumark and 'decode' it.
+
+        int column = 0;
+        if (Vumark == ???)
+            column = 1;
+        else if (Vumark == ???)
+            column = 2;
+        else if (Vumark == ???)
+            column = 3;
+
+        //Forward till close to glyph container.
+
+        startMotors(1, 1);
+        while (DISTANCE TO ULTRASONIC > ???) {}
+
+        stopMotors();
+
+        //Turn towards glyph container.
+
+        turn(1, ????);
+
+        //Align with correct column.
+
+        if (column == 1) {
+            //strafe left
+            strafe(?, 1, ?);
+        }
+        else if (column == 2) {
+            // align with center column
+            strafe(?, 1, ?);
+        }
+        else if (column == 3) {
+            //strafe right
+            strafe(?, 1, ?);
+        }
+
+        // Place glyph into column and park.
+
+        startMotors(1, 1);
+        Thread.sleep(????);
+        stopMotors();
+
+        */
+
     }
 
-    public void stopMotor() {
+    public void stopMotors() {
         motorFL.setPower(0);
         motorFR.setPower(0);
         motorBL.setPower(0);
         motorBR.setPower(0);
     }
 
-    public void startMotor(double rSpeed, double lSpeed) {
+    public void startMotors(double rSpeed, double lSpeed) {
         motorFL.setPower(lSpeed);
         motorFR.setPower(rSpeed);
         motorBL.setPower(lSpeed);
         motorBR.setPower(rSpeed);
     }
 
-    public void moveMotor(double speed, int time) throws InterruptedException {
-
-        startMotor(speed, speed);
+    public void turn(double speed, int time) throws InterruptedException {
+        startMotors(speed, -speed);
         Thread.sleep(time);
-        stopMotor();
+        stopMotors();
     }
 
-    public void turn(double speed, int time) throws InterruptedException {
-        startMotor(speed, -speed);
-        Thread.sleep(time);
-        stopMotor();
+    public void strafe(int d, int p, int t) throws InterruptedException { // d = direction, p = power, t = time
+        if (d == 0) {
+            motorFL.setPower(-p);
+            motorFR.setPower(p);
+            motorBL.setPower(p);
+            motorBR.setPower(-p);
+        }
+        else if (d == 1) {
+            motorFL.setPower(p);
+            motorFR.setPower(-p);
+            motorBL.setPower(-p);
+            motorBR.setPower(p);
+        }
+        Thread.sleep(t);
+        stopMotors();
     }
 }
