@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.hardware.Sensor;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
@@ -16,6 +17,7 @@ public class TrollbotAuto extends LinearOpMode {
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
+    ModernRoboticsI2cRangeSensor rangeSensor;
 
 
     public void runOpMode() throws InterruptedException {
@@ -24,6 +26,7 @@ public class TrollbotAuto extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
+        rangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
         waitForStart();
 
@@ -41,10 +44,10 @@ public class TrollbotAuto extends LinearOpMode {
         else if (Vumark == ???)
             column = 3;
 
-        //Forward till close to glyph container.
+        //Forward till close to glyph container. (using range sensor??)
 
         startMotors(1, 1);
-        while (DISTANCE TO ULTRASONIC > ???) {}
+        while (rangeSensor.getDistance(DistanceUnit.CM) > ???) {//do nothing}
 
         stopMotors();
 
@@ -56,7 +59,7 @@ public class TrollbotAuto extends LinearOpMode {
 
         if (column == 1) {
             //strafe left
-            strafe(?, 1, ?);
+            strafe(0, 1, ?);
         }
         else if (column == 2) {
             // align with center column
@@ -64,7 +67,7 @@ public class TrollbotAuto extends LinearOpMode {
         }
         else if (column == 3) {
             //strafe right
-            strafe(?, 1, ?);
+            strafe(1, 1, ?);
         }
 
         // Place glyph into column and park.
@@ -74,7 +77,6 @@ public class TrollbotAuto extends LinearOpMode {
         stopMotors();
 
         */
-
     }
 
     public void stopMotors() {
@@ -98,13 +100,13 @@ public class TrollbotAuto extends LinearOpMode {
     }
 
     public void strafe(int d, int p, int t) throws InterruptedException { // d = direction, p = power, t = time
-        if (d == 0) {
+        if (d == 0) { //left
             motorFL.setPower(-p);
             motorFR.setPower(p);
             motorBL.setPower(p);
             motorBR.setPower(-p);
         }
-        else if (d == 1) {
+        else if (d == 1) { //right
             motorFL.setPower(p);
             motorFR.setPower(-p);
             motorBL.setPower(-p);
