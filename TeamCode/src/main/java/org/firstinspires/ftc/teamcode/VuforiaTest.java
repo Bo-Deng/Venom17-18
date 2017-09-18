@@ -46,30 +46,10 @@ public class VuforiaTest extends LinearOpMode {
         params.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
 
         VuforiaLocalizer localizer = ClassFactory.createVuforiaLocalizer(params);
-        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
-
-        VuforiaTrackables beacons = localizer.loadTrackablesFromAsset("RelicVuMark");
-        beacons.get(0).setName("img");
-
-        VuforiaTrackableDefaultListener wheels = (VuforiaTrackableDefaultListener) beacons.get(0).getListener();
 
         waitForStart();
 
-        beacons.activate();
-
-        while (opModeIsActive()) {
-            for (VuforiaTrackable beac : beacons) {
-                OpenGLMatrix imgPose = ((VuforiaTrackableDefaultListener) beac.getListener()).getPose();
-                if (imgPose != null) {
-                    VectorF translation = imgPose.getTranslation();
-                    telemetry.addData(beac.getName() + " Translation ", translation);
-                    double angleTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(2)));
-                    telemetry.addData(beac.getName() + " Degrees", angleTurn);
-                }
-            }
-            telemetry.update();
-        }
-
+        getImageFromFrame();
     }
 
     public Image getImageFromFrame(VuforiaLocalizer.CloseableFrame frame, int pixelFormat) {
