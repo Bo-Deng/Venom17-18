@@ -34,7 +34,7 @@ public class TrollbotAuto extends LinearOpMode {
 
         //This is where the phone would detect the jewel and then the servo would hit the right one.
 
-        //Then it would scan the Vumark and 'decode' it.
+        //Then it would scan the Vumark and 'decode' it. A 'column' variable would tell the robot where to place its glyph.
 
         int column = 0;
         if (Vumark == ???)
