@@ -10,6 +10,7 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.CameraCalibration;
+import com.vuforia.Frame;
 import com.vuforia.HINT;
 import com.vuforia.Image;
 import com.vuforia.Matrix34F;
@@ -47,9 +48,12 @@ public class VuforiaTest extends LinearOpMode {
 
         VuforiaLocalizer localizer = ClassFactory.createVuforiaLocalizer(params);
 
+        Frame Ftest = new Frame();
+        VuforiaLocalizer.CloseableFrame test = new VuforiaLocalizer.CloseableFrame(Ftest);
+
         waitForStart();
 
-        getImageFromFrame();
+        getImageFromFrame(test, 1);
     }
 
     public Image getImageFromFrame(VuforiaLocalizer.CloseableFrame frame, int pixelFormat) {
