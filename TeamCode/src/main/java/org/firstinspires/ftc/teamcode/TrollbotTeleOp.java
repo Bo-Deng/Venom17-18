@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,6 +17,10 @@ public class TrollbotTeleOp extends OpMode {
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
+    IMU imu;
+
+    double maintainAngle;
+
 
     public void init() {
 
@@ -25,6 +30,9 @@ public class TrollbotTeleOp extends OpMode {
         motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        imu = new IMU(hardwareMap.get(BNO055IMU.class, "IMU"));
+        imu.IMUinit(hardwareMap);
 
         telemetry.addData("init ", "completed");
         telemetry.update();
@@ -113,8 +121,6 @@ public class TrollbotTeleOp extends OpMode {
         motorFR.setPower(Speed);
         motorBR.setPower(Speed);
     }
-
-
 
     public void stopMotor() {
         motorFL.setPower(0);
