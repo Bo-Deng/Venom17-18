@@ -29,7 +29,7 @@ public class PIDtesting extends OpMode {
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        imu = new IMU(hardwareMap.get(BNO055IMU.class, "IMU"));
+        imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
 
         telemetry.addData("init ", "completed");
