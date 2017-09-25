@@ -77,7 +77,7 @@ public class IMU extends LinearOpMode {
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        IMU = map.get(BNO055IMU.class, "IMU");
+        IMU = map.get(BNO055IMU.class, "imu");
         IMU.initialize(parameters);
 
 
@@ -85,7 +85,7 @@ public class IMU extends LinearOpMode {
 
     public double getYaw() { //returns yaw between -179.9999 and 180 degrees
         angles = IMU.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX);
-        return Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+        return -Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
     }
 
     public double getPitch() { //returns yaw between -179.9999 and 180 degrees

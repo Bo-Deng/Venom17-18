@@ -14,19 +14,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name="SensorTesting", group="opMode")
 public class SensorTesting extends OpMode {
     IMU imu;
-    ModernRoboticsI2cRangeSensor range;
+    ModernRoboticsI2cRangeSensor rangeL;
+    ModernRoboticsI2cRangeSensor rangeR;
 
 
     public void init() {
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
-        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
+        rangeL = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
+        rangeR = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
 
         telemetry.addData("Yaw: ", imu.getYaw());
-        telemetry.addData("Range: ", range.getDistance(DistanceUnit.INCH));
+        telemetry.addData("RangeL: ", rangeL.getDistance(DistanceUnit.INCH));
+        telemetry.addData("RangeR: ", rangeR.getDistance(DistanceUnit.INCH));
+        telemetry.update();
     }
 
     public void loop() {
-        telemetry.update();
+
+        telemetry.addData("Yaw: ", imu.getYaw());
+        telemetry.addData("RangeL: ", rangeL.getDistance(DistanceUnit.INCH));
+        telemetry.addData("RangeR: ", rangeR.getDistance(DistanceUnit.INCH));
     }
 }
