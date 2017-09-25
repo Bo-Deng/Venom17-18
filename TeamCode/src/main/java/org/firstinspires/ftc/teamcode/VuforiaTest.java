@@ -9,19 +9,12 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.vuforia.CameraCalibration;
-import com.vuforia.Frame;
-import com.vuforia.HINT;
-import com.vuforia.Image;
-import com.vuforia.Matrix34F;
-import com.vuforia.PIXEL_FORMAT;
-import com.vuforia.Tool;
-import com.vuforia.Vec3F;
-import com.vuforia.Vuforia;
+import com.vuforia.*;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -39,6 +32,10 @@ public class VuforiaTest extends LinearOpMode {
     int BEACON_ALL_BLUE = 3;
     int BEACON_ALL_RED = 4;
 
+    VuforiaLocalizer vuforia;
+
+    CameraDevice myCam;
+
     public void runOpMode() throws InterruptedException {
 
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -49,11 +46,34 @@ public class VuforiaTest extends LinearOpMode {
         VuforiaLocalizer localizer = ClassFactory.createVuforiaLocalizer(params);
 
         Frame Ftest = new Frame();
-        VuforiaLocalizer.CloseableFrame test = new VuforiaLocalizer.CloseableFrame(Ftest);
+        VuforiaLocalizer.CloseableFrame imgFrame = new VuforiaLocalizer.CloseableFrame(Ftest);
+
+        this.vuforia = ClassFactory.createVuforiaLocalizer(params);
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+
+        myCam.init();
 
         waitForStart();
 
-        getImageFromFrame(test, 1);
+        relicTrackables.activate();
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        myCam.start();
+
+        getImageFromFrame(imgFrame, 1);
+
+        boolean match = false;
+        for (int i = 0; i < imgFrame.getNumImages(); i++) {
+            if (compareToVumark(imgFrame.getImage(i), vuMark)) {
+                match = true;
+            }
+        }
+        if (match)
+            telemetry.addData("Vumark Located?", "true");
+
+        myCam.stop();
+        myCam.deinit();
     }
 
     public Image getImageFromFrame(VuforiaLocalizer.CloseableFrame frame, int pixelFormat) {
@@ -65,7 +85,11 @@ public class VuforiaTest extends LinearOpMode {
         }
         return null;
     }
-
-
+    public boolean compareToVumark(Image img, org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark Vumark) {
+        if (img.equals(Vumark)) {
+            return true;
+        }
+        return false;
+    }
 }
 
