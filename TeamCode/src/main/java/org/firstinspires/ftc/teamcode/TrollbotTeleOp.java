@@ -22,6 +22,7 @@ public class TrollbotTeleOp extends OpMode {
         motorBR = hardwareMap.dcMotor.get("motorBR");
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     public void loop() {
@@ -31,19 +32,16 @@ public class TrollbotTeleOp extends OpMode {
 
             startMotor(gamepad1.left_stick_y);
         }
-
         // if statement for left/right
-        if (Math.abs(gamepad1.left_stick_y) < .1 && Math.abs(gamepad1.left_stick_x) > .1) {
-
+        if (Math.abs(gamepad1.left_stick_y) < .1 && Math.abs(gamepad1.left_stick_x) > .1)
+        {
             motorFR.setPower(gamepad1.left_stick_x);
             motorBR.setPower(-gamepad1.left_stick_x);
             motorFL.setPower(-gamepad1.left_stick_x);
             motorBL.setPower(gamepad1.left_stick_x);
         }
-
-        // if statement for non-cardinal directions
-        if (Math.abs(gamepad1.left_stick_y) > .1 && Math.abs(gamepad1.left_stick_x) > .1) {
-
+        if (Math.abs(gamepad1.left_stick_y) > .1 && Math.abs(gamepad1.left_stick_x) > .1)
+        {
             double x = gamepad1.left_stick_y;
             double y = gamepad1.left_stick_x;
             double r = gamepad1.right_stick_x;
@@ -53,21 +51,22 @@ public class TrollbotTeleOp extends OpMode {
             motorBL.setPower((x - y + r) / max);
             motorBR.setPower((x + y - r) / max);
         }
-
         else
             stopMotor();
+
+
     }
 
     public void startMotor(double Speed) {
-
         motorFL.setPower(-Speed);
         motorBL.setPower(-Speed);
         motorFR.setPower(Speed);
         motorBR.setPower(Speed);
     }
 
-    public void stopMotor() {
 
+
+    public void stopMotor() {
         motorFL.setPower(0);
         motorFR.setPower(0);
         motorBL.setPower(0);
