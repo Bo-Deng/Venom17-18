@@ -18,7 +18,7 @@ public class SensorTesting extends OpMode {
 
 
     public void init() {
-        imu = new IMU(hardwareMap.get(BNO055IMU.class, "IMU"));
+        imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
         range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
 

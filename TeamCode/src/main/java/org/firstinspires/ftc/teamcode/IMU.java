@@ -98,6 +98,18 @@ public class IMU extends LinearOpMode {
         return Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
     }
 
+    public double getTrueDiff(double origAngle) {
+        double currAngle = getYaw();
+            if (currAngle >= 0 && origAngle >= 0 || currAngle <= 0 && origAngle <= 0)
+                return currAngle - origAngle;
+            else if (Math.abs(currAngle - origAngle) <= 180)
+                return currAngle - origAngle;
+            else if (currAngle > origAngle)
+                return -(360 - (currAngle - origAngle));
+            else
+                return (360 + (currAngle - origAngle));
+    }
+
     String formatAngle(org.firstinspires.ftc.robotcore.external.navigation.AngleUnit angleUnit, double angle) {
         return formatDegrees(org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
