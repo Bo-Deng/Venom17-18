@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+    package org.firstinspires.ftc.teamcode;
 
 import android.hardware.Sensor;
 
@@ -7,8 +7,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-/**
+
+
+    /**
  * Created by Bo on 9/4/2017.
  */
 public class TrollbotAuto extends LinearOpMode {
@@ -17,8 +33,12 @@ public class TrollbotAuto extends LinearOpMode {
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
-    ModernRoboticsI2cRangeSensor rangeSensor;
+    ModernRoboticsI2cRangeSensor leftRangeSensor;
+    ModernRoboticsI2cRangeSensor rightRangeSensor;
 
+    public static final String TAG = "Vuforia VuMark Sample";
+    OpenGLMatrix lastLocation = null;
+    VuforiaLocalizer vuforia;
 
     public void runOpMode() throws InterruptedException {
 
@@ -26,57 +46,93 @@ public class TrollbotAuto extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
-        rangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
+        leftRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
+        rightRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AXb/g5n/////AAAAGSUed2rh5Us1jESA1cUn5r5KDUqTfwO2woh7MxjiLKSUyDslqBAgwCi0Qmc6lVczErnF5TIw7vG5R4TJ2igvrDVp+dP+3i2o7UUCRRj/PtyVgb4ZfNrDzHE80/6TUHifpKu4QCM04eRWYZocWNWhuRfytVeWy6NSTWefM9xadqG8FFrFk3XnvqDvk/6ZAgerNBdq5SsJ90eDdoAhgYEee40WxasoUUM9YVMvkWOqZgHSuraV2IyIUjkW/u0O+EkFtTNRUWP+aZwn1qO1H4Lk07AJYe21eqioBLMdzY7A8YqR1TeQ//0WJg8SFdXjuGbF6uHykBe2FF5UeyaehA0iTqfPS+59FLm8y1TuUt57eImq";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        telemetry.addData(">", "Press Play to start");
+        telemetry.update();
 
         waitForStart();
 
-        /*
+        relicTrackables.activate();
+
+
+        // copy pasta from the ftc ppl
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+            telemetry.addData("VuMark", "%s visible", vuMark);
+        } else {
+            telemetry.addData("VuMark", "not visible");
+        }
+
+        telemetry.update();
+
 
         //This is where the phone would detect the jewel and then the servo would hit the right one.
 
-        //Then it would scan the Vumark and 'decode' it. A 'column' variable would tell the robot where to place its glyph.
-
-        int column = 0;
-        if (Vumark == ???)
-            column = 1;
-        else if (Vumark == ???)
-            column = 2;
-        else if (Vumark == ???)
-            column = 3;
-
         //Forward till close to glyph container. (using range sensor??)
 
-        startMotors(1, 1);
-        while (rangeSensor.getDistance(DistanceUnit.CM) > ???) {//do nothing}
+        startMotors(1.0, 1.0);
+        Thread.sleep(2 * 1000);
 
         stopMotors();
 
         //Turn towards glyph container.
 
-        turn(1, ????);
+        /* make the grab blocc and turn around
+
+
+
+         */
+        turn(1, 500);
 
         //Align with correct column.
 
-        if (column == 1) {
+
+        if (vuMark == RelicRecoveryVuMark.LEFT) {
             //strafe left
-            strafe(0, 1, ?);
+            strafe(0, 1);
+            while (getDistance() > 100) {
+            }
+            stopMotors();
         }
-        else if (column == 2) {
+
+        else if (vuMark == RelicRecoveryVuMark.CENTER) {
             // align with center column
-            strafe(?, 1, ?);
+            strafe(0, 1);
+            while (getDistance() > 80) {
+            }
+            stopMotors();
         }
-        else if (column == 3) {
+
+        else if (vuMark == RelicRecoveryVuMark.RIGHT) {
             //strafe right
-            strafe(1, 1, ?);
+            strafe(0, 1);
+            while (getDistance() > 60) {
+            }
+            stopMotors();
         }
 
         // Place glyph into column and park.
 
         startMotors(1, 1);
-        Thread.sleep(????);
+        Thread.sleep(2000);
         stopMotors();
 
-        */
+
+
     }
 
     public void stopMotors() {
@@ -99,20 +155,26 @@ public class TrollbotAuto extends LinearOpMode {
         stopMotors();
     }
 
-    public void strafe(int d, int p, int t) throws InterruptedException { // d = direction, p = power, t = time
+    public void strafe(int d, int p) throws InterruptedException { // d = direction, p = power, t = time
         if (d == 0) { //left
             motorFL.setPower(-p);
             motorFR.setPower(p);
             motorBL.setPower(p);
             motorBR.setPower(-p);
-        }
-        else if (d == 1) { //right
+        } else if (d == 1) { //right
             motorFL.setPower(p);
             motorFR.setPower(-p);
             motorBL.setPower(-p);
             motorBR.setPower(p);
         }
-        Thread.sleep(t);
-        stopMotors();
     }
+    public double getDistance() {
+            double distance;
+            if (leftRangeSensor.getDistance(DistanceUnit.CM) < rightRangeSensor.getDistance(DistanceUnit.CM)) {
+                distance = leftRangeSensor.getDistance(DistanceUnit.CM);
+            } else {
+                distance = rightRangeSensor.getDistance(DistanceUnit.CM);
+            }
+            return distance;
+        }
 }
