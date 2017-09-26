@@ -59,20 +59,22 @@ public class VuforiaTest extends LinearOpMode {
         relicTrackables.activate();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        myCam.start();
+        myCam.start(); //takes pictures for 2 sec
+        Thread.sleep(2000);
+        myCam.stop();
 
         getImageFromFrame(imgFrame, 1);
 
+        //tests if images match with vumark
         boolean match = false;
         for (int i = 0; i < imgFrame.getNumImages(); i++) {
-            if (compareToVumark(imgFrame.getImage(i), vuMark)) {
+            if (compareToVumark(imgFrame.getImage(i), vuMark))
                 match = true;
-            }
         }
-        if (match)
-            telemetry.addData("Vumark Located?", "true");
 
-        myCam.stop();
+        telemetry.addData("Vumark Located?: ", match);
+        telemetry.update();
+
         myCam.deinit();
     }
 
