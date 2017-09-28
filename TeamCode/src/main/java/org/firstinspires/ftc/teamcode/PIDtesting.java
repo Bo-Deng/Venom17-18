@@ -4,18 +4,21 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by Bo on 9/20/2017.
  */
-public class PIDtesting extends OpMode {
+public class PIDtesting extends CustomOpMode {
 
     DcMotor motorFL;
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
     IMU imu;
+
+    ElapsedTime time = new ElapsedTime();
 
     final static int squaresToEncoder = 1084; //NEED TO TEST & GET CORRECT VALUE
 
@@ -81,12 +84,32 @@ public class PIDtesting extends OpMode {
         }
     }
 
-    public void straightAssisted(double squares) {
+    public void straightAssisted(double squares) throws InterruptedException {
         straightAssisted(squares, imu.getYaw());
     }
 
-    public void straightAssisted(double squares, double angle) {
+    public void straightAssisted(double squares, double angle) throws InterruptedException {
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFR.setTargetPosition((int) -squares * squaresToEncoder);
+        motorFL.setTargetPosition((int) squares * squaresToEncoder);
+        motorBR.setTargetPosition((int) -squares * squaresToEncoder);
+        motorBL.setTargetPosition((int) squares * squaresToEncoder);
+    }
 
+    public void Pturn(double angle, int ms) throws InterruptedException {
+        double kP = .25/90;
+        double PIDchange;
+        double angleDiff;
+        time.reset();
+        while (time.milliseconds() < ms) {
+            angleDiff = imu.getTrueDiff(angle);
+            PIDchange = angleDiff * kP;
+            motorFR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
+            motorBR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
+            motorFL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
+            motorBL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
+        }
     }
 
 }

@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Created by Bo on 9/25/2017.
  */
 public class CustomOpMode extends OpMode {
+
     DcMotor motorFR;
     DcMotor motorFL;
     DcMotor motorBR;
@@ -22,14 +23,14 @@ public class CustomOpMode extends OpMode {
 
     }
 
-    public void initStuff(HardwareMap map) throws InterruptedException {
+    public void initStuff(HardwareMap map) {
         motorFR = map.dcMotor.get("motorFR");
         motorFL = map.dcMotor.get("motorFL");
         motorBR = map.dcMotor.get("motorBR");
         motorBL = map.dcMotor.get("motorBL");
     }
 
-    public void setMode(DcMotor.RunMode runMode) throws InterruptedException {
+    public void setMode(DcMotor.RunMode runMode){
         motorFR.setMode(runMode);
         motorFL.setMode(runMode);
         motorBR.setMode(runMode);

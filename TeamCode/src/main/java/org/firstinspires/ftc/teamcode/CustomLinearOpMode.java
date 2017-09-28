@@ -14,7 +14,7 @@ public class CustomLinearOpMode extends LinearOpMode {
     DcMotor motorBL;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
     }
 

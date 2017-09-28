@@ -3,9 +3,12 @@
 import android.hardware.Sensor;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
+import com.vuforia.ar.pl.DebugLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -27,6 +30,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
     /**
  * Created by Bo on 9/4/2017.
  */
+
+
+@Autonomous(name = "TrollbotAuto", group = "autonomous")
 public class TrollbotAuto extends LinearOpMode {
 
     DcMotor motorFL;
@@ -46,6 +52,8 @@ public class TrollbotAuto extends LinearOpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
+        motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
         rightRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
 
@@ -62,73 +70,80 @@ public class TrollbotAuto extends LinearOpMode {
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
 
-        waitForStart();
-
         relicTrackables.activate();
 
 
         // copy pasta from the ftc ppl
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        char template = ' ';
 
-        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-            telemetry.addData("VuMark", "%s visible", vuMark);
-        } else {
-            telemetry.addData("VuMark", "not visible");
+        telemetry.addData("VuMark ", vuMark);
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+            vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
 
+        telemetry.addData("VuMark ", vuMark);
+        if (vuMark == RelicRecoveryVuMark.CENTER)
+            template = 'C';
+        else if (vuMark == RelicRecoveryVuMark.LEFT)
+            template = 'L';
+        else if (vuMark == RelicRecoveryVuMark.RIGHT)
+            template = 'R';
+
         telemetry.update();
+
+        waitForStart();
+
 
 
         //This is where the phone would detect the jewel and then the servo would hit the right one.
 
         //Forward till close to glyph container. (using range sensor??)
 
-        startMotors(1.0, 1.0);
+        startMotors(.20, .20);
         Thread.sleep(2 * 1000);
 
         stopMotors();
 
         //Turn towards glyph container.
 
-        /* make the grab blocc and turn around
 
-
-
-         */
-        turn(1, 500);
+        //turn(1, 500);
 
         //Align with correct column.
 
+        DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
-        if (vuMark == RelicRecoveryVuMark.LEFT) {
+        if (template == 'L') {
             //strafe left
             strafe(0, 1);
-            while (getDistance() > 100) {
+            while (getRightDistance() < 100) {
             }
             stopMotors();
         }
 
-        else if (vuMark == RelicRecoveryVuMark.CENTER) {
+        else if (template == 'C') {
             // align with center column
             strafe(0, 1);
-            while (getDistance() > 80) {
+            while (getRightDistance() < 80) {
             }
             stopMotors();
         }
 
-        else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+        else if (template == 'R') {
             //strafe right
             strafe(0, 1);
-            while (getDistance() > 60) {
+            while (getRightDistance() < 60) {
             }
             stopMotors();
         }
 
         // Place glyph into column and park.
 
-        startMotors(1, 1);
-        Thread.sleep(2000);
+        startMotors(.10, .10);
+        Thread.sleep(1000);
+
+        DebugLog.LOGE("at end ", "ended");
         stopMotors();
 
 
@@ -168,13 +183,12 @@ public class TrollbotAuto extends LinearOpMode {
             motorBR.setPower(p);
         }
     }
-    public double getDistance() {
-            double distance;
-            if (leftRangeSensor.getDistance(DistanceUnit.CM) < rightRangeSensor.getDistance(DistanceUnit.CM)) {
-                distance = leftRangeSensor.getDistance(DistanceUnit.CM);
-            } else {
-                distance = rightRangeSensor.getDistance(DistanceUnit.CM);
-            }
-            return distance;
+    public double getRightDistance() {
+
+        double dist = rightRangeSensor.getDistance(DistanceUnit.CM);
+        while (dist > 1000) {
+            dist = rightRangeSensor.getDistance(DistanceUnit.CM);
         }
+        return dist;
+    }
 }
