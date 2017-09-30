@@ -30,7 +30,6 @@ public class PIDtesting extends CustomOpMode {
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
 
-        motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -38,6 +37,7 @@ public class PIDtesting extends CustomOpMode {
         imu.IMUinit(hardwareMap);
 
         telemetry.addData("init ", "completed");
+        telemetry.addData("PID value = ", ".0275");
         telemetry.update();
     }
     public void loop() {
@@ -65,7 +65,7 @@ public class PIDtesting extends CustomOpMode {
         if (lTrig) {
             while (gamepad1.left_trigger > .1) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.005;
+                double kP = 0.0275; //.025 < PID <.03
                 double PIDchange;
 
                 PIDchange = kP * diffFromDesired;
@@ -74,9 +74,9 @@ public class PIDtesting extends CustomOpMode {
             }
         }
         else {
-            while (gamepad2.right_trigger > .1) {
+            while (gamepad1.right_trigger > .1) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.005;
+                double kP = 0.0275; //.025 < PID <.03
                 double PIDchange;
 
                 PIDchange = kP * diffFromDesired;
