@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="trollbot tele", group="opMode")
+@TeleOp(name="Main teleop", group="opMode")
 public class MainTeleOp extends OpMode {
 
     DcMotor motorFL;
