@@ -41,10 +41,18 @@ public class PIDtesting extends CustomOpMode {
         telemetry.update();
     }
     public void loop() {
-        if (gamepad1.left_trigger > .1) {
+
+        if (gamepad1.a) { //testing PID Turning
+            try {
+                Pturn(90.0, 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if (gamepad1.left_trigger > .1) { //testing left strafe
             strafeAssisted(true);
         }
-        else if (gamepad1.right_trigger > .1) {
+        else if (gamepad1.right_trigger > .1) { //testing right strafe
             strafeAssisted(false);
         }
         else {
@@ -66,6 +74,7 @@ public class PIDtesting extends CustomOpMode {
             while (gamepad1.left_trigger > .1) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.0275; //.025 < PID <.03
+                // While this range does work on the trollbot, it has not been tested on the actual robot.
                 double PIDchange;
 
                 PIDchange = kP * diffFromDesired;
