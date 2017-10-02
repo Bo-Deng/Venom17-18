@@ -17,8 +17,8 @@ public class MainTeleOp extends OpMode {
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
-    DcMotor motorYLift;
-    DcMotor motorXLift;
+    //DcMotor motorYLift;
+    //DcMotor motorXLift;
     IMU imu;
 
     double maintainAngle;
@@ -29,8 +29,8 @@ public class MainTeleOp extends OpMode {
         motorFR = hardwareMap.dcMotor.get("motorFR");
         motorBL = hardwareMap.dcMotor.get("motorBL");
         motorBR = hardwareMap.dcMotor.get("motorBR");
-        motorYLift = hardwareMap.dcMotor.get("motorYLift");
-        motorXLift = hardwareMap.dcMotor.get("motorXLift");
+        //motorYLift = hardwareMap.dcMotor.get("motorYLift");
+        //motorXLift = hardwareMap.dcMotor.get("motorXLift");
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -53,12 +53,14 @@ public class MainTeleOp extends OpMode {
         if (gamepad1.x)
             motorFR.setPower(1);
 
+        /*// the signs might need to be switched
         if (Math.abs(gamepad2.right_stick_y) > 0.1) {
             motorXLift.setPower(gamepad2.right_stick_y);
         }
         if (Math.abs(gamepad2.left_stick_y) > 0.1) {
             motorYLift.setPower(gamepad2.right_stick_y);
-        }
+        } */
+
         double yL = gamepad1.left_stick_y;
         double yR = gamepad1.right_stick_y;
         double rt = gamepad1.right_trigger;

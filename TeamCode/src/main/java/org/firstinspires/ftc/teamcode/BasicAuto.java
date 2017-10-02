@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.vuforia.ar.pl.DebugLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
- * Created by hannahbransteter on 9/30/17.
+ * Created by Ryan Bransteter on 9/30/17.
  */
 
 
@@ -28,6 +29,9 @@ public class BasicAuto extends LinearOpMode {
     DcMotor motorBR;
     ModernRoboticsI2cRangeSensor leftRangeSensor;
     ModernRoboticsI2cRangeSensor rightRangeSensor;
+    // Servo rightWallServo;
+
+    String AutoColor;
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -42,6 +46,7 @@ public void runOpMode() throws InterruptedException {
     motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
     leftRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
     rightRangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
+    // rightWallServo = hardwareMap.get("RightWallServo");
 
     int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -80,21 +85,36 @@ public void runOpMode() throws InterruptedException {
 
     waitForStart();
 
+    /*
+    // testing jewels, psuedo code
+    // if always detects on left jewel
+
+    // rightWallServo.setPosition(.25);
+
+    if (getColor().equals(AutoColor)) {
+        startMotors(-.10, -.10);
+        Thread.sleep(100); }
+    else if (!getColor.equals(AutoColor) && !getColor.equals("GREEN")){
+        startMotors(.10, .10);
+        Thread.sleep(100); }
+    else {
+        wallServo.setPosition(0); }
+
+    // wallServo.setPosition(0);
+    */
 
 
-    //This is where the phone would detect the jewel and then the servo would hit the right one.
 
     //Forward till close to glyph container. (using range sensor??)
 
     startMotors(.20, .20);
-        Thread.sleep(2 * 1000);
+    Thread.sleep(2 * 1000);
 
     stopMotors();
 
     //Turn towards glyph container.
 
 
-    //turn(1, 500);
 
     //Align with correct column.
 
