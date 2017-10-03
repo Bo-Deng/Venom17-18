@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -14,6 +16,8 @@ public class CustomOpMode extends OpMode {
     DcMotor motorFL;
     DcMotor motorBR;
     DcMotor motorBL;
+
+    IMU imu;
 
     public void init() {
 
@@ -28,6 +32,15 @@ public class CustomOpMode extends OpMode {
         motorFL = map.dcMotor.get("motorFL");
         motorBR = map.dcMotor.get("motorBR");
         motorBL = map.dcMotor.get("motorBL");
+
+        motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
+        imu.IMUinit(hardwareMap);
+
+        telemetry.addData("init ", "completed");
+        telemetry.update();
     }
 
     public void setMode(DcMotor.RunMode runMode){
