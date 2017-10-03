@@ -42,17 +42,26 @@ public class PIDtesting extends CustomOpMode {
     }
     public void loop() {
 
-        if (gamepad1.a) { //testing PID Turning
+        if (Math.abs(gamepad1.left_stick_x) > 0.1) { //testing PTurn method; based on left stick value (left of right).
             try {
-                Pturn(90.0, 1000);
+                Pturn((gamepad1.left_stick_x * 10), 5000); //turns x degrees for 5 seconds.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        if (gamepad1.left_trigger > .1) { //testing left strafe
+
+        if ((gamepad1.right_stick_y) < -0.1) { //testing straightAssisted method; use right stick (up).
+            try {
+                straightAssisted(2.0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //strafe testing
+        if (gamepad1.left_trigger > .1) { //left strafe
             strafeAssisted(true);
         }
-        else if (gamepad1.right_trigger > .1) { //testing right strafe
+        else if (gamepad1.right_trigger > .1) { //right strafe
             strafeAssisted(false);
         }
         else {
