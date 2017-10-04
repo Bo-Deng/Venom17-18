@@ -89,6 +89,11 @@ public class MainTeleOp extends OpMode {
         }
         else
             stopMotor();
+
+        telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
+        telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
+        telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
+        telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
     }
 
     public void stopMotor() {
