@@ -70,21 +70,17 @@ public class RedStraightAuto extends CustomLinearOpMode {
         if (template == 'L') {
             //strafe left
             while (getLeftDistance() < 100) {
-                strafe(0, 1);
-            }
+                strafe(0, 1); }
             stopMotors();
         } else if (template == 'C') {
             // align with center column
-
             while (getLeftDistance() < 80) {
-                strafe(0, 1);
-            }
+                strafe(0, 1); }
             stopMotors();
         } else if (template == 'R') {
             //strafe right
             while (getLeftDistance() < 60) {
-                strafe(0, 1);
-            }
+                strafe(0, 1); }
             stopMotors();
         }
         else {
