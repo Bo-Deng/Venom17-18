@@ -35,6 +35,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     String AutoColor;
     char template;
+    int squaresToEncoder = 1100; //use motorBL
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;

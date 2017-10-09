@@ -53,6 +53,13 @@ public class MainTeleOp extends OpMode {
         if (gamepad1.x)
             motorFR.setPower(1);
 
+        if (gamepad1.dpad_up) {
+            motorBL.setPower(.2);
+            motorBR.setPower(.2);
+            motorFL.setPower(.2);
+            motorFR.setPower(.2);
+        }
+
         /*// the signs might need to be switched
         if (Math.abs(gamepad2.right_stick_y) > 0.1) {
             motorXLift.setPower(gamepad2.right_stick_y);
@@ -68,24 +75,24 @@ public class MainTeleOp extends OpMode {
 
         // forwards and backwards
         if (Math.abs(yL) > .1 || Math.abs(yR) > .1) {
-            motorBL.setPower(yL);
-            motorFL.setPower(yL);
-            motorBR.setPower(yR);
-            motorFR.setPower(yR);
+            motorBL.setPower(-yL);
+            motorFL.setPower(-yL);
+            motorBR.setPower(-yR);
+            motorFR.setPower(-yR);
         }
         // strafe right
         else if (rt != 0){
-            motorBL.setPower(rt);
-            motorFL.setPower(-rt);
-            motorBR.setPower(-rt);
-            motorFR.setPower(rt);
+            motorBL.setPower(-rt);
+            motorFL.setPower(rt);
+            motorBR.setPower(rt);
+            motorFR.setPower(-rt);
         }
         // strafe left
         else if (lt != 0){
-            motorBL.setPower(-lt);
-            motorFL.setPower(lt);
-            motorBR.setPower(lt);
-            motorFR.setPower(-lt);
+            motorBL.setPower(lt);
+            motorFL.setPower(-lt);
+            motorBR.setPower(-lt);
+            motorFR.setPower(lt);
         }
         else
             stopMotor();

@@ -25,16 +25,7 @@ public class PIDtesting extends CustomOpMode {
     final static int squaresToEncoder = 1084; //NEED TO TEST & GET CORRECT VALUE
 
     public void init() {
-        motorFL = hardwareMap.dcMotor.get("motorFL");
-        motorFR = hardwareMap.dcMotor.get("motorFR");
-        motorBL = hardwareMap.dcMotor.get("motorBL");
-        motorBR = hardwareMap.dcMotor.get("motorBR");
-
-        motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
-        imu.IMUinit(hardwareMap);
+        initStuff(hardwareMap);
 
         telemetry.addData("init ", "completed");
         telemetry.addData("PID value = ", ".0275");
