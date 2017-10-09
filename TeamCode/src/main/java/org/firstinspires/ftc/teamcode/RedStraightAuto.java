@@ -55,10 +55,9 @@ public class RedStraightAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        startMotors(.20, .20);
-        Thread.sleep(1 * 1000);
 
-        stopMotors();
+        moveSquares(1, .20);
+
 
         //Turn towards glyph container.
 
@@ -67,27 +66,23 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
+
+
         if (template == 'L') {
             //strafe left
             while (getLeftDistance() < 100) {
-                strafe(0, 1); }
-            stopMotors();
+                strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
             while (getLeftDistance() < 80) {
-                strafe(0, 1); }
-            stopMotors();
+                strafe(0, .2); }
         } else if (template == 'R') {
             //strafe right
             while (getLeftDistance() < 60) {
-                strafe(0, 1); }
-            stopMotors();
-        }
-        else {
-            strafe(0, 1);
-            Thread.sleep(100 * 1);
-        }
-        startMotors(.20, .20);
-        Thread.sleep(1000 * 1);
+                strafe(0, .2); }
+        } stopMotors();
+
+        moveSquares(1, .20);
+        stopMotors();
     }
 }

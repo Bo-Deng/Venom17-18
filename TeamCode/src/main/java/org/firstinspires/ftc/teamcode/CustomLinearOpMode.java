@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -40,6 +42,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
+
+    ElapsedTime time = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -103,6 +107,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         // best started before waitForStart
         telemetry.addLine("Camera ready!");
 
+        telemetry.addData("PID value = ", ".0275");
+
         telemetry.update();
     }
 
@@ -137,7 +143,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         idle();
     }
 
-    public void strafe(int d, int p) throws InterruptedException { // d = direction, p = power
+    public void strafe(int d, double p) throws InterruptedException { // d = direction, p = power
 
         if (d == 0) { //left
             motorFL.setPower(p);
@@ -252,5 +258,75 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         }
         return colorString;
+    }
+    public void moveSquares(int squares, double power) throws InterruptedException{
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while (motorBL.getCurrentPosition() < squares * squaresToEncoder) {
+            startMotors(power, power);
+        }
+        stopMotors();
+    }
+    public void setMotors(double FLpow, double BLpow, double FRpow, double BRpow) {
+        motorFL.setPower(Range.clip(FLpow, -1, 1));
+        motorBL.setPower(Range.clip(BLpow, -1, 1));
+        motorFR.setPower(Range.clip(FRpow, -1, 1));
+        motorBR.setPower(Range.clip(BRpow, -1, 1));
+    }
+
+    public void strafeAssisted(boolean lTrig) { //pass true to strafe left, false to strafe right
+        double desiredAngle = imu.getYaw();
+        if (lTrig) {
+            while (gamepad1.left_trigger > .1) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.0275; //.025 < PID <.03
+                // While this range does work on the trollbot, it has not been tested on the actual robot.
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(-.5 - PIDchange, .5 - PIDchange, .5 + PIDchange, -.5 + PIDchange);
+            }
+        }
+        else {
+            while (gamepad1.right_trigger > .1) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.0275; //.025 < PID <.03
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(.5 - PIDchange, -.5 - PIDchange, -.5 + PIDchange, .5 + PIDchange);
+            }
+        }
+    }
+
+    public void straightAssisted(double squares) throws InterruptedException {
+        straightAssisted(squares, imu.getYaw());
+    }
+
+    public void straightAssisted(double squares, double angle) throws InterruptedException {
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFR.setTargetPosition((int) -squares * squaresToEncoder);
+        motorFL.setTargetPosition((int) squares * squaresToEncoder);
+        motorBR.setTargetPosition((int) -squares * squaresToEncoder);
+        motorBL.setTargetPosition((int) squares * squaresToEncoder);
+    }
+
+    public void Pturn(double angle) throws InterruptedException {
+        double kP = .25/90;
+        double PIDchange;
+        double angleDiff = imu.getTrueDiff(angle);
+        time.reset();
+        while (Math.abs(angleDiff) > 0.25) {
+            angleDiff = imu.getTrueDiff(angle);
+            PIDchange = angleDiff * kP;
+            motorFR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
+            motorBR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
+            motorFL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
+            motorBL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
+        }
+        stopMotors();
     }
 }

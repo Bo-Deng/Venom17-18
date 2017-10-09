@@ -33,12 +33,10 @@ public class BlueSideAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        startMotors(.20, .20);
-        Thread.sleep(1 * 1000);
 
-        stopMotors();
+        moveSquares(1, -.20);
 
-        turn(.2, 500);
+        Pturn(90);
 
         //Turn towards glyph container.
 
@@ -50,28 +48,17 @@ public class BlueSideAuto extends CustomLinearOpMode {
         if (template == 'L') {
             //strafe left
             while (getLeftDistance() < 100) {
-                strafe(0, 1);
-            }
-            stopMotors();
+                strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
-
             while (getLeftDistance() < 80) {
-                strafe(0, 1);
-            }
-            stopMotors();
+                strafe(0, .2); }
         } else if (template == 'R') {
             //strafe right
             while (getLeftDistance() < 60) {
-                strafe(0, 1);
-            }
-            stopMotors();
-        }
-        else {
-            strafe(0, 1);
-            Thread.sleep(1000 * 1);
-        }
-        startMotors(.20, .20);
-        Thread.sleep(1000 * 1);
+                strafe(0, .2); }
+        } stopMotors();
+
+        moveSquares(1, .2);
     }
 }

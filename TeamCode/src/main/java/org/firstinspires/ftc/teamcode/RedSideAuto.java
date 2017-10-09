@@ -33,45 +33,33 @@ public class RedSideAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        startMotors(.20, .20);
-        Thread.sleep(1 * 1000);
+        moveSquares(1, .20);
 
-        stopMotors();
-
-        turn(.2, 500);
+        Pturn(90);
 
         //Turn towards glyph container.
 
 
         //Align with correct column.
 
-        DebugLog.LOGE("startDistance ", "" + getLeftDistance());
+        DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
         if (template == 'L') {
             //strafe left
-            while (getLeftDistance() < 100) {
-                strafe(0, 1);
-            }
-            stopMotors();
+            while (getRightDistance() < 170) {
+                strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
-
-            while (getLeftDistance() < 80) {
-                strafe(0, 1);
+            while (getRightDistance() < 150) {
+                strafe(0, .2);
             }
-            stopMotors();
         } else if (template == 'R') {
             //strafe right
-            while (getLeftDistance() < 60) {
-                strafe(0, 1);
-            }
-            stopMotors();
-        }
-        else {
-            strafe(0, 1);
-            Thread.sleep(100 * 1);
-        }
-        startMotors(.20, .20);
-        Thread.sleep(1000 * 1);
+            while (getRightDistance() < 130) {
+                strafe(0, .2); }
+        } stopMotors();
+
+        moveSquares(1, .20);
+        stopMotors();
     }
 }
