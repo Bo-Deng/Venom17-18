@@ -31,8 +31,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     DcMotor motorBL;
 
     IMU imu;
-    ModernRoboticsI2cRangeSensor leftRangeSensor;
-    ModernRoboticsI2cRangeSensor rightRangeSensor;
+    ModernRoboticsI2cRangeSensor rangeSensorL;
+    ModernRoboticsI2cRangeSensor rangeSensorR;
     // Servo rightWallServo;
 
     String AutoColor;
@@ -43,7 +43,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
-    ElapsedTime time = new ElapsedTime();
+    ElapsedTime time;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -51,6 +51,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void initStuff(HardwareMap map) throws InterruptedException {
+        time = new ElapsedTime();
+
         motorFR = map.dcMotor.get("motorFR");
         motorFL = map.dcMotor.get("motorFL");
         motorBR = map.dcMotor.get("motorBR");
@@ -58,6 +60,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
+        rangeSensorR = map.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
 
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
@@ -99,7 +104,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         else if (vuMark == RelicRecoveryVuMark.RIGHT)
             template = 'R';
 
-        setCameraDownsampling(8);
+        //setCameraDownsampling(8);
 
         telemetry.addLine("Wait for camera to finish initializing!");
         telemetry.update();
@@ -159,17 +164,17 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public double getRightDistance() {
-        double dist = rightRangeSensor.getDistance(DistanceUnit.CM);
+        double dist = rangeSensorR.getDistance(DistanceUnit.CM);
         while (dist > 1000) {
-            dist = rightRangeSensor.getDistance(DistanceUnit.CM);
+            dist = rangeSensorR.getDistance(DistanceUnit.CM);
         }
         return dist;
     }
 
     public double getLeftDistance() {
-        double dist = leftRangeSensor.getDistance(DistanceUnit.CM);
+        double dist = rangeSensorL.getDistance(DistanceUnit.CM);
         while (dist > 1000) {
-            dist = leftRangeSensor.getDistance(DistanceUnit.CM);
+            dist = rangeSensorL.getDistance(DistanceUnit.CM);
         }
         return dist;
     }
