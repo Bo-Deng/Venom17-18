@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.vuforia.ar.pl.DebugLog;
 
 /**
  * Created by hannahbransteter on 10/4/17.
  */
 
+@Autonomous(name = "RedSideAuto", group = "autonomous")
 public class RedSideAuto extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         initStuff(hardwareMap);
@@ -42,20 +44,19 @@ public class RedSideAuto extends CustomLinearOpMode {
 
         //Align with correct column.
 
-        DebugLog.LOGE("startDistance ", "" + getRightDistance());
+        DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
         if (template == 'L') {
             //strafe left
-            while (getRightDistance() < 170) {
+            while (getLeftDistance() < 170) {
                 strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
-            while (getRightDistance() < 150) {
-                strafe(0, .2);
-            }
+            while (getLeftDistance() < 150) {
+                strafe(0, .2); }
         } else if (template == 'R') {
             //strafe right
-            while (getRightDistance() < 130) {
+            while (getLeftDistance() < 130) {
                 strafe(0, .2); }
         } stopMotors();
 

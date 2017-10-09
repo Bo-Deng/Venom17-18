@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.vuforia.ar.pl.DebugLog;
 
 /**
  * Created by hannahbransteter on 10/4/17.
  */
 
+@Autonomous(name = "BlueStraightAuto", group = "autonomous")
 public class BlueStraightAuto extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         initStuff(hardwareMap);

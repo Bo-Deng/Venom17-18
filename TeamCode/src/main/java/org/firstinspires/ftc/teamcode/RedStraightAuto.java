@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -27,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by Ryan Bransteter on 10/3/17.
  */
 
+@Autonomous(name = "RedStraightAuto", group = "autonomous")
 public class RedStraightAuto extends CustomLinearOpMode {
 
     public void runOpMode() throws InterruptedException {
@@ -64,21 +66,21 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         //Align with correct column.
 
-        DebugLog.LOGE("startDistance ", "" + getLeftDistance());
+        DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
-
+        template = 'L';
 
         if (template == 'L') {
             //strafe left
-            while (getLeftDistance() < 100) {
+            while (getRightDistance() < 100) {
                 strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
-            while (getLeftDistance() < 80) {
+            while (getRightDistance() < 80) {
                 strafe(0, .2); }
         } else if (template == 'R') {
             //strafe right
-            while (getLeftDistance() < 60) {
+            while (getRightDistance() < 60) {
                 strafe(0, .2); }
         } stopMotors();
 

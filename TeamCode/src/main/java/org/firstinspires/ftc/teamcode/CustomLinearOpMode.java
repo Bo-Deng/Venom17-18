@@ -165,7 +165,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public double getRightDistance() {
         double dist = rangeSensorR.getDistance(DistanceUnit.CM);
-        while (dist > 1000) {
+        while (dist > 1000 || Double.isNaN(dist)) {
             dist = rangeSensorR.getDistance(DistanceUnit.CM);
         }
         return dist;
@@ -173,7 +173,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public double getLeftDistance() {
         double dist = rangeSensorL.getDistance(DistanceUnit.CM);
-        while (dist > 1000) {
+        while (dist > 1000 || Double.isNaN(dist)) {
             dist = rangeSensorL.getDistance(DistanceUnit.CM);
         }
         return dist;
@@ -267,7 +267,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void moveSquares(int squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (motorBL.getCurrentPosition() < squares * squaresToEncoder) {
+        while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder) {
             startMotors(power, power);
         }
         stopMotors();
