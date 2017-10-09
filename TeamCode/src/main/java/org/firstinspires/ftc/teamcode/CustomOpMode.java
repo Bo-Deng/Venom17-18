@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 /**
@@ -23,8 +24,8 @@ public class CustomOpMode extends OpMode {
 
     IMU imu;
 
-    ModernRoboticsI2cRangeSensor leftRangeSensor;
-    ModernRoboticsI2cRangeSensor rightRangeSensor;
+    ModernRoboticsI2cRangeSensor rangeSensorL;
+    ModernRoboticsI2cRangeSensor rangeSensorR;
     // Servo rightWallServo;
 
     String AutoColor;
@@ -47,6 +48,9 @@ public class CustomOpMode extends OpMode {
         motorBR = map.dcMotor.get("motorBR");
         motorBL = map.dcMotor.get("motorBL");
 
+        rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
+        rangeSensorR = map.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
+
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -62,5 +66,21 @@ public class CustomOpMode extends OpMode {
         motorFL.setMode(runMode);
         motorBR.setMode(runMode);
         motorBL.setMode(runMode);
+    }
+
+    public double getRightDistance() {
+        double dist = rangeSensorR.getDistance(DistanceUnit.CM);
+        while (dist > 1000 || Double.isNaN(dist)) {
+            dist = rangeSensorR.getDistance(DistanceUnit.CM);
+        }
+        return dist;
+    }
+
+    public double getLeftDistance() {
+        double dist = rangeSensorL.getDistance(DistanceUnit.CM);
+        while (dist > 1000 || Double.isNaN(dist)) {
+            dist = rangeSensorL.getDistance(DistanceUnit.CM);
+        }
+        return dist;
     }
 }

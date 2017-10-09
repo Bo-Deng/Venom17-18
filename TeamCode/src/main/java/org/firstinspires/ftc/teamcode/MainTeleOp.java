@@ -11,31 +11,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Main teleop", group="opMode")
-public class MainTeleOp extends OpMode {
+public class MainTeleOp extends CustomOpMode {
 
-    DcMotor motorFL;
-    DcMotor motorFR;
-    DcMotor motorBL;
-    DcMotor motorBR;
-    //DcMotor motorYLift;
-    //DcMotor motorXLift;
-    IMU imu;
 
-    double maintainAngle;
 
     public void init() {
 
-        motorFL = hardwareMap.dcMotor.get("motorFL");
-        motorFR = hardwareMap.dcMotor.get("motorFR");
-        motorBL = hardwareMap.dcMotor.get("motorBL");
-        motorBR = hardwareMap.dcMotor.get("motorBR");
-        //motorYLift = hardwareMap.dcMotor.get("motorYLift");
-        //motorXLift = hardwareMap.dcMotor.get("motorXLift");
-        motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
-        imu.IMUinit(hardwareMap);
+        initStuff(hardwareMap);
 
         telemetry.addData("init ", "completed");
         telemetry.update();
@@ -101,6 +83,8 @@ public class MainTeleOp extends OpMode {
         telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
         telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
         telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
+        telemetry.addData("rangeL cm: ", getLeftDistance());
+        telemetry.addData("rangeR cm: ", getRightDistance());
     }
 
     public void stopMotor() {
