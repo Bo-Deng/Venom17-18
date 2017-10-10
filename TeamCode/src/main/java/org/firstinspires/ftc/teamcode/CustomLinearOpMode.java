@@ -264,7 +264,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
         return colorString;
     }
-    public void moveSquares(int squares, double power) throws InterruptedException{
+    public void moveSquares(double squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {

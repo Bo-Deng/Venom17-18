@@ -36,7 +36,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
     */
 
 
-        moveSquares(1, -.20);
+        moveSquares(.8, -.20);
 
         Pturn(90);
 
@@ -49,18 +49,18 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            while (getLeftDistance() < 100) {
+            while (getLeftDistance() < 148) {
                 strafe(0, .2); }
         } else if (template == 'C') {
             // align with center column
-            while (getLeftDistance() < 80) {
+            while (getLeftDistance() < 128) {
                 strafe(0, .2); }
         } else if (template == 'R') {
             //strafe right
-            while (getLeftDistance() < 60) {
+            while (getLeftDistance() < 108) {
                 strafe(0, .2); }
         } stopMotors();
 
-        moveSquares(1, .2);
+        moveSquares(.3, .2);
     }
 }

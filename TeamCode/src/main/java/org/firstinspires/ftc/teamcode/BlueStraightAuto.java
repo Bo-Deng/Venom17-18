@@ -35,7 +35,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        moveSquares(1, -.20);
+        moveSquares(.8, -.20);
 
         Pturn(180);
     //Turn towards glyph container.
@@ -47,18 +47,18 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
         //strafe left
-        while (getRightDistance() < 100) {
+        while (getRightDistance() < 80) {
             strafe(0, .2); }
     } else if (template == 'C') {
         // align with center column
-        while (getRightDistance() < 80) {
+        while (getRightDistance() < 60) {
             strafe(0, .2); }
     } else if (template == 'R') {
         //strafe right
-        while (getRightDistance() < 60) {
+        while (getRightDistance() < 40) {
             strafe(0, .2); }
     } stopMotors();
 
-    moveSquares(1, .20);
+    moveSquares(.3, .20);
     }
 }

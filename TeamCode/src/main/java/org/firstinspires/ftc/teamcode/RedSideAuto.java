@@ -35,7 +35,7 @@ public class RedSideAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        moveSquares(1, .20);
+        moveSquares(.8, .20);
 
         Pturn(90);
 
@@ -48,19 +48,19 @@ public class RedSideAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            while (getLeftDistance() < 170) {
-                strafe(0, .2); }
+            while (getLeftDistance() < 148) {
+                strafe(1, .2); }
         } else if (template == 'C') {
             // align with center column
-            while (getLeftDistance() < 150) {
-                strafe(0, .2); }
+            while (getLeftDistance() < 128) {
+                strafe(1, .2); }
         } else if (template == 'R') {
             //strafe right
-            while (getLeftDistance() < 130) {
-                strafe(0, .2); }
+            while (getLeftDistance() < 108) {
+                strafe(1, .2); }
         } stopMotors();
 
-        moveSquares(1, .20);
+        moveSquares(.3, .20);
         stopMotors();
     }
 }
