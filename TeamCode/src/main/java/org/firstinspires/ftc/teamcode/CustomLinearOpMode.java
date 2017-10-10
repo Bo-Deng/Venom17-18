@@ -37,7 +37,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     String AutoColor;
     char template;
-    int squaresToEncoder = 1100; //use motorBL
+    int squaresToEncoder = 1120; //use motorBL
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -90,9 +90,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
 
         telemetry.addData("VuMark ", vuMark);
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+        /*while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        }
+        }*/
 
         template = ' ';
 
@@ -104,11 +104,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         else if (vuMark == RelicRecoveryVuMark.RIGHT)
             template = 'R';
 
-        //setCameraDownsampling(8);
+        setCameraDownsampling(8);
 
         telemetry.addLine("Wait for camera to finish initializing!");
         telemetry.update();
-        startCamera();  // can take a while.
+        //startCamera();  // can take a while.
         // best started before waitForStart
         telemetry.addLine("Camera ready!");
 
@@ -151,15 +151,15 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void strafe(int d, double p) throws InterruptedException { // d = direction, p = power
 
         if (d == 0) { //left
-            motorFL.setPower(p);
-            motorFR.setPower(-p);
-            motorBL.setPower(-p);
-            motorBR.setPower(p);
-        } else if (d == 1) { //right
             motorFL.setPower(-p);
             motorFR.setPower(p);
             motorBL.setPower(p);
             motorBR.setPower(-p);
+        } else if (d == 1) { //right
+            motorFL.setPower(p);
+            motorFR.setPower(-p);
+            motorBL.setPower(-p);
+            motorBR.setPower(p);
         }
     }
 
@@ -267,7 +267,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void moveSquares(int squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder) {
+        while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {
+            telemetry.addData("motorBL Pos: ", motorBL.getCurrentPosition());
+            telemetry.update();
             startMotors(power, power);
         }
         stopMotors();

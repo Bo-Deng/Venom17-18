@@ -14,15 +14,9 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp (name = "PIDtesting", group = "test")
 public class PIDtesting extends CustomOpMode {
 
-    DcMotor motorFL;
-    DcMotor motorFR;
-    DcMotor motorBL;
-    DcMotor motorBR;
-    IMU imu;
 
-    ElapsedTime time = new ElapsedTime();
 
-    final static int squaresToEncoder = 1084; //NEED TO TEST & GET CORRECT VALUE
+
 
     public void init() {
         initStuff(hardwareMap);

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -23,6 +24,10 @@ public class CustomOpMode extends OpMode {
     DcMotor motorBL;
 
     IMU imu;
+
+    int squaresToEncoder = 1120; //use motorBL
+
+    ElapsedTime time;
 
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
@@ -43,6 +48,8 @@ public class CustomOpMode extends OpMode {
     }
 
     public void initStuff(HardwareMap map) {
+        time = new ElapsedTime();
+
         motorFR = map.dcMotor.get("motorFR");
         motorFL = map.dcMotor.get("motorFL");
         motorBR = map.dcMotor.get("motorBR");

@@ -60,6 +60,8 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         moveSquares(1, .20);
 
+        telemetry.addLine("Move One Square Complete");
+        telemetry.update();
 
         //Turn towards glyph container.
 
@@ -72,16 +74,16 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            while (getRightDistance() < 100) {
-                strafe(0, .2); }
+            while (getRightDistance() < 85 && opModeIsActive()) {
+                strafe(0, .5); }
         } else if (template == 'C') {
             // align with center column
-            while (getRightDistance() < 80) {
-                strafe(0, .2); }
+            while (getRightDistance() < 65 && opModeIsActive()) {
+                strafe(0, .5); }
         } else if (template == 'R') {
             //strafe right
-            while (getRightDistance() < 60) {
-                strafe(0, .2); }
+            while (getRightDistance() < 45 && opModeIsActive()) {
+                strafe(0, .5); }
         } stopMotors();
 
         moveSquares(1, .20);
