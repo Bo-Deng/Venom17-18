@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -125,8 +126,9 @@ public class VuMarkID extends LinearOpMode {
         waitForStart();
 
         relicTrackables.activate();
+        ElapsedTime time = new ElapsedTime();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive() && time.seconds() < 5) {
 
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
@@ -171,6 +173,12 @@ public class VuMarkID extends LinearOpMode {
 
             telemetry.update();
         }
+
+        relicTrackables.deactivate();
+        parameters = new VuforiaLocalizer.Parameters();
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        while (time.seconds() < 25 && opModeIsActive());
     }
 
     String format(OpenGLMatrix transformationMatrix) {
