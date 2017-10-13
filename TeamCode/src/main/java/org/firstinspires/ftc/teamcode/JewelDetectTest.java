@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Bitmap;
+import android.content.Context;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.OpModeCamera;
 
+import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -18,7 +20,6 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.core.Core;
 
-
 /**
  * Created by Bo on 9/30/2017.
  */
@@ -26,7 +27,43 @@ import org.opencv.core.Core;
 @Autonomous (name = "JewelDetect", group = "test")
 public class JewelDetectTest extends OpModeCamera {
 
-    //Object Declarations
+    //public CustomOpMode customopmode = new CustomOpMode();
+
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this.hardwareMap.appContext) { //FIND OUT WHAT THE CONTEXT FOR THIS CLASS IS!!!
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    telemetry.addData("OPENCV", "OpenCV Manager Connected");
+                    telemetry.update();
+                    //from now onwards, you can use OpenCV API
+                    break;
+                case LoaderCallbackInterface.INIT_FAILED:
+                    telemetry.addData("OPENCV", "Init Failed");
+                    telemetry.update();
+                    break;
+                case LoaderCallbackInterface.INSTALL_CANCELED:
+                    telemetry.addData("OPENCV", "Install Cancelled");
+                    telemetry.update();
+                    break;
+                case LoaderCallbackInterface.INCOMPATIBLE_MANAGER_VERSION:
+                    telemetry.addData("OPENCV", "Incompatible Version");
+                    telemetry.update();
+                    break;
+                case LoaderCallbackInterface.MARKET_ERROR:
+                    telemetry.addData("OPENCV", "Market Error");
+                    telemetry.update();
+                    break;
+                default:
+                    telemetry.addData("OPENCV", "OpenCV Manager Install");
+                    telemetry.update();
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
+
+    //opencv Object Declarations
     public Mat imgMat; //Mat = matrix
     public Mat CMat;
     public Imgproc myProc; //Imgproc = Image Processing Object (used to identify circles/modify image)
@@ -34,31 +71,17 @@ public class JewelDetectTest extends OpModeCamera {
     private double dp = 1.0; //variables used to locate circles in image
     private double minDst = 5.0;
 
-    public OpenCVLoader openCVLoader; //loads the opencv library
-
     public void init() {
 
-        telemetry.addData("loading", "libs");
-        telemetry.update();
-        System.loadLibrary("opencv_java"); //loads opencv libs
-        telemetry.addData("loading", "complete");
-        telemetry.update();
-
-        setCameraDownsampling(2); //down sampling = lower resolution for higher speed; TEST THIS (may be unnecessary)
+        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this.hardwareMap.appContext, mLoaderCallback)) { //FIND OUT WHAT THE CONTEXT FOR THIS CLASS IS!!!
+            telemetry.addData("Cannot connect to OpenCV Manager", "Failure");
+            telemetry.update();
+        }
 
         myProc = new Imgproc(); //initializations
-        openCVLoader = new OpenCVLoader();
 
         startCamera(); //camera init
         telemetry.addData("Camera", "Initialized");
-        telemetry.update();
-
-        if (openCVLoader.initDebug()) { //inits opencv libs
-            telemetry.addData("OpenCV Library", "Found");
-        }
-        else {
-            telemetry.addData("OpenCV Library", "Not Found");
-        }
         telemetry.update();
 
     }
