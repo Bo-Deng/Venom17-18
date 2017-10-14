@@ -59,7 +59,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
 
         moveSquares(.8, .20);
-
+        stopMotors();
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
@@ -67,19 +67,19 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            while (getRightDistance() < 85 && opModeIsActive()) {
+            while (getRightDistance() < 73 && opModeIsActive()) {
                 strafe(0, .5); }
         } else if (template == 'C') {
             // align with center column
-            while (getRightDistance() < 60 && opModeIsActive()) {
+            while (getRightDistance() < 53 && opModeIsActive()) {
                 strafe(0, .5); }
         } else if (template == 'R') {
             //strafe right
-            while (getRightDistance() < 40 && opModeIsActive()) {
+            while (getRightDistance() < 33 && opModeIsActive()) {
                 strafe(0, .5); }
         } stopMotors();
 
-        moveSquares(.3, .20);
+        moveSquares(.15, .20);
         stopMotors();
     }
 }
