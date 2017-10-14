@@ -37,6 +37,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     String AutoColor;
     char template;
+    boolean jewelIsRed;
+
     int squaresToEncoder = 1120; //use motorBL
 
     public static final String TAG = "Vuforia VuMark Sample";
@@ -67,8 +69,45 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
 
-        telemetry.addData("init ", "completed");
+        telemetry.addLine("startJewelCamera initialization started");
         telemetry.update();
+
+        setCameraDownsampling(8);
+
+        telemetry.addLine("Wait for camera to finish initializing!");
+        telemetry.update();
+        startCamera();  // can take a while.
+        // best started before waitForStart
+        telemetry.addLine("Camera ready!");
+
+        time.reset();
+        while (time.seconds() < 3) {
+            if (imageReady()) { // only do this if an image has been returned from the camera
+                int redValue = 0;
+                int blueValue = 0;
+                int greenValue = 0;
+
+                // get image, rotated so (0,0) is in the bottom left of the preview window
+                Bitmap rgbImage;
+                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                for (int x = (int) (.8 * rgbImage.getWidth()); x < rgbImage.getWidth(); x++) {
+                    for (int y = (int) (.75 * rgbImage.getHeight()); y < rgbImage.getHeight(); y++) {
+                        int pixel = rgbImage.getPixel(x, y);
+                        redValue += red(pixel);
+                        blueValue += blue(pixel);
+                        greenValue += green(pixel);
+                    }
+                }
+
+                jewelIsRed = redValue > blueValue;
+                telemetry.addData("Is Jewel Red? ", jewelIsRed);
+
+            }
+            telemetry.update();
+            sleep(10);
+        }
+        stopCamera();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -90,9 +129,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
 
         telemetry.addData("VuMark ", vuMark);
-        /*while (vuMark == RelicRecoveryVuMark.UNKNOWN) {
+        time.reset();
+
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && time.seconds() < 3) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        }*/
+        }
 
         template = ' ';
 
@@ -104,13 +145,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         else if (vuMark == RelicRecoveryVuMark.RIGHT)
             template = 'R';
 
-        setCameraDownsampling(8);
-
-        telemetry.addLine("Wait for camera to finish initializing!");
-        telemetry.update();
-        //startCamera();  // can take a while.
-        // best started before waitForStart
-        telemetry.addLine("Camera ready!");
 
         telemetry.addData("PID value = ", ".0275");
 

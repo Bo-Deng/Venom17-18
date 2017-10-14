@@ -32,6 +32,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.Frame;
+import com.vuforia.Image;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -46,6 +48,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
+
+import java.nio.ByteBuffer;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * This OpMode illustrates the basics of using the Vuforia engine to determine
@@ -176,7 +182,17 @@ public class VuMarkID extends LinearOpMode {
 
         relicTrackables.deactivate();
         parameters = new VuforiaLocalizer.Parameters();
+        parameters.vuforiaLicenseKey = "AXb/g5n/////AAAAGSUed2rh5Us1jESA1cUn5r5KDUqTfwO2woh7MxjiLKSUyDslqBAgwCi0Qmc6lVczErnF5TIw7vG5R4TJ2igvrDVp+dP+3i2o7UUCRRj/PtyVgb4ZfNrDzHE80/6TUHifpKu4QCM04eRWYZocWNWhuRfytVeWy6NSTWefM9xadqG8FFrFk3XnvqDvk/6ZAgerNBdq5SsJ90eDdoAhgYEee40WxasoUUM9YVMvkWOqZgHSuraV2IyIUjkW/u0O+EkFtTNRUWP+aZwn1qO1H4Lk07AJYe21eqioBLMdzY7A8YqR1TeQ//0WJg8SFdXjuGbF6uHykBe2FF5UeyaehA0iTqfPS+59FLm8y1TuUt57eImq";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+
+        this.vuforia.setFrameQueueCapacity(1);
+        BlockingQueue<VuforiaLocalizer.CloseableFrame> frames = this.vuforia.getFrameQueue();
+        Frame frame = frames.poll();
+        Image img = frame.getImage(0);
+        ByteBuffer bb = img.getPixels();
+
 
         while (time.seconds() < 25 && opModeIsActive());
     }
