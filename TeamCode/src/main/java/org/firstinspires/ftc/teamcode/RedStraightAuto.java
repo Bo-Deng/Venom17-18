@@ -67,7 +67,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            while (getRightDistance() < 80 && opModeIsActive()) {
+            while (getRightDistance() < 85 && opModeIsActive()) {
                 strafe(0, .5); }
         } else if (template == 'C') {
             // align with center column

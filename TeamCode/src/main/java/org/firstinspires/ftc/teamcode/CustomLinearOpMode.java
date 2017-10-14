@@ -165,7 +165,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public double getRightDistance() {
         double dist = rangeSensorR.getDistance(DistanceUnit.CM);
-        while (dist > 1000 || Double.isNaN(dist)) {
+        while (dist > 1000 || Double.isNaN(dist) && opModeIsActive()) {
             dist = rangeSensorR.getDistance(DistanceUnit.CM);
         }
         return dist;
@@ -173,7 +173,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public double getLeftDistance() {
         double dist = rangeSensorL.getDistance(DistanceUnit.CM);
-        while (dist > 1000 || Double.isNaN(dist)) {
+        while (dist > 1000 || Double.isNaN(dist) && opModeIsActive()) {
             dist = rangeSensorL.getDistance(DistanceUnit.CM);
         }
         return dist;
@@ -268,8 +268,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {
-            telemetry.addData("motorBL Pos: ", motorBL.getCurrentPosition());
-            telemetry.update();
             startMotors(power, power);
         }
         stopMotors();
@@ -284,7 +282,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void strafeAssisted(boolean lTrig) { //pass true to strafe left, false to strafe right
         double desiredAngle = imu.getYaw();
         if (lTrig) {
-            while (gamepad1.left_trigger > .1) {
+            while (gamepad1.left_trigger > .1 && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.0275; //.025 < PID <.03
                 // While this range does work on the trollbot, it has not been tested on the actual robot.
@@ -296,7 +294,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
         }
         else {
-            while (gamepad1.right_trigger > .1) {
+            while (gamepad1.right_trigger > .1 && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.0275; //.025 < PID <.03
                 double PIDchange;
@@ -326,7 +324,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         time.reset();
-        while (Math.abs(angleDiff) > 0.25) {
+        while (Math.abs(angleDiff) > 0.25 && opModeIsActive()) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
             motorFR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);

@@ -37,7 +37,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         moveSquares(.8, -.20);
 
-        Pturn(180);
+        Pturn(179);
     //Turn towards glyph container.
 
 
@@ -59,6 +59,6 @@ public class BlueStraightAuto extends CustomLinearOpMode {
             strafe(0, .2); }
     } stopMotors();
 
-    moveSquares(.3, .20);
+    moveSquares(.2, .20);
     }
 }
