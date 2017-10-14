@@ -313,29 +313,58 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorBR.setPower(Range.clip(BRpow, -1, 1));
     }
 
-    public void strafeAssisted(boolean lTrig) { //pass true to strafe left, false to strafe right
+    public void strafeAssisted(boolean isLeft, double power, double stopRangeCM) { //pass true to strafe left, false to strafe right
+        power = Math.abs(power);
         double desiredAngle = imu.getYaw();
-        if (lTrig) {
-            while (gamepad1.left_trigger > .1 && opModeIsActive()) {
+        if (isLeft) {
+            while (getRightDistance() < stopRangeCM) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.0275; //.025 < PID <.03
+                double kP = 0.02; //.025 < PID <.03
                 // While this range does work on the trollbot, it has not been tested on the actual robot.
                 double PIDchange;
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors(-.5 - PIDchange, .5 - PIDchange, .5 + PIDchange, -.5 + PIDchange);
+                setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
             }
         }
         else {
-            while (gamepad1.right_trigger > .1 && opModeIsActive()) {
+            while (getLeftDistance() < stopRangeCM) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.0275; //.025 < PID <.03
+                double kP = 0.02; //.025 < PID <.03
                 double PIDchange;
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors(.5 - PIDchange, -.5 - PIDchange, -.5 + PIDchange, .5 + PIDchange);
+                setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
+            }
+        }
+    }
+
+    public void strafeAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
+        power = Math.abs(power);
+        double desiredAngle = angle;
+        if (isLeft) {
+            while (getRightDistance() < stopRangeCM) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.02; //.025 < PID <.03
+                // While this range does work on the trollbot, it has not been tested on the actual robot.
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
+            }
+        }
+        else {
+            while (getLeftDistance() < stopRangeCM) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.02; //.025 < PID <.03
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
             }
         }
     }
