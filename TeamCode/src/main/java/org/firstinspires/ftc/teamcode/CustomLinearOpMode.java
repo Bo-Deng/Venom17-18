@@ -313,6 +313,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorBR.setPower(Range.clip(BRpow, -1, 1));
     }
 
+    @Deprecated
     public void strafeAssisted(boolean isLeft, double power, double stopRangeCM) { //pass true to strafe left, false to strafe right
         power = Math.abs(power);
         double desiredAngle = imu.getYaw();
@@ -341,13 +342,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
     }
 
-    public void strafeAssisted(boolean isLeft, double power, double stopRangeCM, double angle, String color) { //pass true to strafe left, false to strafe right
+    public void strafeRedAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
         power = Math.abs(power);
         double desiredAngle = angle;
 
 
         if (isLeft) {
-            while (getDist(color) < stopRangeCM && opModeIsActive()) {
+            while (getRightDistance() < stopRangeCM && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.02; //.025 < PID <.03
                 // While this range does work on the trollbot, it has not been tested on the actual robot.
@@ -359,7 +360,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
         }
         else {
-            while (getDist(color) < stopRangeCM && opModeIsActive()) {
+            while (getRightDistance() > stopRangeCM && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.02; //.025 < PID <.03
                 double PIDchange;
@@ -370,6 +371,38 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
         }
     }
+
+    public void strafeBlueAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
+        power = Math.abs(power);
+        double desiredAngle = angle;
+
+
+        if (isLeft) {
+            while (getLeftDistance() > stopRangeCM && opModeIsActive()) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.02; //.025 < PID <.03
+                // While this range does work on the trollbot, it has not been tested on the actual robot.
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
+            }
+        }
+        else {
+            while (getLeftDistance() < stopRangeCM && opModeIsActive()) {
+                double diffFromDesired = imu.getTrueDiff(desiredAngle);
+                double kP = 0.02; //.025 < PID <.03
+                double PIDchange;
+
+                PIDchange = kP * diffFromDesired;
+
+                setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
+            }
+        }
+    }
+
+
 
     public void straightAssisted(double squares) throws InterruptedException {
         straightAssisted(squares, imu.getYaw());

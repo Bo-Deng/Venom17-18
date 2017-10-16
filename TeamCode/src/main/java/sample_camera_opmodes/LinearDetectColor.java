@@ -20,7 +20,7 @@ public class LinearDetectColor extends LinearOpModeCamera {
     DcMotor motorRight;
     DcMotor motorLeft;
 
-    int ds2 = 2;  // additional downsampling of the image
+    int ds2 = 1;  // additional downsampling of the image
     // set to 1 to disable further downsampling
 
     @Override

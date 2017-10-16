@@ -16,7 +16,7 @@ import for_camera_opmodes.OpModeCamera;
 //@Disabled
 public class DetectColor extends OpModeCamera {
 
-  int ds2 = 2;  // additional downsampling of the image
+  int ds2 = 1;  // additional downsampling of the image
   private int looped = 0;
   private long lastLoopTime = 0;
   // set to 1 to disable further downsampling
