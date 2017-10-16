@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.vuforia.ar.pl.DebugLog;
 
 /**
- * Created by hannahbransteter on 10/4/17.
+ * Created by Ryan Branstetter on 10/4/17.
  */
 
 @Autonomous(name = "BlueStraightAuto", group = "autonomous")
@@ -49,13 +49,13 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeAssisted(false, .4, 75, 180, AutoColor);
+            strafeBlueAssisted(false, .4, 75, 180);
         } else if (template == 'C') {
             // align with center column
-            strafeAssisted(false, .4, 60, 180, AutoColor);
+            strafeBlueAssisted(false, .4, 60, 180);
         } else if (template == 'R') {
             //strafe right
-            strafeAssisted(false, .4, 45, 180, AutoColor);
+            strafeBlueAssisted(false, .4, 45, 180);
         } stopMotors();
         Thread.sleep(500);
 

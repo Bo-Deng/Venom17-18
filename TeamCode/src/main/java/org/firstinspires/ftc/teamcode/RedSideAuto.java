@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.vuforia.ar.pl.DebugLog;
 
 /**
- * Created by hannahbransteter on 10/4/17.
+ * Created by Ryan Branstetter on 10/4/17.
  */
 
 @Autonomous(name = "RedSideAuto", group = "autonomous")
@@ -40,6 +40,8 @@ public class RedSideAuto extends CustomLinearOpMode {
         Thread.sleep(500);
 
         Pturn(90);
+        stopMotors();
+        Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
@@ -50,17 +52,17 @@ public class RedSideAuto extends CustomLinearOpMode {
             //strafe left
             if (getRightDistance() > 65) {
                 side = false; }
-            strafeAssisted(side, .4, 65, 90, AutoColor);
+            strafeRedAssisted(side, .4, 65, 90);
         } else if (template == 'C') {
             // align with center column
             if (getRightDistance() > 40) {
                 side = false; }
-            strafeAssisted(side, .4, 40, 90, AutoColor);
+            strafeRedAssisted(side, .4, 40, 90);
         } else if (template == 'R') {
             //strafe right
             if (getRightDistance() > 25) {
                 side = false; }
-            strafeAssisted(side, .4, 25, 90, AutoColor);
+            strafeRedAssisted(side, .4, 25, 90);
         } stopMotors();
 
         moveSquares(.15, .20);
