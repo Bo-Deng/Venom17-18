@@ -35,30 +35,31 @@ public class BlueStraightAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        moveSquares(.8, -.20);
+        moveSquares(.75, .20);
+        stopMotors();
+        Thread.sleep(500);
 
-        Pturn(179);
-    //Turn towards glyph container.
+        Pturn(180);
+        stopMotors();
+        Thread.sleep(500);
 
+        DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
-    //Align with correct column.
-
-        DebugLog.LOGE("startDistance ", "" + getRightDistance());
+        template = 'R';
 
         if (template == 'L') {
-        //strafe left
-        while (getRightDistance() < 80) {
-            strafe(0, .2); }
-    } else if (template == 'C') {
-        // align with center column
-        while (getRightDistance() < 60) {
-            strafe(0, .2); }
-    } else if (template == 'R') {
-        //strafe right
-        while (getRightDistance() < 40) {
-            strafe(0, .2); }
-    } stopMotors();
+            //strafe left
+            strafeAssisted(false, .4, 75, 180, AutoColor);
+        } else if (template == 'C') {
+            // align with center column
+            strafeAssisted(false, .4, 60, 180, AutoColor);
+        } else if (template == 'R') {
+            //strafe right
+            strafeAssisted(false, .4, 45, 180, AutoColor);
+        } stopMotors();
+        Thread.sleep(500);
 
-    moveSquares(.2, .20);
+        moveSquares(.15, .20);
+        stopMotors();
     }
 }

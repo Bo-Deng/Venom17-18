@@ -36,31 +36,35 @@ public class BlueSideAuto extends CustomLinearOpMode {
     */
 
 
-        moveSquares(.8, -.20);
+        moveSquares(.75, -.20);
+        stopMotors();
+        Thread.sleep(500);
 
         Pturn(90);
 
-        //Turn towards glyph container.
+        DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
+        template = 'R';
 
-        //Align with correct column.
-
-        DebugLog.LOGE("startDistance ", "" + getLeftDistance());
-
+        boolean side = true;
         if (template == 'L') {
             //strafe left
-            while (getLeftDistance() < 148) {
-                strafe(0, .2); }
+            if (getRightDistance() > 65) {
+                side = false; }
+            strafeAssisted(side, .4, 65, 90, AutoColor);
         } else if (template == 'C') {
             // align with center column
-            while (getLeftDistance() < 128) {
-                strafe(0, .2); }
+            if (getRightDistance() > 40) {
+                side = false; }
+            strafeAssisted(side, .4, 40, 90, AutoColor);
         } else if (template == 'R') {
             //strafe right
-            while (getLeftDistance() < 108) {
-                strafe(0, .2); }
+            if (getRightDistance() > 25) {
+                side = false; }
+            strafeAssisted(side, .4, 25, 90, AutoColor);
         } stopMotors();
 
-        moveSquares(.3, .2);
+        moveSquares(.15, .20);
+        stopMotors();
     }
 }

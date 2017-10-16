@@ -341,11 +341,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
     }
 
-    public void strafeAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
+    public void strafeAssisted(boolean isLeft, double power, double stopRangeCM, double angle, String color) { //pass true to strafe left, false to strafe right
         power = Math.abs(power);
         double desiredAngle = angle;
+
+
         if (isLeft) {
-            while (getRightDistance() < stopRangeCM) {
+            while (getDist(color) < stopRangeCM && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.02; //.025 < PID <.03
                 // While this range does work on the trollbot, it has not been tested on the actual robot.
@@ -357,7 +359,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
         }
         else {
-            while (getLeftDistance() < stopRangeCM) {
+            while (getDist(color) < stopRangeCM && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.02; //.025 < PID <.03
                 double PIDchange;
@@ -383,18 +385,24 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void Pturn(double angle) throws InterruptedException {
-        double kP = .25/90;
+        double kP = .5/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         time.reset();
-        while (Math.abs(angleDiff) > 0.25 && opModeIsActive()) {
+        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 2) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
-            motorFR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
-            motorBR.setPower(Math.abs(PIDchange) > .05 ? PIDchange : 0);
-            motorFL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
-            motorBL.setPower(Math.abs(PIDchange) > .05 ? -PIDchange : 0);
+            motorFR.setPower(Range.clip(PIDchange - .1, -1, 1));
+            motorBR.setPower(Range.clip(PIDchange - .1, -1, 1));
+            motorFL.setPower(Range.clip(-PIDchange + .1, -1, 1));
+            motorBL.setPower(Range.clip(-PIDchange + .1, -1, 1));
         }
         stopMotors();
+    }
+    public double getDist(String color) {
+        if (color.equals("RED")) {
+            return getRightDistance();
+        }
+        return getLeftDistance();
     }
 }

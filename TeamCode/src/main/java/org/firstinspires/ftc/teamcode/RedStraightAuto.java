@@ -58,26 +58,25 @@ public class RedStraightAuto extends CustomLinearOpMode {
     */
 
 
-        moveSquares(.8, .20);
+        moveSquares(.75, .20);
         stopMotors();
+        Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
-        template = 'L';
+        template = 'R';
 
         if (template == 'L') {
             //strafe left
-            while (getRightDistance() < 73 && opModeIsActive()) {
-                strafe(0, .5); }
+                strafeAssisted(true, .4, 75, 0, AutoColor);
         } else if (template == 'C') {
             // align with center column
-            while (getRightDistance() < 53 && opModeIsActive()) {
-                strafe(0, .5); }
+                strafeAssisted(true, .4, 60, 0, AutoColor);
         } else if (template == 'R') {
             //strafe right
-            while (getRightDistance() < 33 && opModeIsActive()) {
-                strafe(0, .5); }
+            strafeAssisted(true, .4, 45, 0, AutoColor);
         } stopMotors();
+        Thread.sleep(500);
 
         moveSquares(.15, .20);
         stopMotors();
