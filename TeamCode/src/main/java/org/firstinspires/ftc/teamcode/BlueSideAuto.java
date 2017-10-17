@@ -36,7 +36,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
     */
 
 
-        moveSquares(.75, -.20);
+        moveSquares(-.75, .20);
         stopMotors();
         Thread.sleep(500);
 
@@ -47,22 +47,18 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         template = 'R';
 
-        boolean side = true;
+
         if (template == 'L') {
             //strafe left
-            if (getLeftDistance() > 65) {
-                side = false; }
-            strafeBlueAssisted(side, .4, 65, 90);
+            strafeBlueAssisted(.4, 60, 90);
+
         } else if (template == 'C') {
             // align with center column
-            if (getLeftDistance() > 40) {
-                side = false; }
-            strafeBlueAssisted(side, .4, 40, 90);
+            strafeBlueAssisted(.4, 45, 90);
+
         } else if (template == 'R') {
             //strafe right
-            if (getLeftDistance() > 25) {
-                side = false; }
-            strafeBlueAssisted(side, .4, 25, 90);
+            strafeBlueAssisted(.4, 30, 90);
         } stopMotors();
         Thread.sleep(500);
 

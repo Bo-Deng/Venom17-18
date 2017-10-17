@@ -35,7 +35,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
     // wallServo.setPosition(0);
     */
 
-        moveSquares(.75, .20);
+        moveSquares(-.75, .20);
         stopMotors();
         Thread.sleep(500);
 
@@ -49,13 +49,15 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(false, .4, 75, 180);
+            strafeBlueAssisted(.4, 60, 180);
+
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(false, .4, 60, 180);
+            strafeBlueAssisted(.4, 45, 180);
+
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(false, .4, 45, 180);
+            strafeBlueAssisted(.4, 30, 180);
         } stopMotors();
         Thread.sleep(500);
 

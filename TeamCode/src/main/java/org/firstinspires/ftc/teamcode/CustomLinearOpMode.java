@@ -147,6 +147,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
 
         telemetry.addData("PID value = ", ".0275");
+        telemetry.addData("Init = ", "completed");
 
         telemetry.update();
     }
@@ -158,17 +159,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorBR.setPower(0);
     }
 
-    public void startMotors(double rSpeed, double lSpeed) {
-        motorFL.setPower(lSpeed);
-        motorFR.setPower(rSpeed);
-        motorBL.setPower(lSpeed);
-        motorBR.setPower(rSpeed);
-    }
-
-    public void turn(double speed, int time) throws InterruptedException {
-        startMotors(speed, -speed);
-        Thread.sleep(time);
-        stopMotors();
+    public void startMotors(double speed) {
+        motorFL.setPower(speed);
+        motorFR.setPower(speed);
+        motorBL.setPower(speed);
+        motorBR.setPower(speed);
     }
 
     public void setMode(DcMotor.RunMode runMode) throws InterruptedException {
@@ -301,8 +296,15 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void moveSquares(double squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {
-            startMotors(power, power);
+        if (squares > 0) {
+            while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {
+                startMotors(power);
+            }
+        }
+        else {
+            while (-Math.abs(motorBL.getCurrentPosition()) > squares * squaresToEncoder && opModeIsActive()) {
+                startMotors(-power);
+            }
         }
         stopMotors();
     }
@@ -342,12 +344,12 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
     }
 
-    public void strafeRedAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
+    public void strafeRedAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
         power = Math.abs(power);
         double desiredAngle = angle;
 
 
-        if (isLeft) {
+        /*if (isLeft) {
             while (getRightDistance() < stopRangeCM && opModeIsActive()) {
                 double diffFromDesired = imu.getTrueDiff(desiredAngle);
                 double kP = 0.02; //.025 < PID <.03
@@ -369,39 +371,62 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
                 setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
             }
+        } */
+
+        if(getRightDistance() > stopRangeCM) {
+            while (getRightDistance() > stopRangeCM && opModeIsActive()) {
+                strafeRight(power, angle);
+            }
+        }
+        if (getRightDistance() < stopRangeCM) {
+            while (getRightDistance() < stopRangeCM && opModeIsActive()) {
+                strafeLeft(power, angle);
+            }
         }
     }
 
-    public void strafeBlueAssisted(boolean isLeft, double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
+    public void strafeBlueAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
         power = Math.abs(power);
         double desiredAngle = angle;
 
 
-        if (isLeft) {
-            while (getLeftDistance() > stopRangeCM && opModeIsActive()) {
-                double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.02; //.025 < PID <.03
-                // While this range does work on the trollbot, it has not been tested on the actual robot.
-                double PIDchange;
-
-                PIDchange = kP * diffFromDesired;
-
-                setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
+        if(getLeftDistance() < stopRangeCM) {
+            while (getLeftDistance() < stopRangeCM && opModeIsActive()) {
+                strafeRight(power, angle);
             }
         }
-        else {
-            while (getLeftDistance() < stopRangeCM && opModeIsActive()) {
-                double diffFromDesired = imu.getTrueDiff(desiredAngle);
-                double kP = 0.02; //.025 < PID <.03
-                double PIDchange;
-
-                PIDchange = kP * diffFromDesired;
-
-                setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
+        if (getLeftDistance() > stopRangeCM) {
+            while (getLeftDistance() > stopRangeCM && opModeIsActive()) {
+                strafeLeft(power, angle);
             }
         }
     }
 
+    public void strafeRight(double power, double angle) {
+        power = Math.abs(power);
+        double desiredAngle = angle;
+
+        double diffFromDesired = imu.getTrueDiff(desiredAngle);
+        double kP = 0.01; //.025 < PID <.03
+        double PIDchange;
+
+        PIDchange = kP * diffFromDesired;
+
+        setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
+    }
+
+    public void strafeLeft(double power, double angle) {
+        power = Math.abs(power);
+        double desiredAngle = angle;
+
+        double diffFromDesired = imu.getTrueDiff(desiredAngle);
+        double kP = 0.01; //.025 < PID <.03
+        double PIDchange;
+
+        PIDchange = kP * diffFromDesired;
+
+        setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
+    }
 
 
     public void straightAssisted(double squares) throws InterruptedException {
@@ -422,7 +447,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         time.reset();
-        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 2) {
+        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 3) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
             motorFR.setPower(Range.clip(PIDchange - .1, -1, 1));

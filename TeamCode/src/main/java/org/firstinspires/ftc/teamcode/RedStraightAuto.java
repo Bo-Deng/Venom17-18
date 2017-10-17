@@ -68,13 +68,15 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-                strafeRedAssisted(true, .4, 75, 0);
+                strafeRedAssisted(.4, 75, 0);
+
         } else if (template == 'C') {
             // align with center column
-                strafeRedAssisted(true, .4, 60, 0);
+                strafeRedAssisted(.4, 60, 0);
+
         } else if (template == 'R') {
             //strafe right
-            strafeRedAssisted(true, .4, 45, 0);
+            strafeRedAssisted(.4, 45, 0);
         } stopMotors();
         Thread.sleep(500);
 
