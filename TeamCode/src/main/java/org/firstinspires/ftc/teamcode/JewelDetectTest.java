@@ -16,6 +16,8 @@ import org.opencv.android.Utils;
 import org.opencv.core.CvException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -25,6 +27,9 @@ import org.opencv.core.Core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static android.R.attr.radius;
+import static org.opencv.imgproc.Imgproc.circle;
 
 /**
  * Created by Bo on 9/30/2017.
@@ -64,7 +69,7 @@ public class JewelDetectTest extends OpModeCamera {
     public Mat CMat;
 
     private double dp = 1.2d; //ratio of input resolution  to output resolution
-    private double minDst = 100; //min distance between centers of detected circles (replace with jewel radius)
+    private double minDst = 100; //min distance between centers of detected circles (replace with jewel radius) ||| jewel radius = 3.5
 
     int loopCount = 0;
 
@@ -100,11 +105,13 @@ public class JewelDetectTest extends OpModeCamera {
 
             Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst); //find circles in image (add parameters based on jewel dimensions to increase accuracy)
 
-            // telemetry.addData("Num of Circles:", CMat.cols()); //return number of circles (# of columns = # of circles)
-            // printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
-            telemetry.update();
+            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0,0); //find circles in image (add parameters based on jewel dimensions to increase accuracy)
 
-            /*try {
+            telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
+            printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
+            //telemetry.update();
+
+            try {
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 telemetry.addData("Exception", e);
@@ -117,14 +124,32 @@ public class JewelDetectTest extends OpModeCamera {
             if (loopCount == 9)
                 telemetry.update();
 
-            loopCount++;*/
+            loopCount++;
         }
     }
 
-    public void writeToFile(Mat mat, Mat circle){ //debugging only; prints images into data files on phone, access through camera
+    public void writeToFile(Mat mat, Mat circles) { //debugging only; prints images into data files on phone, access through camera
 
-        //code to add circle to img goes here
+        // Draw the circles detected
 
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB, 0); //convert to rgb
+
+        int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
+        try {
+            for (int i = 0; i < numberOfCircles; i++) {
+                double[] circleCoordinates = circles.get(0, i);
+                int x = (int) circleCoordinates[0];
+                int y = (int) circleCoordinates[1];
+                Point center = new Point(x, y);
+                int r = (int) circleCoordinates[2];
+
+                // draw the circle center
+                circle(mat, center, 5, new Scalar(0, 255, 0), -1);
+                // draw the circle outline
+                circle(mat, center, r, new Scalar(0, 0, 255), 6);
+            }
+        } catch (Exception e) {
+        }
         Bitmap bmp = null;
         try {
             bmp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
@@ -132,11 +157,9 @@ public class JewelDetectTest extends OpModeCamera {
         } catch (CvException e) {
             telemetry.addData("Exception", "creating bitmap:" + e);
         }
-
         mat.release();
 
         FileOutputStream out = null;
-
         String filename = "frame" + loopCount + ".png";
 
         File sd = new File(Environment.getExternalStorageDirectory() + "/frames");
@@ -168,5 +191,17 @@ public class JewelDetectTest extends OpModeCamera {
         }
     }
 
-    //public void printCircleData(Mat circle) {}
+    public void printCircleData(Mat circle) {
+        double[] list;
+        try {
+            for (int i = 0; i < circle.cols(); i++) {
+            list = circle.get(i, 0);
+            telemetry.addData("x = ", (int) list[0]);
+            telemetry.addData("y = ", (int) list[1]);
+            telemetry.addData("r = ", (int) list[2]);
+            }
+        } catch (NullPointerException e) {
+            telemetry.addData("Array", "Empty");
+        }
+    }
 }
