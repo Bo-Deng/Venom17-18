@@ -99,20 +99,21 @@ public class JewelDetectTest extends OpModeCamera {
 
             CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new mat to store circle data
 
-            /* edge detection & image blur if necessary
-            myProc.blur(imgMat, imgMat, new Size(width, height)); //blurs image to eliminate false circles
-            myProc.Canny(edgeMat, edgeMat, 80, 100); //detect edges; may make detection more accurate
-            */
+            // edge detection & image blur if necessary
+            Imgproc.GaussianBlur(imgMat, imgMat, new Size(15, 15), 15); //blur
+            //Imgproc.Canny(edgeMat, edgeMat, 80, 100); //detect edges; may make detection more accurate
 
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst); //find circles in image (add parameters based on jewel dimensions to increase accuracy)
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst); //find circles in image
 
-            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0,0); //find circles in image (more specific, but also more volatile)
+            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 150, 50, 75, 125); //find circles in image (more specific)
 
             telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
             printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
 
+
             if (loopCount < 10) //only saves 10 images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
+
 
             loopCount++; //debug
         }
