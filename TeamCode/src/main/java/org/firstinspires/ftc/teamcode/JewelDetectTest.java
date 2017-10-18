@@ -23,6 +23,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.core.Core;
+//import org.opencv.android.Camera2Renderer;  -- comment out and see if this helps with the stuck in loop error
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,40 +39,40 @@ import static org.opencv.imgproc.Imgproc.circle;
 @Autonomous (name = "JewelDetect", group = "test")
 public class JewelDetectTest extends OpModeCamera {
 
-    public void startOpenCV(){
-       BaseLoaderCallback openCVLoaderCallback = null;
-       try {
-           openCVLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
-               @Override
-               public void onManagerConnected(int status) {
-                   switch (status) {
-                       case LoaderCallbackInterface.SUCCESS: {
-                           telemetry.addData("OpenCV", "OpenCV Manager connected!");
-                       }
-                       break;
-                       default: {
-                           super.onManagerConnected(status);
-                       }
-                       break;
-                   }
-               }
-           };
-       } catch (NullPointerException e) {
-           telemetry.addData("Could not find OpenCV Manager!", "Please install the app from the Google Play Store.");
-       }
+    public void startOpenCV(){ //loads openCV library from phone via openCVManager
+        BaseLoaderCallback openCVLoaderCallback = null;
+        try {
+            openCVLoaderCallback = new BaseLoaderCallback(hardwareMap.appContext) {
+                @Override
+                public void onManagerConnected(int status) {
+                    switch (status) {
+                        case LoaderCallbackInterface.SUCCESS: {
+                            telemetry.addData("OpenCV", "OpenCV Manager connected!");
+                        }
+                        break;
+                        default: {
+                            super.onManagerConnected(status);
+                        }
+                        break;
+                    }
+                }
+            };
+        } catch (NullPointerException e) {
+            telemetry.addData("Could not find OpenCV Manager!", "Please install the app from the Google Play Store.");
+        }
 
-       if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this.hardwareMap.appContext, openCVLoaderCallback)) { //FIND OUT WHAT THE CONTEXT FOR THIS CLASS IS!!!
-           telemetry.addData("Cannot connect to OpenCV Manager", "Failure");
-       }
-   }
+        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this.hardwareMap.appContext, openCVLoaderCallback)) {
+            telemetry.addData("Cannot connect to OpenCV Manager", "Failure");
+        }
+    }
 
     public Mat imgMat; //Mat = matrix
-    public Mat CMat;
+    public Mat CMat; //holds image data
 
     private double dp = 1.2d; //ratio of input resolution  to output resolution
-    private double minDst = 100; //min distance between centers of detected circles (replace with jewel radius) ||| jewel radius = 3.5
+    private double minDst = 100; //min distance between centers of detected circles (TEST THIS value)
 
-    int loopCount = 0;
+    int loopCount = 0; //debugging purposes
 
     public void init() {
 
@@ -83,58 +84,57 @@ public class JewelDetectTest extends OpModeCamera {
     }
 
     public void loop() {
-
         if (imageReady()) { //when image received from camera
 
             Bitmap img; //creates a bitmap of the image
 
-            img = convertYuvImageToRgb(yuvImage, width, height, 1);
+            img = convertYuvImageToRgb(yuvImage, width, height, 1); //convert image to bitmap
 
             //imgMat = new Mat();
             imgMat = new Mat(new Size(img.getWidth(), img.getHeight()), CvType.CV_8UC1); //put image into a matrix
 
-            Utils.bitmapToMat(img, imgMat);
+            Utils.bitmapToMat(img, imgMat); //bitmap to mat conversion
 
-            Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY, 0); //convert to grayscale
+            Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY, 0); //convert mat to grayscale
 
-            CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new matrix to store circle data
+            CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new mat to store circle data
 
             /* edge detection & image blur if necessary
             myProc.blur(imgMat, imgMat, new Size(width, height)); //blurs image to eliminate false circles
-            myProc.Canny(edgeMat, edgeMat, 80, 100);*/
+            myProc.Canny(edgeMat, edgeMat, 80, 100); //detect edges; may make detection more accurate
+            */
 
             Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst); //find circles in image (add parameters based on jewel dimensions to increase accuracy)
 
-            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0,0); //find circles in image (add parameters based on jewel dimensions to increase accuracy)
+            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0,0); //find circles in image (more specific, but also more volatile)
 
             telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
             printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
-            //telemetry.update();
 
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                telemetry.addData("Exception", e);
-                telemetry.update();
-            }
-
-            if (loopCount < 10)
+            if (loopCount < 10) //only saves 10 images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
 
-            if (loopCount == 9)
-                telemetry.update();
-
-            loopCount++;
+            loopCount++; //debug
         }
+        else {
+            telemetry.addData("Image not loaded; ", "Loop count: " + loopCount);
+        }
+        telemetry.update();
+
+        /*
+        try { //pause for 1.5 seconds between each image (buffer)
+            Thread.sleep(1500);
+        } catch (Exception e) {
+            telemetry.addData("Exception", e);
+        } */
     }
 
-    public void writeToFile(Mat mat, Mat circles) { //debugging only; prints images into data files on phone, access through camera
+    public void writeToFile(Mat mat, Mat circles) { //debugging only; prints images into data files on phone, access through camera roll (gallery)
 
         // Draw the circles detected
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB, 0); //convert to rgb (so the circle that gets drawn is colored)
 
-        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB, 0); //convert to rgb
-
-        int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols();
+        int numberOfCircles = (circles.rows() == 0) ? 0 : circles.cols(); //confusing copypasta (retrieves data from mat, draw circle based on data, converts mat to bitmap, saves to system directory = Gallery)
         try {
             for (int i = 0; i < numberOfCircles; i++) {
                 double[] circleCoordinates = circles.get(0, i);
@@ -191,14 +191,14 @@ public class JewelDetectTest extends OpModeCamera {
         }
     }
 
-    public void printCircleData(Mat circle) {
+    public void printCircleData(Mat circle) { //prints x, y, and radius of each circle (throws NullPointerException if array has no data)
         double[] list;
         try {
             for (int i = 0; i < circle.cols(); i++) {
-            list = circle.get(i, 0);
-            telemetry.addData("x = ", (int) list[0]);
-            telemetry.addData("y = ", (int) list[1]);
-            telemetry.addData("r = ", (int) list[2]);
+                list = circle.get(i, 0);
+                telemetry.addData("x = ", (int) list[0]);
+                telemetry.addData("y = ", (int) list[1]);
+                telemetry.addData("r = ", (int) list[2]);
             }
         } catch (NullPointerException e) {
             telemetry.addData("Array", "Empty");
