@@ -23,7 +23,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.core.Core;
-//import org.opencv.android.Camera2Renderer;  -- comment out and see if this helps with the stuck in loop error
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,7 +68,7 @@ public class JewelDetectTest extends OpModeCamera {
     public Mat imgMat; //Mat = matrix
     public Mat CMat; //holds image data
 
-    private double dp = 1.2d; //ratio of input resolution  to output resolution
+    private double dp = 1; //ratio of input resolution  to output resolution
     private double minDst = 100; //min distance between centers of detected circles (TEST THIS value)
 
     int loopCount = 0; //debugging purposes
@@ -99,23 +98,26 @@ public class JewelDetectTest extends OpModeCamera {
 
             CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new mat to store circle data
 
-            // edge detection & image blur if necessary
-            Imgproc.GaussianBlur(imgMat, imgMat, new Size(15, 15), 15); //blur
-            //Imgproc.Canny(edgeMat, edgeMat, 80, 100); //detect edges; may make detection more accurate
+            //image blur if necessary
+            //Imgproc.GaussianBlur(imgMat, imgMat, new Size(45, 45), 0); //blur (TEST PARAMETERS)
 
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst); //find circles in image
-
-            //Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 150, 50, 75, 125); //find circles in image (more specific)
+            //find circles in image (optimal params for PHONE AT HOME; min/max radius may need to be doubled at school based on camera resolution at school)
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 50, 25, 75, 125);
 
             telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
             printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
 
 
-            if (loopCount < 10) //only saves 10 images to phone gallery
+            if (loopCount < 10) { //saves first 10 images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
-
-
-            loopCount++; //debug
+                loopCount++;
+            }
+            /*
+            if (CMat.cols() > 0) {
+                writeToFile(imgMat, CMat);  //only save image if circle detected (add this)
+                loopCount++; //debug
+            }
+            */
         }
         else {
             telemetry.addData("Image not loaded; ", "Loop count: " + loopCount);
@@ -190,6 +192,7 @@ public class JewelDetectTest extends OpModeCamera {
                 }
             }
         }
+        telemetry.update();
     }
 
     public void printCircleData(Mat circle) { //prints x, y, and radius of each circle (throws NullPointerException if array has no data)
