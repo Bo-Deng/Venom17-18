@@ -102,7 +102,8 @@ public class JewelDetectTest extends OpModeCamera {
             //Imgproc.GaussianBlur(imgMat, imgMat, new Size(45, 45), 0); //blur (TEST PARAMETERS)
 
             //find circles in image (optimal params for PHONE AT HOME; min/max radius may need to be doubled at school based on camera resolution at school)
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 50, 25, 75, 125);
+            //camera must be ~1 ft away from jewel
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 75, 125); //(50, 25, 75, 125) at home; (50, 25, 75, 125) at school WITH LIGHT ABOVE IT (~0.5 ft)
 
             telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
             printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
