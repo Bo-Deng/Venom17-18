@@ -31,7 +31,8 @@ public class CustomOpMode extends OpMode {
 
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
-    // Servo rightWallServo;
+
+
 
     String AutoColor;
 

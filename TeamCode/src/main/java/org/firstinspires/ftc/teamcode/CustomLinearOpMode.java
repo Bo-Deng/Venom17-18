@@ -4,10 +4,12 @@ import android.graphics.Bitmap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsUsbServoController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -33,7 +35,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     IMU imu;
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
-    // Servo rightWallServo;
+
+    Servo upDownArm;
+    Servo leftRightArm;
 
     String AutoColor;
     char template;
@@ -66,6 +70,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
         rangeSensorR = map.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
 
+        upDownArm = map.servo.get("upDownArm");
+        leftRightArm = map.servo.get("leftRightArm");
+
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
 
@@ -81,7 +88,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         telemetry.addLine("Camera ready!");
 
         time.reset();
-        while (time.seconds() < 3) {
+        while (time.seconds() < 3 && opModeIsActive()) {
             if (imageReady()) { // only do this if an image has been returned from the camera
                 int redValue = 0;
                 int blueValue = 0;
@@ -445,19 +452,30 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void Pturn(double angle) throws InterruptedException {
-        double kP = .65/90;
+        double kP = .5/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         time.reset();
         while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 2) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
-            motorFR.setPower(Range.clip(PIDchange - .1, -1, 1));
-            motorBR.setPower(Range.clip(PIDchange - .1, -1, 1));
-            motorFL.setPower(Range.clip(-PIDchange + .1, -1, 1));
-            motorBL.setPower(Range.clip(-PIDchange + .1, -1, 1));
+
+            if (PIDchange < 0) {
+                motorFR.setPower(Range.clip(PIDchange - .1, -1, 1));
+                motorBR.setPower(Range.clip(PIDchange - .1, -1, 1));
+                motorFL.setPower(Range.clip(-PIDchange + .1, -1, 1));
+                motorBL.setPower(Range.clip(-PIDchange + .1, -1, 1));
+            }
+            else {
+                motorFR.setPower(Range.clip(PIDchange + .1, -1, 1));
+                motorBR.setPower(Range.clip(PIDchange + .1, -1, 1));
+                motorFL.setPower(Range.clip(-PIDchange - .1, -1, 1));
+                motorBL.setPower(Range.clip(-PIDchange - .1, -1, 1));
+            }
         }
         stopMotors();
+
+
     }
     public double getDist(String color) {
         if (color.equals("RED")) {
