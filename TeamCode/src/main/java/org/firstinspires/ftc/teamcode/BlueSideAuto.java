@@ -50,15 +50,15 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 60, 90);
+            strafeBlueAssisted(.4, 55, 90);
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.4, 45, 90);
+            strafeBlueAssisted(.4, 40, 90);
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.4, 30, 90);
+            strafeBlueAssisted(.4, 25, 90);
         } stopMotors();
         Thread.sleep(500);
 

@@ -147,7 +147,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
 
         telemetry.addData("PID value = ", ".0275");
-        telemetry.addData("Init = ", "completed");
+        telemetry.addData("init = ", "completed");
 
         telemetry.update();
     }
@@ -296,13 +296,15 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void moveSquares(double squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        double encoderStart = Math.abs(motorFR.getCurrentPosition());
         if (squares > 0) {
-            while (Math.abs(motorBL.getCurrentPosition()) < squares * squaresToEncoder && opModeIsActive()) {
+            while (Math.abs(motorFR.getCurrentPosition()) < encoderStart +(squares * squaresToEncoder) && opModeIsActive()) {
                 startMotors(power);
+
             }
         }
         else {
-            while (-Math.abs(motorBL.getCurrentPosition()) > squares * squaresToEncoder && opModeIsActive()) {
+            while (-Math.abs(motorFR.getCurrentPosition()) > encoderStart + (squares * squaresToEncoder) && opModeIsActive()) {
                 startMotors(-power);
             }
         }
@@ -443,11 +445,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void Pturn(double angle) throws InterruptedException {
-        double kP = .5/90;
+        double kP = .65/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         time.reset();
-        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 3) {
+        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 2) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
             motorFR.setPower(Range.clip(PIDchange - .1, -1, 1));

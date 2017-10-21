@@ -49,15 +49,15 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 60, 180);
+            strafeBlueAssisted(.4, 80, 180);
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.4, 45, 180);
+            strafeBlueAssisted(.4, 65, 180);
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.4, 30, 180);
+            strafeBlueAssisted(.4, 50, 180);
         } stopMotors();
         Thread.sleep(500);
 
