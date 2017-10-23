@@ -134,7 +134,7 @@ public class VuMarkID extends LinearOpMode {
         relicTrackables.activate();
         ElapsedTime time = new ElapsedTime();
 
-        while (opModeIsActive() && time.seconds() < 5) {
+        while (opModeIsActive()) {
 
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
@@ -180,7 +180,7 @@ public class VuMarkID extends LinearOpMode {
             telemetry.update();
         }
 
-        relicTrackables.deactivate();
+        /*relicTrackables.deactivate();
         parameters = new VuforiaLocalizer.Parameters();
         parameters.vuforiaLicenseKey = "AXb/g5n/////AAAAGSUed2rh5Us1jESA1cUn5r5KDUqTfwO2woh7MxjiLKSUyDslqBAgwCi0Qmc6lVczErnF5TIw7vG5R4TJ2igvrDVp+dP+3i2o7UUCRRj/PtyVgb4ZfNrDzHE80/6TUHifpKu4QCM04eRWYZocWNWhuRfytVeWy6NSTWefM9xadqG8FFrFk3XnvqDvk/6ZAgerNBdq5SsJ90eDdoAhgYEee40WxasoUUM9YVMvkWOqZgHSuraV2IyIUjkW/u0O+EkFtTNRUWP+aZwn1qO1H4Lk07AJYe21eqioBLMdzY7A8YqR1TeQ//0WJg8SFdXjuGbF6uHykBe2FF5UeyaehA0iTqfPS+59FLm8y1TuUt57eImq";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
@@ -191,10 +191,9 @@ public class VuMarkID extends LinearOpMode {
         BlockingQueue<VuforiaLocalizer.CloseableFrame> frames = this.vuforia.getFrameQueue();
         Frame frame = frames.poll();
         Image img = frame.getImage(0);
-        ByteBuffer bb = img.getPixels();
+        ByteBuffer bb = img.getPixels();*/
 
 
-        while (time.seconds() < 25 && opModeIsActive());
     }
 
     String format(OpenGLMatrix transformationMatrix) {
