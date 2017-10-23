@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Main teleop", group="opMode")
 public class MainTeleOp extends CustomOpMode {
@@ -18,6 +19,7 @@ public class MainTeleOp extends CustomOpMode {
     public void init() {
 
         initStuff(hardwareMap);
+
 
         telemetry.addData("init ", "completed");
         telemetry.update();
@@ -79,12 +81,29 @@ public class MainTeleOp extends CustomOpMode {
         else
             stopMotor();
 
+
+        if (gamepad2.dpad_left) {
+            servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
+        }
+        else if (gamepad2.dpad_right) {
+            servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
+        }
+
+        if (gamepad2.x) {
+            servoRHug.setPosition(Range.clip(servoRHug.getPosition() - .025, 0, 1)); //.775
+        }
+        if (gamepad2.b) {
+            servoRHug.setPosition(Range.clip(servoRHug.getPosition() + .025, 0, 1)); //1
+        }
+
         telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
         telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
         telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
         telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
         telemetry.addData("rangeL cm: ", getLeftDistance());
         telemetry.addData("rangeR cm: ", getRightDistance());
+        telemetry.addData("servoLHug Position: ", servoLHug.getPosition());
+        telemetry.addData("servoRHug Position: ", servoRHug.getPosition());
     }
 
     public void stopMotor() {

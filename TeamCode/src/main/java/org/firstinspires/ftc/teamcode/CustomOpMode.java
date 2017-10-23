@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -23,6 +24,9 @@ public class CustomOpMode extends OpMode {
     DcMotor motorBR;
     DcMotor motorBL;
 
+    Servo servoLHug;
+    Servo servoRHug;
+
     IMU imu;
 
     int squaresToEncoder = 1120; //use motorBL
@@ -32,7 +36,7 @@ public class CustomOpMode extends OpMode {
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
-    
+
 
     String AutoColor;
 
@@ -55,6 +59,13 @@ public class CustomOpMode extends OpMode {
         motorFL = map.dcMotor.get("motorFL");
         motorBR = map.dcMotor.get("motorBR");
         motorBL = map.dcMotor.get("motorBL");
+
+        servoLHug = map.servo.get("servoLHug");
+        servoRHug = map.servo.get("servoRHug");
+
+        servoLHug.setPosition(0);
+        servoRHug.setPosition(1);
+
 
         rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
         rangeSensorR = map.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
