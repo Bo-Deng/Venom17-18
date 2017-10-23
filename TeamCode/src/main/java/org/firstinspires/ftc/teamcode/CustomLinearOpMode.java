@@ -398,7 +398,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         power = Math.abs(power);
         double desiredAngle = angle;
 
-
         if(getLeftDistance() < stopRangeCM) {
             while (getLeftDistance() < stopRangeCM && opModeIsActive()) {
                 strafeRight(power, angle);
@@ -474,13 +473,28 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
         }
         stopMotors();
-
-
     }
     public double getDist(String color) {
         if (color.equals("RED")) {
             return getRightDistance();
         }
         return getLeftDistance();
+    }
+
+    public void knockBall(String color) {
+        upDownArm.setPosition(1);
+
+        if (jewelIsRed && color.equals("RED")) {
+           leftRightArm.setPosition(-1);
+       } else if (!jewelIsRed && color.equals("RED")) {
+           leftRightArm.setPosition(1);
+       }
+        if (jewelIsRed && color.equals("BLUE")) {
+            leftRightArm.setPosition(1);
+        } else if (!jewelIsRed && color.equals("BLUE")) {
+            leftRightArm.setPosition(-1);
+        }
+
+       upDownArm.setPosition(.5);
     }
 }

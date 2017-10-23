@@ -16,24 +16,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
     waitForStart();
 
 
-
-    /*
-    // testing jewels, psuedo code
-    // if always detects on left jewel
-
-    // rightWallServo.setPosition(.25);
-
-    if (getColor().equals(AutoColor)) {
-        startMotors(-.10, -.10);
-        Thread.sleep(100); }
-    else if (!getColor.equals(AutoColor) && !getColor.equals("GREEN")){
-        startMotors(.10, .10);
-        Thread.sleep(100); }
-    else {
-        wallServo.setPosition(0); }
-
-    // wallServo.setPosition(0);
-    */
+        knockBall(AutoColor);
 
         moveSquares(-.75, .20);
         stopMotors();
