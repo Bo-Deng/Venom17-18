@@ -497,4 +497,20 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
        upDownArm.setPosition(.5);
     }
+    public void knockWrongBall(String color) {
+        upDownArm.setPosition(1);
+
+        if (jewelIsRed && color.equals("RED")) {
+            leftRightArm.setPosition(1);
+        } else if (!jewelIsRed && color.equals("RED")) {
+            leftRightArm.setPosition(-1);
+        }
+        if (jewelIsRed && color.equals("BLUE")) {
+            leftRightArm.setPosition(-1);
+        } else if (!jewelIsRed && color.equals("BLUE")) {
+            leftRightArm.setPosition(1);
+        }
+
+        upDownArm.setPosition(.5);
+    }
 }
