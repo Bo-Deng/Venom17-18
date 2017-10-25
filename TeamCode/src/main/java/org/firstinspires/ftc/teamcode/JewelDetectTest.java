@@ -69,7 +69,7 @@ public class JewelDetectTest extends OpModeCamera {
     public Mat CMat; //holds image data
 
     private double dp = 1; //ratio of input resolution  to output resolution
-    private double minDst = 100; //min distance between centers of detected circles (TEST THIS value)
+    private double minDst = 100; //min distance between centers of detected circles
 
     int loopCount = 0; //debugging purposes
 
@@ -89,7 +89,6 @@ public class JewelDetectTest extends OpModeCamera {
 
             img = convertYuvImageToRgb(yuvImage, width, height, 1); //convert image to bitmap
 
-            //imgMat = new Mat();
             imgMat = new Mat(new Size(img.getWidth(), img.getHeight()), CvType.CV_8UC1); //put image into a matrix
 
             Utils.bitmapToMat(img, imgMat); //bitmap to mat conversion
@@ -98,42 +97,30 @@ public class JewelDetectTest extends OpModeCamera {
 
             CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new mat to store circle data
 
-            //image blur if necessary
-            //Imgproc.GaussianBlur(imgMat, imgMat, new Size(45, 45), 0); //blur (TEST PARAMETERS)
+            //Imgproc.GaussianBlur(imgMat, imgMat, new Size(3, 3), 0); //blur if necessary
 
-            //find circles in image (optimal params for PHONE AT HOME; min/max radius may need to be doubled at school based on camera resolution at school)
-            //camera must be ~1 ft away from jewel
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 75, 125); //(50, 25, 75, 125) at home; (50, 25, 75, 125) at school WITH LIGHT ABOVE IT (~0.5 ft)
+            //find circles in image (optimal params for PHONE AT HOME: 50, 25, 75, 125)
+            //camera must be ~1 ft away from jewel; TEST THESE PARAMS: 70, 35, 75, 100 WITH LIGHT ABOVE IT (~0.5 ft)
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 100, 175);
 
-            telemetry.addData("Num of Circles: ", CMat.cols()); //return number of circles (# of columns = # of circles)
-            printCircleData(CMat); //method to print x, y coordinates and radius of the circles detected
+            telemetry.addData("Num of Circles", CMat.cols()); //return number of circles (# of columns = # of circles)
+            getCircleData(CMat, false, 0); //method to print x, y coordinates and radius of the circles detected
 
-
+            if (CMat.cols() == 2)
+                for (int i = 0; i < 2; i++) {
+                    telemetry.addData("Jewel " + i + "'s Color is", JewelColor(CMat, i) + " and on the " + JewelSide(CMat, i) + " side."); //prints side and color (TEST)
+            }
             if (loopCount < 10) { //saves first 10 images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
                 loopCount++;
             }
-            /*
-            if (CMat.cols() > 0) {
-                writeToFile(imgMat, CMat);  //only save image if circle detected (add this)
-                loopCount++; //debug
-            }
-            */
         }
-        else {
-            telemetry.addData("Image not loaded; ", "Loop count: " + loopCount);
-        }
+        else
+            telemetry.addData("Image not loaded", "Loop count: " + loopCount);
         telemetry.update();
-
-        /*
-        try { //pause for 1.5 seconds between each image (buffer)
-            Thread.sleep(1500);
-        } catch (Exception e) {
-            telemetry.addData("Exception", e);
-        } */
     }
 
-    public void writeToFile(Mat mat, Mat circles) { //debugging only; prints images into data files on phone, access through camera roll (gallery)
+    public void writeToFile(Mat mat, Mat circles) { //debugging only; prints images into data files on phone, access through camera roll/gallery
 
         // Draw the circles detected
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB, 0); //convert to rgb (so the circle that gets drawn is colored)
@@ -159,7 +146,7 @@ public class JewelDetectTest extends OpModeCamera {
             bmp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mat, bmp);
         } catch (CvException e) {
-            telemetry.addData("Exception", "creating bitmap:" + e);
+            telemetry.addData("Exception", "creating bitmap: " + e);
         }
         mat.release();
 
@@ -188,25 +175,100 @@ public class JewelDetectTest extends OpModeCamera {
                         telemetry.addData("File Saved", "Loop Count: " + loopCount);
                     }
                 } catch (IOException e) {
-                    telemetry.addData("Error: ", e);
+                    telemetry.addData("Error", e);
                     e.printStackTrace();
                 }
             }
         }
-        telemetry.update();
     }
 
-    public void printCircleData(Mat circle) { //prints x, y, and radius of each circle (throws NullPointerException if array has no data)
+    public String JewelColor(Mat circle, int n) { //print what color each ball is (corresponds with JewelSide)
+        Bitmap img = convertYuvImageToRgb(yuvImage, width, height, 1);
+        int redValue = 0;
+        int blueValue = 0;
+        int pix;
+
+        double[] list = getCircleData(circle, true, n);
+        if (list != null) {
+            for (int i = 0; i < list[2]; i++){
+                pix = img.getPixel((int) list[0] - i, (int) list[1] - i);
+                redValue += red(pix);
+                blueValue += blue(pix);
+            }
+            for (int i = 0; i < list[2]; i++){
+                pix = img.getPixel((int) list[0] + i, (int) list[1] + i);
+                redValue += red(pix);
+                blueValue += blue(pix);
+            }
+        }
+        else {
+            telemetry.addData("List is", "NULL");
+            return "NULL";
+        }
+        String colorString = "";
+        if (redValue > blueValue)
+            colorString = "RED";
+        else
+            colorString = "BLUE";
+        return colorString;
+    }
+
+    public String JewelSide(Mat circle, int num) { //print what side each ball its on (corresponds to JewelColor)
+        Bitmap img = convertYuvImageToRgb(yuvImage, width, height, 1);
+        double x1;
+        double x2;
         double[] list;
+
+        if (num == 0)
+            list = getCircleData(circle, true, 0);
+        else
+            list = getCircleData(circle, true, 1);
+        if (list != null) {
+            x1 = list[0];
+        }
+        else {
+            telemetry.addData("List is", "NULL");
+            return "NULL";
+        }
+        if (num == 0)
+            list = getCircleData(circle, true, 1);
+        else
+            list = getCircleData(circle, true, 0);
+        if (list != null) {
+            x2 = list[0];
+        }
+        else {
+            telemetry.addData("List is", "NULL");
+            return "NULL";
+        }
+
+        if (x1 < x2)
+            return "RIGHT";
+        return "LEFT";
+    }
+
+    public double[] getCircleData(Mat circle, Boolean ret, int circnum) { //prints x, y, and radius of each circle (throws NullPointerException if array has no data) OR returns list with specific circle info (you change function through boolean ret; true to return list, false to just print)
+        double[] list;
+        if (ret){
+            try {
+                // list = circle.get(circnum, 0);  should these be the other way around as below?
+                list = circle.get(0, circnum);
+                return list;
+            } catch (NullPointerException e){
+                telemetry.addData("No Data Found", "SORRY");
+                return null;
+            }
+        }
         try {
             for (int i = 0; i < circle.cols(); i++) {
-                list = circle.get(i, 0);
-                telemetry.addData("x = ", (int) list[0]);
-                telemetry.addData("y = ", (int) list[1]);
-                telemetry.addData("r = ", (int) list[2]);
+                list = circle.get(0, i);
+                telemetry.addData("x", (int) list[0]);
+                telemetry.addData("y", (int) list[1]);
+                telemetry.addData("r", (int) list[2]);
             }
         } catch (NullPointerException e) {
             telemetry.addData("Array", "Empty");
         }
+        return null;
     }
 }
