@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -26,6 +27,9 @@ public class CustomOpMode extends OpMode {
 
     Servo servoLHug;
     Servo servoRHug;
+
+    Servo servoUpDownArm;
+    CRServo servoLeftRightArm;
 
     IMU imu;
 
@@ -62,9 +66,15 @@ public class CustomOpMode extends OpMode {
 
         servoLHug = map.servo.get("servoLHug");
         servoRHug = map.servo.get("servoRHug");
+        servoLeftRightArm = map.crservo.get("servoLeftRightArm");
+        servoUpDownArm = map.servo.get("servoUpDownArm");
+
 
         servoLHug.setPosition(0);
         servoRHug.setPosition(1);
+
+        servoUpDownArm.setPosition(1);
+
 
 
         rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");

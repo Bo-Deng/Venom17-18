@@ -83,10 +83,22 @@ public class MainTeleOp extends CustomOpMode {
 
 
         if (gamepad2.dpad_left) {
-            servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
+            //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
+            servoLeftRightArm.setPower(-1);
         }
         else if (gamepad2.dpad_right) {
-            servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
+            //servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
+            servoLeftRightArm.setPower(1);
+        }
+        else {
+            servoLeftRightArm.setPower(0);
+        }
+
+        if (gamepad2.dpad_up) {
+            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .05, 0, 1));
+        }
+        else if (gamepad2.dpad_down) {
+            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() + .05, 0, 1));
         }
 
         if (gamepad2.x) {
