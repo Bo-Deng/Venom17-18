@@ -74,7 +74,6 @@ public class JewelDetectTest extends OpModeCamera {
     int loopCount = 0; //debugging purposes
 
     public void init() {
-
         startOpenCV(); //load opencvlibrary
 
         startCamera(); //camera init
@@ -100,15 +99,15 @@ public class JewelDetectTest extends OpModeCamera {
             //Imgproc.GaussianBlur(imgMat, imgMat, new Size(3, 3), 0); //blur if necessary
 
             //find circles in image (optimal params for PHONE AT HOME: 50, 25, 75, 125)
-            //camera must be ~1 ft away from jewel; TEST THESE PARAMS: 70, 35, 75, 100 WITH LIGHT ABOVE IT (~0.5 ft)
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 100, 175);
+            //at school, circles detected from ~1ft away (70, 35, 100, 175):: May no work on robot (adjust we able to test on robot)
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 75, 125);
 
             telemetry.addData("Num of Circles", CMat.cols()); //return number of circles (# of columns = # of circles)
             getCircleData(CMat, false, 0); //method to print x, y coordinates and radius of the circles detected
 
             if (CMat.cols() == 2)
                 for (int i = 0; i < 2; i++) {
-                    telemetry.addData("Jewel " + i + "'s Color is", JewelColor(CMat, i) + " and on the " + JewelSide(CMat, i) + " side."); //prints side and color (TEST)
+                    telemetry.addData("Jewel " + i + "'s Color is " + JewelColor(CMat, i), "It is on the " + JewelSide(CMat, i) + " side."); //prints side and color (TEST)
             }
             if (loopCount < 10) { //saves first 10 images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
