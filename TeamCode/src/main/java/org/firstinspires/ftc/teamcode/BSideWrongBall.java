@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.vuforia.ar.pl.DebugLog;
 
 /**
  * Created by hannahbransteter on 10/25/17.
  */
 
+@Autonomous(name = "BSideWrongBall", group = "autonomous")
 public class BSideWrongBall extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         initStuff(hardwareMap);

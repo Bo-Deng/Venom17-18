@@ -29,7 +29,7 @@ public class CustomOpMode extends OpMode {
     Servo servoRHug;
 
     Servo servoUpDownArm;
-    CRServo servoLeftRightArm;
+    Servo servoLeftRightArm;
 
     IMU imu;
 
@@ -40,9 +40,11 @@ public class CustomOpMode extends OpMode {
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
-
+    DcMotor motorXLift;
+    DcMotor motorYLift;
 
     String AutoColor;
+
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -66,9 +68,11 @@ public class CustomOpMode extends OpMode {
 
         servoLHug = map.servo.get("servoLHug");
         servoRHug = map.servo.get("servoRHug");
-        servoLeftRightArm = map.crservo.get("servoLeftRightArm");
+        servoLeftRightArm = map.servo.get("servoLeftRightArm");
         servoUpDownArm = map.servo.get("servoUpDownArm");
 
+        motorXLift = map.dcMotor.get("XLift");
+        motorYLift = map.dcMotor.get("YLift");
 
         servoLHug.setPosition(0);
         servoRHug.setPosition(1);

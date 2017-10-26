@@ -7,7 +7,7 @@ import com.vuforia.ar.pl.DebugLog;
  * Created by hannahbransteter on 10/25/17.
  */
 
-@Autonomous(name = "BlueStraightAuto", group = "autonomous")
+@Autonomous(name = "BStraightWrongBall", group = "autonomous")
 public class BStraightWrongBall extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         initStuff(hardwareMap);

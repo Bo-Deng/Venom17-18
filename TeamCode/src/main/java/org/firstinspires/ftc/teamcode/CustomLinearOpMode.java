@@ -6,6 +6,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsUsbServoController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -36,8 +37,15 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     ModernRoboticsI2cRangeSensor rangeSensorL;
     ModernRoboticsI2cRangeSensor rangeSensorR;
 
-    Servo upDownArm;
-    Servo leftRightArm;
+    Servo servoLHug;
+    Servo servoRHug;
+
+    Servo servoUpDownArm;
+    Servo servoLeftRightArm;;
+
+
+    DcMotor motorXLift;
+    DcMotor motorYLift;
 
     String AutoColor;
     char template;
@@ -70,11 +78,21 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         rangeSensorL = map.get(ModernRoboticsI2cRangeSensor.class, "rangeL");
         rangeSensorR = map.get(ModernRoboticsI2cRangeSensor.class, "rangeR");
 
-        upDownArm = map.servo.get("upDownArm");
-        leftRightArm = map.servo.get("leftRightArm");
+        servoLHug = map.servo.get("servoLHug");
+        servoRHug = map.servo.get("servoRHug");
+        servoLeftRightArm = map.servo.get("servoLeftRightArm");
+        servoUpDownArm = map.servo.get("servoUpDownArm");
+
+        motorXLift = map.dcMotor.get("XLift");
+        motorYLift = map.dcMotor.get("YLift");
 
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
+
+        servoLHug.setPosition(0);
+        servoRHug.setPosition(1);
+
+        servoUpDownArm.setPosition(1);
 
         telemetry.addLine("startJewelCamera initialization started");
         telemetry.update();
@@ -482,35 +500,40 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void knockBall(String color) {
-        upDownArm.setPosition(1);
+        servoUpDownArm.setPosition(.4);
+        servoLeftRightArm.setPosition(.1);
+        servoUpDownArm.setPosition(0);
+
 
         if (jewelIsRed && color.equals("RED")) {
-           leftRightArm.setPosition(-1);
+           servoLeftRightArm.setPosition(0);
        } else if (!jewelIsRed && color.equals("RED")) {
-           leftRightArm.setPosition(1);
+           servoLeftRightArm.setPosition(.2);
        }
         if (jewelIsRed && color.equals("BLUE")) {
-            leftRightArm.setPosition(1);
+            servoLeftRightArm.setPosition(.2);
         } else if (!jewelIsRed && color.equals("BLUE")) {
-            leftRightArm.setPosition(-1);
+            servoLeftRightArm.setPosition(0);
         }
 
-       upDownArm.setPosition(.5);
+       servoUpDownArm.setPosition(.55);
     }
     public void knockWrongBall(String color) {
-        upDownArm.setPosition(1);
+        servoUpDownArm.setPosition(.4);
+        servoLeftRightArm.setPosition(.1);
+        servoUpDownArm.setPosition(0);
 
         if (jewelIsRed && color.equals("RED")) {
-            leftRightArm.setPosition(1);
+            servoLeftRightArm.setPosition(.2);
         } else if (!jewelIsRed && color.equals("RED")) {
-            leftRightArm.setPosition(-1);
+            servoLeftRightArm.setPosition(0);
         }
         if (jewelIsRed && color.equals("BLUE")) {
-            leftRightArm.setPosition(-1);
+            servoLeftRightArm.setPosition(0);
         } else if (!jewelIsRed && color.equals("BLUE")) {
-            leftRightArm.setPosition(1);
+            servoLeftRightArm.setPosition(.2);
         }
 
-        upDownArm.setPosition(.5);
+        servoUpDownArm.setPosition(.55);
     }
 }

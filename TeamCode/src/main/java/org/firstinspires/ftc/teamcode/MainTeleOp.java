@@ -44,13 +44,13 @@ public class MainTeleOp extends CustomOpMode {
             motorFR.setPower(.2);
         }
 
-        /*// the signs might need to be switched
-        if (Math.abs(gamepad2.right_stick_y) > 0.1) {
-            motorXLift.setPower(gamepad2.right_stick_y);
-        }
+        // the signs might need to be switched
         if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+            motorXLift.setPower(gamepad2.left_stick_y);
+        }
+        if (Math.abs(gamepad2.right_stick_y) > 0.1) {
             motorYLift.setPower(gamepad2.right_stick_y);
-        } */
+        }
 
         double yL = gamepad1.left_stick_y;
         double yR = gamepad1.right_stick_y;
@@ -84,14 +84,14 @@ public class MainTeleOp extends CustomOpMode {
 
         if (gamepad2.dpad_left) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
-            servoLeftRightArm.setPower(-1);
+            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() - .05, 0, 1));
         }
         else if (gamepad2.dpad_right) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
-            servoLeftRightArm.setPower(1);
+            servoLeftRightArm.setPosition(.5);
         }
         else {
-            servoLeftRightArm.setPower(0);
+            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() + .05, 0, 1));
         }
 
         if (gamepad2.dpad_up) {
@@ -106,6 +106,13 @@ public class MainTeleOp extends CustomOpMode {
         }
         if (gamepad2.b) {
             servoRHug.setPosition(Range.clip(servoRHug.getPosition() + .025, 0, 1)); //1
+        }
+
+        if (gamepad2.y) {
+            servoLHug.setPosition(Range.clip(servoRHug.getPosition() - .025, 0, 1)); //.775
+        }
+        if(gamepad2.a) {
+            servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //.775
         }
 
         telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
