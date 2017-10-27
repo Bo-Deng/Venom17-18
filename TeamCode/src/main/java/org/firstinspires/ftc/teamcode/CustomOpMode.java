@@ -71,13 +71,14 @@ public class CustomOpMode extends OpMode {
         servoLeftRightArm = map.servo.get("servoLeftRightArm");
         servoUpDownArm = map.servo.get("servoUpDownArm");
 
-        motorXLift = map.dcMotor.get("XLift");
-        motorYLift = map.dcMotor.get("YLift");
+        motorXLift = map.dcMotor.get("motorXLift");
+        motorYLift = map.dcMotor.get("motorYLift");
 
-        servoLHug.setPosition(0);
-        servoRHug.setPosition(1);
+        servoLHug.setPosition(1);
+        servoRHug.setPosition(0);
 
-        servoUpDownArm.setPosition(1);
+        servoUpDownArm.setPosition(.54);
+        servoLeftRightArm.setPosition(.88);
 
 
 

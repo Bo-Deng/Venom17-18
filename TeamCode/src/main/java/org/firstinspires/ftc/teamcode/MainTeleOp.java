@@ -88,11 +88,10 @@ public class MainTeleOp extends CustomOpMode {
         }
         else if (gamepad2.dpad_right) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
-            servoLeftRightArm.setPosition(.5);
-        }
-        else {
+
             servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() + .05, 0, 1));
         }
+
 
         if (gamepad2.dpad_up) {
             servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .05, 0, 1));
@@ -109,10 +108,10 @@ public class MainTeleOp extends CustomOpMode {
         }
 
         if (gamepad2.y) {
-            servoLHug.setPosition(Range.clip(servoRHug.getPosition() - .025, 0, 1)); //.775
+            servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //.775
         }
         if(gamepad2.a) {
-            servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //.775
+            servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.775
         }
 
         telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());

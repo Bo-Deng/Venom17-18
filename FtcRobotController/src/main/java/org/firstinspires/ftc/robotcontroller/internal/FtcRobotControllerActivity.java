@@ -318,7 +318,12 @@ public class FtcRobotControllerActivity extends Activity
     BlocksOpMode.setActivityAndWebView(this, (WebView) findViewById(R.id.webViewBlocksRuntime));
 
     ClassManagerFactory.registerFilters();
-    ClassManagerFactory.processAllClasses();
+    try {
+      ClassManagerFactory.processAllClasses();
+    }
+    catch (Exception e) {
+
+    }
     cfgFileMgr = new RobotConfigFileManager(this);
 
     // Clean up 'dirty' status after a possible crash
