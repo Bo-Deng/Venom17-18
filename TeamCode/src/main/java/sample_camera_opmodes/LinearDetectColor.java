@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import for_camera_opmodes.LinearOpModeCamera;
 
@@ -17,8 +18,6 @@ import for_camera_opmodes.LinearOpModeCamera;
 //@Disabled
 public class LinearDetectColor extends LinearOpModeCamera {
 
-    DcMotor motorRight;
-    DcMotor motorLeft;
 
     int ds2 = 1;  // additional downsampling of the image
     // set to 1 to disable further downsampling
@@ -36,7 +35,50 @@ public class LinearDetectColor extends LinearOpModeCamera {
         */
 
         if (isCameraAvailable()) {
+            int jewelIsRed = -1;
+            telemetry.addLine("Camera is available, about to set Downsampling");
 
+            setCameraDownsampling(8);
+
+            telemetry.addLine("Wait for camera to finish initializing!");
+
+            startCamera();  // can take a while.
+            // best started before waitForStart
+            telemetry.addLine("Camera ready!");
+
+            ElapsedTime time = new ElapsedTime();
+
+            time.reset();
+            while (time.seconds() < 6 && opModeIsActive()) {
+                if (imageReady()) { // only do this if an image has been returned from the camera
+                    int redValue = 0;
+                    int blueValue = 0;
+                    int greenValue = 0;
+
+                    // get image, rotated so (0,0) is in the bottom left of the preview window
+                    Bitmap rgbImage;
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                    for (int x = (int) (.8 * rgbImage.getWidth()); x < rgbImage.getWidth(); x++) {
+                        for (int y = (int) (.75 * rgbImage.getHeight()); y < rgbImage.getHeight(); y++) {
+                            int pixel = rgbImage.getPixel(x, y);
+                            redValue += red(pixel);
+                            blueValue += blue(pixel);
+                            greenValue += green(pixel);
+                        }
+                    }
+
+                    jewelIsRed = redValue > blueValue ? 0 : 1;
+                    telemetry.addData("Is Jewel Red? ", jewelIsRed);
+                    telemetry.update();
+
+                }
+                telemetry.update();
+                sleep(50);
+            }
+            telemetry.addData("Jewel Red?:", jewelIsRed);
+            telemetry.update();
+            /*
             setCameraDownsampling(8);
             // parameter determines how downsampled you want your images
             // 8, 4, 2, or 1.
@@ -49,7 +91,7 @@ public class LinearDetectColor extends LinearOpModeCamera {
             startCamera();  // can take a while.
             // best started before waitForStart
             telemetry.addLine("Camera ready!");
-            telemetry.update();
+            telemetry.update();*/
 
             waitForStart();
 

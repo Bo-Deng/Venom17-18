@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="Main teleop", group="opMode")
 public class MainTeleOp extends CustomOpMode {
 
-
+    double motorScale = 1;
 
     public void init() {
 
@@ -28,14 +28,14 @@ public class MainTeleOp extends CustomOpMode {
     public void loop() {
 
         // for testing hardware mapping
-        if (gamepad1.a)
-            motorBL.setPower(1);
-        if (gamepad1.b)
-            motorBR.setPower(1);
-        if (gamepad1.y)
-            motorFL.setPower(1);
-        if (gamepad1.x)
-            motorFR.setPower(1);
+        if (gamepad1.a) {
+            motorScale = motorScale == .5 ? 1 : .5;
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+            }
+        }
+
 
         if (gamepad1.dpad_up) {
             motorBL.setPower(.2);
@@ -45,11 +45,23 @@ public class MainTeleOp extends CustomOpMode {
         }
 
         // the signs might need to be switched
-        if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-            motorXLift.setPower(gamepad2.left_stick_y);
+        if (gamepad2.left_stick_y > 0.1 && motorXLift.getCurrentPosition() > 0) {
+            motorXLift.setPower(gamepad2.left_stick_y / 1.5);
         }
-        if (Math.abs(gamepad2.right_stick_y) > 0.1) {
+        else if (gamepad2.left_stick_y < -0.1 && motorXLift.getCurrentPosition() > -70) {
+            motorXLift.setPower(gamepad2.left_stick_y / 1.5);
+        }
+        else {
+            motorXLift.setPower(0);
+        }
+        if (gamepad2.right_stick_y > 0.1 && motorYLift.getCurrentPosition() < 0) {
             motorYLift.setPower(gamepad2.right_stick_y);
+        }
+        else if (gamepad2.right_stick_y < -0.1 && motorYLift.getCurrentPosition() > -5250) {
+            motorYLift.setPower(gamepad2.right_stick_y);
+        }
+        else {
+            motorYLift.setPower(0);
         }
 
         double yL = gamepad1.left_stick_y;
@@ -84,20 +96,20 @@ public class MainTeleOp extends CustomOpMode {
 
         if (gamepad2.dpad_left) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
-            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() - .05, 0, 1));
+            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() - .025, 0, 1));
         }
         else if (gamepad2.dpad_right) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.225
 
-            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() + .05, 0, 1));
+            servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() + .025, 0, 1));
         }
 
 
         if (gamepad2.dpad_up) {
-            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .05, 0, 1));
+            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .025, 0, 1));
         }
         else if (gamepad2.dpad_down) {
-            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() + .05, 0, 1));
+            servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() + .025, 0, 1));
         }
 
         if (gamepad2.x) {
@@ -114,14 +126,34 @@ public class MainTeleOp extends CustomOpMode {
             servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.775
         }
 
-        telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
-        telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
-        telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
-        telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
-        telemetry.addData("rangeL cm: ", getLeftDistance());
-        telemetry.addData("rangeR cm: ", getRightDistance());
+        if (gamepad2.left_bumper) {
+            servoLHug.setPosition(.45);
+
+        }
+        else if (gamepad2.left_trigger > .1) {
+            servoLHug.setPosition(1);
+        }
+
+        if (gamepad2.right_bumper) {
+            servoRHug.setPosition(.55);
+        }
+        else if (gamepad2.right_trigger > .1) {
+            servoRHug.setPosition(0);
+        }
+
+        //telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
+        //telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
+        //telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
+        //telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
+        //telemetry.addData("rangeL cm: ", getLeftDistance());
+        //telemetry.addData("rangeR cm: ", getRightDistance());
+        telemetry.addData("motorScale: ", motorScale);
+        telemetry.addData("XLift: ", motorXLift.getCurrentPosition());
+        telemetry.addData("YLift: ", motorYLift.getCurrentPosition());
         telemetry.addData("servoLHug Position: ", servoLHug.getPosition());
         telemetry.addData("servoRHug Position: ", servoRHug.getPosition());
+        telemetry.addData("servoLeftRight Position: ", servoLeftRightArm.getPosition());
+        telemetry.addData("servoUpDown Position: ", servoUpDownArm.getPosition());
     }
 
     public void stopMotor() {

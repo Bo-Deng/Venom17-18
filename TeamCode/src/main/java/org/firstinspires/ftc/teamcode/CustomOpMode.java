@@ -15,6 +15,8 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
+import for_camera_opmodes.OpModeCamera;
+
 /**
  * Created by Bo on 9/25/2017.
  */
@@ -74,11 +76,11 @@ public class CustomOpMode extends OpMode {
         motorXLift = map.dcMotor.get("motorXLift");
         motorYLift = map.dcMotor.get("motorYLift");
 
-        servoLHug.setPosition(1);
-        servoRHug.setPosition(0);
+        servoLHug.setPosition(.6);
+        servoRHug.setPosition(.4);
 
-        servoUpDownArm.setPosition(.54);
-        servoLeftRightArm.setPosition(.88);
+        servoUpDownArm.setPosition(.55);
+        servoLeftRightArm.setPosition(.28);
 
 
 
@@ -87,6 +89,21 @@ public class CustomOpMode extends OpMode {
 
         motorFR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorXLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorYLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorXLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);

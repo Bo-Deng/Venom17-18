@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import for_camera_opmodes.OpModeCamera;
 
+/*
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
@@ -23,13 +24,13 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.core.Core;
-
+*/
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static android.R.attr.radius;
-import static org.opencv.imgproc.Imgproc.circle;
+//import static org.opencv.imgproc.Imgproc.circle;
 
 /**
  * Created by Bo on 9/30/2017.
@@ -37,7 +38,7 @@ import static org.opencv.imgproc.Imgproc.circle;
 
 @Autonomous (name = "JewelDetect", group = "test")
 public class JewelDetectTest extends OpModeCamera {
-
+/*
     public void startOpenCV(){ //loads openCV library from phone via openCVManager
         BaseLoaderCallback openCVLoaderCallback = null;
         try {
@@ -270,4 +271,5 @@ public class JewelDetectTest extends OpModeCamera {
         }
         return null;
     }
+    */
 }

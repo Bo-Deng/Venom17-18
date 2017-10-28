@@ -95,19 +95,22 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         servoUpDownArm.setPosition(.69);
         servoLeftRightArm.setPosition(1);
 
+        sleep(3000);
+
         telemetry.addLine("startJewelCamera initialization started");
         telemetry.update();
 
         setCameraDownsampling(8);
 
         telemetry.addLine("Wait for camera to finish initializing!");
-        telemetry.update();
+
         startCamera();  // can take a while.
         // best started before waitForStart
+        sleep(2000);
         telemetry.addLine("Camera ready!");
 
         time.reset();
-        while (time.seconds() < 3 && opModeIsActive()) {
+        while (time.seconds() < 5 && opModeIsActive()) {
             if (imageReady()) { // only do this if an image has been returned from the camera
                 int redValue = 0;
                 int blueValue = 0;
