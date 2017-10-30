@@ -40,6 +40,8 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         knockBall(AutoColor);
 
+        //Thread.sleep(200);
+
         moveSquares(.75, .20);
         stopMotors();
         Thread.sleep(500);

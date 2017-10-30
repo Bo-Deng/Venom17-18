@@ -22,6 +22,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.io.IOException;
+
 import for_camera_opmodes.LinearOpModeCamera;
 
 /**
@@ -92,8 +94,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         servoLHug.setPosition(1);
         servoRHug.setPosition(0);
 
-        servoUpDownArm.setPosition(.69);
-        servoLeftRightArm.setPosition(1);
+
 
         sleep(3000);
 
@@ -173,6 +174,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             template = 'L';
         else if (vuMark == RelicRecoveryVuMark.RIGHT)
             template = 'R';
+
+        servoUpDownArm.setPosition(.5);
+        servoLeftRightArm.setPosition(.3);
 
 
         telemetry.addData("PID value = ", ".0275");
@@ -619,18 +623,17 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void knockBall(String color) {
-        servoUpDownArm.setPosition(.4);
-        servoLeftRightArm.setPosition(.1);
+        servoLeftRightArm.setPosition(.3);
         servoUpDownArm.setPosition(0);
 
 
         if (jewelIsRed && color.equals("RED")) {
            servoLeftRightArm.setPosition(0);
        } else if (!jewelIsRed && color.equals("RED")) {
-           servoLeftRightArm.setPosition(.2);
+           servoLeftRightArm.setPosition(.45);
        }
         if (jewelIsRed && color.equals("BLUE")) {
-            servoLeftRightArm.setPosition(.2);
+            servoLeftRightArm.setPosition(.45);
         } else if (!jewelIsRed && color.equals("BLUE")) {
             servoLeftRightArm.setPosition(0);
         }
@@ -638,19 +641,18 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
        servoUpDownArm.setPosition(.55);
     }
     public void knockWrongBall(String color) {
-        servoUpDownArm.setPosition(.4);
-        servoLeftRightArm.setPosition(.1);
+        servoLeftRightArm.setPosition(.3);
         servoUpDownArm.setPosition(0);
 
         if (jewelIsRed && color.equals("RED")) {
-            servoLeftRightArm.setPosition(.2);
+            servoLeftRightArm.setPosition(.45);
         } else if (!jewelIsRed && color.equals("RED")) {
             servoLeftRightArm.setPosition(0);
         }
         if (jewelIsRed && color.equals("BLUE")) {
             servoLeftRightArm.setPosition(0);
         } else if (!jewelIsRed && color.equals("BLUE")) {
-            servoLeftRightArm.setPosition(.2);
+            servoLeftRightArm.setPosition(.45);
         }
 
         servoUpDownArm.setPosition(.55);
