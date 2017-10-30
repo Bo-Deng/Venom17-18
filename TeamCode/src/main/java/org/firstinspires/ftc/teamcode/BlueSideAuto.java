@@ -16,6 +16,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
         waitForStart();
 
         knockBall(AutoColor);
+        Thread.sleep(200);
 
         moveSquares(-.75, .20);
         stopMotors();

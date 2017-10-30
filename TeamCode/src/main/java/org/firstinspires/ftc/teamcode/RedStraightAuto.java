@@ -37,10 +37,13 @@ public class RedStraightAuto extends CustomLinearOpMode {
         AutoColor = "RED";
         waitForStart();
 
+        grabBlock(-1);
+
+        Thread.sleep(200);
 
         knockBall(AutoColor);
 
-        //Thread.sleep(200);
+        Thread.sleep(200);
 
         moveSquares(.75, .20);
         stopMotors();

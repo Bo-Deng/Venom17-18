@@ -622,9 +622,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         return getLeftDistance();
     }
 
-    public void knockBall(String color) {
+    public void knockBall(String color) throws InterruptedException{
         servoLeftRightArm.setPosition(.3);
         servoUpDownArm.setPosition(0);
+
+        Thread.sleep(200);
 
 
         if (jewelIsRed && color.equals("RED")) {
@@ -640,9 +642,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
        servoUpDownArm.setPosition(.55);
     }
-    public void knockWrongBall(String color) {
+    public void knockWrongBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
         servoUpDownArm.setPosition(0);
+
+        Thread.sleep(200);
 
         if (jewelIsRed && color.equals("RED")) {
             servoLeftRightArm.setPosition(.45);
@@ -656,5 +660,23 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
 
         servoUpDownArm.setPosition(.55);
+    }
+    public void grabBlock(int direction) throws InterruptedException{
+        // direction is either 1 or -1, -1 on red 1 on blue
+        moveSquares(.2 * direction, .2);
+        Thread.sleep(200);
+        motorYLift.setTargetPosition(300);
+        Thread.sleep(200);
+        motorXLift.setTargetPosition(300);
+        Thread.sleep(100);
+        motorYLift.setTargetPosition(300);
+        Thread.sleep(200);
+        servoLHug.setPosition(.55);
+        servoRHug.setPosition(.55);
+        Thread.sleep(200);
+        motorYLift.setTargetPosition(100);
+        Thread.sleep(200);
+
+
     }
 }

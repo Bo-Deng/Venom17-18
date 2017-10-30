@@ -17,6 +17,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
 
         knockBall(AutoColor);
+        Thread.sleep(200 );
 
         moveSquares(-.75, .20);
         stopMotors();
