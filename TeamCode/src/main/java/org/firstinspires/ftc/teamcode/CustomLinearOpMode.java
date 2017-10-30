@@ -101,7 +101,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         telemetry.addLine("startJewelCamera initialization started");
         telemetry.update();
 
-        setCameraDownsampling(8);
+        setCameraDownsampling(2);
 
         telemetry.addLine("Wait for camera to finish initializing!");
 
