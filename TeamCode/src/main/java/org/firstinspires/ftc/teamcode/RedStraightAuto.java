@@ -37,12 +37,11 @@ public class RedStraightAuto extends CustomLinearOpMode {
         AutoColor = "RED";
         waitForStart();
 
-        grabBlock(-1);
-
-        Thread.sleep(200);
 
         knockBall(AutoColor);
+        Thread.sleep(200);
 
+        grabBlock();
         Thread.sleep(200);
 
         moveSquares(.75, .20);
@@ -51,7 +50,6 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
-        template = 'R';
 
         if (template == 'L') {
             //strafe left
@@ -69,5 +67,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         moveSquares(.15, .20);
         stopMotors();
+
+
     }
 }

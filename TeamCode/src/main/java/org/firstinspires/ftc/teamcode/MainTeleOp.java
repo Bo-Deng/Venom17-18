@@ -127,18 +127,18 @@ public class MainTeleOp extends CustomOpMode {
         }
 
         if (gamepad2.left_bumper) {
-            servoLHug.setPosition(.5);
+            servoLHug.setPosition(.25);
 
         }
         else if (gamepad2.left_trigger > .1) {
-            servoLHug.setPosition(1);
+            servoLHug.setPosition(.70);
         }
 
         if (gamepad2.right_bumper) {
-            servoRHug.setPosition(.55);
+            servoRHug.setPosition(.8);
         }
         else if (gamepad2.right_trigger > .1) {
-            servoRHug.setPosition(0);
+            servoRHug.setPosition(.4);
         }
 
         //telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
