@@ -55,7 +55,7 @@ public class DetectColor extends OpModeCamera {
       rgbImage = convertYuvImageToRgb(yuvImage, width, height, ds2);
 
       for (int x = (int) (.8 * rgbImage.getWidth()); x < rgbImage.getWidth(); x++) {
-        for (int y = (int) (.75 * rgbImage.getHeight()); y < rgbImage.getHeight(); y++) {
+        for (int y = 0; y < (int) (.25 * rgbImage.getHeight()); y++) {
           int pixel = rgbImage.getPixel(x, y);
           redValue += red(pixel);
           blueValue += blue(pixel);
