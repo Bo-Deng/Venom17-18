@@ -15,6 +15,9 @@ public class BlueSideAuto extends CustomLinearOpMode {
         AutoColor = "BLUE";
         waitForStart();
 
+        getJewelColor();
+        getVuMark();
+
         knockBall(AutoColor);
         Thread.sleep(200);
 
@@ -27,7 +30,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
-        template = 'R';
+        //template = 'R';
 
 
         if (template == 'L') {

@@ -59,7 +59,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
-    ElapsedTime time;
+    ElapsedTime times;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -67,7 +67,25 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void initStuff(HardwareMap map) throws InterruptedException {
-        time = new ElapsedTime();
+
+        times = new ElapsedTime();
+
+        telemetry.addLine("startJewelCamera initialization started");
+        telemetry.update();
+
+        setCameraDownsampling(2);
+
+        telemetry.addLine("Wait for camera to finish initializing!");
+
+        startCamera();  // can take a while.
+        // best started before waitForStart
+        sleep(2000);
+        telemetry.addLine("Camera ready!");
+
+
+        telemetry.update();
+
+
 
         motorFR = map.dcMotor.get("motorFR");
         motorFL = map.dcMotor.get("motorFL");
@@ -93,29 +111,28 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         servoLHug.setPosition(1);
         servoRHug.setPosition(0.3);
+        servoUpDownArm.setPosition(.94);
+        servoLeftRightArm.setPosition(.45);
 
 
 
-        sleep(3000);
 
-        telemetry.addLine("startJewelCamera initialization started");
+
+        telemetry.addData("PID value = ", ".0275");
+        telemetry.addData("init = ", "completed");
+
+
         telemetry.update();
+    }
 
-        setCameraDownsampling(2);
-
-        telemetry.addLine("Wait for camera to finish initializing!");
-
-        startCamera();  // can take a while.
-        // best started before waitForStart
-        sleep(2000);
-        telemetry.addLine("Camera ready!");
-
-        time.reset();
+    public void getJewelColor() {
+        times.reset();
         int numPics = 0;
         int redValue = 0;
         int blueValue = 0;
+        int numFailLoops = 0;
 
-        while (time.seconds() < 5 && opModeIsActive()) {
+        while (times.seconds() < 3 && opModeIsActive()) {
             if (imageReady()) { // only do this if an image has been returned from the camera
 
                 numPics++;
@@ -131,20 +148,26 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
                         blueValue += blue(pixel);
                     }
                 }
-
-
-
+            }
+            else {
+                numFailLoops++;
             }
 
             sleep(10);
         }
 
         jewelIsRed = redValue > blueValue;
-        telemetry.addData("Is Jewel Red? ", jewelIsRed);
-        telemetry.update();
 
         stopCamera();
 
+        telemetry.addData("Is Jewel Red?", jewelIsRed);
+
+        telemetry.addData("numPics: ", numPics);
+        telemetry.addData("numFailLoops: ", numFailLoops);
+        telemetry.addData("red blue: ", redValue + "    " + blueValue);
+    }
+
+    public void getVuMark() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AXb/g5n/////AAAAGSUed2rh5Us1jESA1cUn5r5KDUqTfwO2woh7MxjiLKSUyDslqBAgwCi0Qmc6lVczErnF5TIw7vG5R4TJ2igvrDVp+dP+3i2o7UUCRRj/PtyVgb4ZfNrDzHE80/6TUHifpKu4QCM04eRWYZocWNWhuRfytVeWy6NSTWefM9xadqG8FFrFk3XnvqDvk/6ZAgerNBdq5SsJ90eDdoAhgYEee40WxasoUUM9YVMvkWOqZgHSuraV2IyIUjkW/u0O+EkFtTNRUWP+aZwn1qO1H4Lk07AJYe21eqioBLMdzY7A8YqR1TeQ//0WJg8SFdXjuGbF6uHykBe2FF5UeyaehA0iTqfPS+59FLm8y1TuUt57eImq";
@@ -165,9 +188,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
 
         telemetry.addData("VuMark ", vuMark);
-        time.reset();
+        times.reset();
 
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && time.seconds() < 3) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && times.seconds() < 2 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
 
@@ -180,17 +203,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             template = 'L';
         else if (vuMark == RelicRecoveryVuMark.RIGHT)
             template = 'R';
-
-
-
-
-        telemetry.addData("PID value = ", ".0275");
-        telemetry.addData("init = ", "completed");
-        telemetry.addData("Is Jewel Red?", jewelIsRed);
-        telemetry.addData("numPics: ", numPics);
-        telemetry.addData("red blue: ", redValue + "    " + blueValue);
-
-        telemetry.update();
     }
 
 
@@ -490,8 +502,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double kP = .5/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
-        time.reset();
-        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && time.seconds() < 2) {
+        times.reset();
+        while (Math.abs(angleDiff) > 0.5 && opModeIsActive() && times.seconds() < 2) {
             angleDiff = imu.getTrueDiff(angle);
             PIDchange = angleDiff * kP;
 
@@ -519,7 +531,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public void knockBall(String color) throws InterruptedException{
         servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(0);
+        servoUpDownArm.setPosition(.15);
 
         Thread.sleep(1000);
 
@@ -567,19 +579,19 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorXLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while (motorYLift.getCurrentPosition() > -300 ) {
+        while (motorYLift.getCurrentPosition() > -300 && opModeIsActive()) {
             motorYLift.setPower(-.5);
         }
-        motorXLift.setPower(0);
+        motorYLift.setPower(0);
         Thread.sleep(200);
 
-        while (motorXLift.getCurrentPosition() > -300) {
+        while (motorXLift.getCurrentPosition() > -30 && opModeIsActive()) {
             motorXLift.setPower(-.3);
         }
         motorXLift.setPower(0);
         Thread.sleep(100);
 
-        while (motorYLift.getCurrentPosition() < 300) {
+        while (motorYLift.getCurrentPosition() < 300 && opModeIsActive()) {
             motorYLift.setPower(.5);
         }
         motorYLift.setPower(0);
@@ -589,9 +601,10 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         servoRHug.setPosition(1);
         Thread.sleep(200);
 
-        while (motorYLift.getCurrentPosition() < 100) {
+        while (motorYLift.getCurrentPosition() < 100 && opModeIsActive()) {
             motorYLift.setPower(-.5);
         }
+        motorYLift.setPower(0);
         Thread.sleep(200);
     }
 }

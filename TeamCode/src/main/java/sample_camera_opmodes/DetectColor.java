@@ -19,6 +19,11 @@ public class DetectColor extends OpModeCamera {
   int ds2 = 1;  // additional downsampling of the image
   private int looped = 0;
   private long lastLoopTime = 0;
+  int numPics = 0;
+  int redValue = 0;
+  int blueValue = 0;
+  int numFailLoops = 0;
+  boolean jewelIsRed = false;
   // set to 1 to disable further downsampling
 
   /*
@@ -46,9 +51,10 @@ public class DetectColor extends OpModeCamera {
     long startTime = System.currentTimeMillis();
 
     if (imageReady()) { // only do this if an image has been returned from the camera
-      int redValue = 0;
-      int blueValue = 0;
-      int greenValue = 0;
+
+
+      numPics++;
+
 
       // get image, rotated so (0,0) is in the bottom left of the preview window
       Bitmap rgbImage;
@@ -59,28 +65,23 @@ public class DetectColor extends OpModeCamera {
           int pixel = rgbImage.getPixel(x, y);
           redValue += red(pixel);
           blueValue += blue(pixel);
-          greenValue += green(pixel);
         }
       }
-      int color = highestColor(redValue, greenValue, blueValue);
-      String colorString = "";
-      switch (color) {
-        case 0:
-          colorString = "RED";
-          break;
-        case 1:
-          colorString = "GREEN";
-          break;
-        case 2:
-          colorString = "BLUE";
-      }
-      telemetry.addData("Color:", "Color detected is: " + colorString);
 
+
+      jewelIsRed = redValue > blueValue;
+    }
+    else {
+      numFailLoops++;
     }
     long endTime = System.currentTimeMillis();
     telemetry.addData("Dims", Integer.toString(width / ds2) + " x " + Integer.toString(height / ds2));
     telemetry.addData("Loop Time", Long.toString(endTime - startTime));
     telemetry.addData("Loop to Loop Time", Long.toString(endTime - lastLoopTime));
+    telemetry.addData("Is Jewel Red?", jewelIsRed);
+    telemetry.addData("numPics: ", numPics);
+    telemetry.addData("numFailLoops: ", numFailLoops);
+    telemetry.addData("red blue: ", redValue + "    " + blueValue);
 
     lastLoopTime = endTime;
   }

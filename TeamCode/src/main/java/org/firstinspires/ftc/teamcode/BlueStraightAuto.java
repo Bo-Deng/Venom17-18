@@ -14,7 +14,8 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
     AutoColor = "BLUE";
     waitForStart();
-
+        getJewelColor();
+        getVuMark();
 
         knockBall(AutoColor);
         Thread.sleep(200 );

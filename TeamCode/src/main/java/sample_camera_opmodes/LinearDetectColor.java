@@ -25,59 +25,58 @@ public class LinearDetectColor extends LinearOpModeCamera {
     @Override
     public void runOpMode() {
 
-        String colorString = "NONE";
+        telemetry.addLine("startJewelCamera initialization started");
+        telemetry.update();
 
-        // linear OpMode, so could do stuff like this too.
-        /*
-        motorLeft = hardwareMap.dcMotor.get("motor_1");
-        motorRight = hardwareMap.dcMotor.get("motor_2");
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-        */
+        setCameraDownsampling(2);
 
-        if (isCameraAvailable()) {
-            int jewelIsRed = -1;
-            telemetry.addLine("Camera is available, about to set Downsampling");
+        telemetry.addLine("Wait for camera to finish initializing!");
 
-            setCameraDownsampling(8);
+        startCamera();  // can take a while.
+        // best started before waitForStart
+        sleep(2000);
+        telemetry.addLine("Camera ready!");
 
-            telemetry.addLine("Wait for camera to finish initializing!");
+        ElapsedTime times = new ElapsedTime();
 
-            startCamera();  // can take a while.
-            // best started before waitForStart
-            telemetry.addLine("Camera ready!");
+        times.reset();
+        int numPics = 0;
+        int redValue = 0;
+        int blueValue = 0;
+        int numFailLoops = 0;
 
-            ElapsedTime time = new ElapsedTime();
+        while (times.seconds() < 5) {
+            if (imageReady()) { // only do this if an image has been returned from the camera
 
-            time.reset();
-            while (time.seconds() < 6 && opModeIsActive()) {
-                if (imageReady()) { // only do this if an image has been returned from the camera
-                    int redValue = 0;
-                    int blueValue = 0;
-                    int greenValue = 0;
+                numPics++;
 
-                    // get image, rotated so (0,0) is in the bottom left of the preview window
-                    Bitmap rgbImage;
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                // get image, rotated so (0,0) is in the bottom left of the preview window
+                Bitmap rgbImage;
+                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                    for (int x = (int) (.8 * rgbImage.getWidth()); x < rgbImage.getWidth(); x++) {
-                        for (int y = (int) (.75 * rgbImage.getHeight()); y < rgbImage.getHeight(); y++) {
-                            int pixel = rgbImage.getPixel(x, y);
-                            redValue += red(pixel);
-                            blueValue += blue(pixel);
-                            greenValue += green(pixel);
-                        }
+                for (int x = (int) (.8 * rgbImage.getWidth()); x < rgbImage.getWidth(); x++) {
+                    for (int y = 0; y < (int) (.25 * rgbImage.getHeight()); y++) {
+                        int pixel = rgbImage.getPixel(x, y);
+                        redValue += red(pixel);
+                        blueValue += blue(pixel);
                     }
-
-                    jewelIsRed = redValue > blueValue ? 0 : 1;
-                    telemetry.addData("Is Jewel Red? ", jewelIsRed);
-                    telemetry.update();
-
                 }
-                telemetry.update();
-                sleep(50);
             }
-            telemetry.addData("Jewel Red?:", jewelIsRed);
-            telemetry.update();
+            else {
+                numFailLoops++;
+            }
+
+            sleep(10);
+        }
+
+        boolean jewelIsRed = redValue > blueValue;
+        telemetry.addData("Is Jewel Red?", jewelIsRed);
+        telemetry.addData("numPics: ", numPics);
+        telemetry.addData("numFailLoops: ", numFailLoops);
+        telemetry.addData("red blue: ", redValue + "    " + blueValue);
+        telemetry.update();
+
+        stopCamera();
             /*
             setCameraDownsampling(8);
             // parameter determines how downsampled you want your images
@@ -106,46 +105,9 @@ public class LinearDetectColor extends LinearOpModeCamera {
             */
 
             while (opModeIsActive()) {
-                if (imageReady()) { // only do this if an image has been returned from the camera
-                    int redValue = 0;
-                    int blueValue = 0;
-                    int greenValue = 0;
 
-                    // get image, rotated so (0,0) is in the bottom left of the preview window
-                    Bitmap rgbImage;
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, ds2);
-
-                    for (int x = 0; x < rgbImage.getWidth(); x++) {
-                        for (int y = 0; y < rgbImage.getHeight(); y++) {
-                            int pixel = rgbImage.getPixel(x, y);
-                            redValue += red(pixel);
-                            blueValue += blue(pixel);
-                            greenValue += green(pixel);
-                        }
-                    }
-                    int color = highestColor(redValue, greenValue, blueValue);
-
-                    switch (color) {
-                        case 0:
-                            colorString = "RED";
-                            break;
-                        case 1:
-                            colorString = "GREEN";
-                            break;
-                        case 2:
-                            colorString = "BLUE";
-                    }
-
-                } else {
-                    colorString = "NONE";
-                }
-
-                telemetry.addData("Color:", "Color detected is: " + colorString);
-                telemetry.update();
-                sleep(10);
             }
             stopCamera();
-
-        }
     }
 }
+

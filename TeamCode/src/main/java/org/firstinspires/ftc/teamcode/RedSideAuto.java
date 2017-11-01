@@ -14,6 +14,8 @@ public class RedSideAuto extends CustomLinearOpMode {
 
         AutoColor = "RED";
         waitForStart();
+        getJewelColor();
+        getVuMark();
 
 
         knockBall(AutoColor);

@@ -79,7 +79,7 @@ public class CustomOpMode extends OpMode {
         servoLHug.setPosition(.6);
         servoRHug.setPosition(.4);
 
-        servoUpDownArm.setPosition(.55);
+        servoUpDownArm.setPosition(.78);
         servoLeftRightArm.setPosition(.28);
 
 

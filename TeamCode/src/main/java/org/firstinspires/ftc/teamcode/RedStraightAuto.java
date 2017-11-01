@@ -36,6 +36,8 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         AutoColor = "RED";
         waitForStart();
+        getJewelColor();
+        getVuMark();
 
 
         knockBall(AutoColor);

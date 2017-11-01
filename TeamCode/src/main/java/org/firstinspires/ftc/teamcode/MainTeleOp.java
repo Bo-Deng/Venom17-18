@@ -45,19 +45,19 @@ public class MainTeleOp extends CustomOpMode {
         }
 
         // the signs might need to be switched
-        if (gamepad2.left_stick_y > 0.1 ) {
+        if (gamepad2.left_stick_y > 0.1) {
             motorXLift.setPower(gamepad2.left_stick_y / 1.5);
         }
-        else if (gamepad2.left_stick_y < -0.1 && motorXLift.getCurrentPosition() > -70) {
+        else if (gamepad2.left_stick_y < -0.1) {
             motorXLift.setPower(gamepad2.left_stick_y / 1.5);
         }
         else {
             motorXLift.setPower(0);
         }
-        if (gamepad2.right_stick_y > 0.1 && motorYLift.getCurrentPosition() < 0) {
+        if (gamepad2.right_stick_y > 0.1) {
             motorYLift.setPower(gamepad2.right_stick_y);
         }
-        else if (gamepad2.right_stick_y < -0.1 && motorYLift.getCurrentPosition() > -5250) {
+        else if (gamepad2.right_stick_y < -0.1) {
             motorYLift.setPower(gamepad2.right_stick_y);
         }
         else {
