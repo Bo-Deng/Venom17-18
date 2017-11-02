@@ -110,7 +110,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         imu.IMUinit(hardwareMap);
 
         servoLHug.setPosition(1);
-        servoRHug.setPosition(0.3);
+        servoRHug.setPosition(0.33);
         servoUpDownArm.setPosition(.94);
         servoLeftRightArm.setPosition(.45);
 
@@ -531,7 +531,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public void knockBall(String color) throws InterruptedException{
         servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(.15);
+        servoUpDownArm.setPosition(.10);
 
         Thread.sleep(1000);
 
@@ -580,7 +580,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorXLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (motorYLift.getCurrentPosition() > -300 && opModeIsActive()) {
-            motorYLift.setPower(-.5);
+            motorYLift.setPower(-.8);
         }
         motorYLift.setPower(0);
         Thread.sleep(200);
