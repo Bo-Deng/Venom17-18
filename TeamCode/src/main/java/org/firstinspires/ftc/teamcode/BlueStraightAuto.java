@@ -18,7 +18,8 @@ public class BlueStraightAuto extends CustomLinearOpMode {
         getVuMark();
 
         knockBall(AutoColor);
-        Thread.sleep(200 );
+        Thread.sleep(200);
+        grabBlock();
 
         moveSquares(-.75, .20);
         stopMotors();

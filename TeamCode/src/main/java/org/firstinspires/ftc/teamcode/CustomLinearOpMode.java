@@ -529,7 +529,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         return getLeftDistance();
     }
 
-    public void knockBall(String color) throws InterruptedException{
+    public void knockBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
         servoUpDownArm.setPosition(.10);
 
@@ -538,18 +538,18 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         if (jewelIsRed && color.equals("RED")) {
            servoLeftRightArm.setPosition(0);
-       } else if (!jewelIsRed && color.equals("RED")) {
+        } else if (!jewelIsRed && color.equals("RED")) {
            servoLeftRightArm.setPosition(.45);
-       }
-        if (jewelIsRed && color.equals("BLUE")) {
+        }
+        else if (jewelIsRed && color.equals("BLUE")) {
             servoLeftRightArm.setPosition(.45);
         } else if (!jewelIsRed && color.equals("BLUE")) {
             servoLeftRightArm.setPosition(0);
         }
 
         Thread.sleep(1000);
-
-       servoUpDownArm.setPosition(.55);
+        servoLeftRightArm.setPosition(.3);
+        servoUpDownArm.setPosition(.55);
     }
     public void knockWrongBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
@@ -572,7 +572,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
     public void grabBlock() throws InterruptedException{
         // direction is either 1 or -1, -1 on red 1 on blue
-        moveSquares(-.005 , .2);
+        moveSquares(-.007 , .2);
         stopMotors();
         Thread.sleep(200);
 
@@ -586,7 +586,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         Thread.sleep(200);
 
         while (motorXLift.getCurrentPosition() > -30 && opModeIsActive()) {
-            motorXLift.setPower(-.3);
+            motorXLift.setPower(-.6);
         }
         motorXLift.setPower(0);
         Thread.sleep(100);

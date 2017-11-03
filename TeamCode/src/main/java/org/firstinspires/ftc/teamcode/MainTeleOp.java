@@ -71,24 +71,24 @@ public class MainTeleOp extends CustomOpMode {
 
         // forwards and backwards
         if (Math.abs(yL) > .1 || Math.abs(yR) > .1) {
-            motorBL.setPower(-yL);
-            motorFL.setPower(-yL);
-            motorBR.setPower(-yR);
-            motorFR.setPower(-yR);
+            motorBL.setPower(-yL * motorScale);
+            motorFL.setPower(-yL * motorScale);
+            motorBR.setPower(-yR * motorScale);
+            motorFR.setPower(-yR * motorScale);
         }
         // strafe right
         else if (rt != 0){
-            motorBL.setPower(-rt);
-            motorFL.setPower(rt);
-            motorBR.setPower(rt);
-            motorFR.setPower(-rt);
+            motorBL.setPower(-rt * motorScale);
+            motorFL.setPower(rt * motorScale);
+            motorBR.setPower(rt * motorScale);
+            motorFR.setPower(-rt * motorScale);
         }
         // strafe left
         else if (lt != 0){
-            motorBL.setPower(lt);
-            motorFL.setPower(-lt);
-            motorBR.setPower(-lt);
-            motorFR.setPower(lt);
+            motorBL.setPower(lt * motorScale);
+            motorFL.setPower(-lt * motorScale);
+            motorBR.setPower(-lt * motorScale);
+            motorFR.setPower(lt * motorScale);
         }
         else
             stopMotor();
@@ -145,8 +145,8 @@ public class MainTeleOp extends CustomOpMode {
         //telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
         //telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
         //telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
-        //telemetry.addData("rangeL cm: ", getLeftDistance());
-        //telemetry.addData("rangeR cm: ", getRightDistance());
+        telemetry.addData("rangeL cm: ", getLeftDistance());
+        telemetry.addData("rangeR cm: ", getRightDistance());
         telemetry.addData("motorScale: ", motorScale);
         telemetry.addData("XLift: ", motorXLift.getCurrentPosition());
         telemetry.addData("YLift: ", motorYLift.getCurrentPosition());
