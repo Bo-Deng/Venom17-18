@@ -110,7 +110,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         imu.IMUinit(hardwareMap);
 
         servoLHug.setPosition(1);
-        servoRHug.setPosition(0.33);
+        servoRHug.setPosition(0.36);
         servoUpDownArm.setPosition(.94);
         servoLeftRightArm.setPosition(.45);
 
@@ -194,7 +194,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
 
-        template = ' ';
+        template = 'R';
 
         telemetry.addData("VuMark ", vuMark);
         if (vuMark == RelicRecoveryVuMark.CENTER)
@@ -572,7 +572,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
     public void grabBlock() throws InterruptedException{
         // direction is either 1 or -1, -1 on red 1 on blue
-        moveSquares(-.007 , .2);
+        servoLHug.setPosition(.4);
+        servoRHug.setPosition(.6);
+        moveSquares(-.027, .25);
+        //startMotors(-.25);
+        Thread.sleep(250);
         stopMotors();
         Thread.sleep(200);
 
@@ -585,25 +589,26 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorYLift.setPower(0);
         Thread.sleep(200);
 
-        while (motorXLift.getCurrentPosition() > -30 && opModeIsActive()) {
-            motorXLift.setPower(-.6);
+        times.reset();
+        while (times.milliseconds() < 140 && opModeIsActive()) {
+            motorXLift.setPower(-.75);
         }
         motorXLift.setPower(0);
         Thread.sleep(100);
 
         while (motorYLift.getCurrentPosition() < 300 && opModeIsActive()) {
-            motorYLift.setPower(.5);
+            motorYLift.setPower(.8);
         }
         motorYLift.setPower(0);
         Thread.sleep(200);
 
-        servoLHug.setPosition(.22);
+        servoLHug.setPosition(.18);
         servoRHug.setPosition(1);
         Thread.sleep(200);
 
-        while (motorYLift.getCurrentPosition() < 100 && opModeIsActive()) {
+        /*while (motorYLift.getCurrentPosition() < 100 && opModeIsActive()) {
             motorYLift.setPower(-.5);
-        }
+        }*/
         motorYLift.setPower(0);
         Thread.sleep(200);
     }

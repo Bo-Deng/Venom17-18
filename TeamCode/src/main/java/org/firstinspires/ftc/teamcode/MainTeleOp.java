@@ -16,6 +16,13 @@ public class MainTeleOp extends CustomOpMode {
 
     double motorScale = 1;
 
+    double leftOpenPos;
+    double leftThreadPos;
+    double leftClampPos;
+    double rightOpenPos;
+    double rightThreadPos;
+    double rightClampPos;
+
     public void init() {
 
         initStuff(hardwareMap);
@@ -145,8 +152,8 @@ public class MainTeleOp extends CustomOpMode {
         //telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
         //telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
         //telemetry.addData("MotorBREncoder", motorBR.getCurrentPosition());
-        telemetry.addData("rangeL cm: ", getLeftDistance());
-        telemetry.addData("rangeR cm: ", getRightDistance());
+        //telemetry.addData("rangeL cm: ", getLeftDistance());
+        //telemetry.addData("rangeR cm: ", getRightDistance());
         telemetry.addData("motorScale: ", motorScale);
         telemetry.addData("XLift: ", motorXLift.getCurrentPosition());
         telemetry.addData("YLift: ", motorYLift.getCurrentPosition());

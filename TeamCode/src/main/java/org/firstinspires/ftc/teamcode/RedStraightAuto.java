@@ -46,7 +46,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(.75, .20);
+        moveSquares(.85, .20);
         stopMotors();
         Thread.sleep(500);
 
@@ -55,11 +55,11 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-                strafeRedAssisted(.4, 75, 0);
+                strafeRedAssisted(.4, 78, 0);
 
         } else if (template == 'C') {
             // align with center column
-                strafeRedAssisted(.4, 60, 0);
+                strafeRedAssisted(.4, 61, 0);
 
         } else if (template == 'R') {
             //strafe right
@@ -67,7 +67,10 @@ public class RedStraightAuto extends CustomLinearOpMode {
         } stopMotors();
         Thread.sleep(500);
 
-        moveSquares(.15, .20);
+        servoLHug.setPosition(.4);
+        servoRHug.setPosition(.6);
+
+        moveSquares(.25, .20);
         stopMotors();
 
 
