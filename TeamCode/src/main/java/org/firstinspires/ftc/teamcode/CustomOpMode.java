@@ -47,6 +47,8 @@ public class CustomOpMode extends OpMode {
 
     String AutoColor;
 
+    double sf = 1.3;
+
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;

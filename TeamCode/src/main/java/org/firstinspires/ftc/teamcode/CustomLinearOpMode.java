@@ -61,6 +61,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     ElapsedTime times;
 
+    double sf = 1.3;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -354,22 +356,22 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double encoderStart = Math.abs(motorFR.getCurrentPosition());
         if (squares > 0) {
             while (Math.abs(motorFR.getCurrentPosition()) < encoderStart +(squares * squaresToEncoder) && opModeIsActive()) {
-                startMotors(power);
+                startMotors(power / sf);
 
             }
         }
         else {
             while (-Math.abs(motorFR.getCurrentPosition()) > encoderStart + (squares * squaresToEncoder) && opModeIsActive()) {
-                startMotors(-power);
+                startMotors(-power / sf);
             }
         }
         stopMotors();
     }
     public void setMotors(double FLpow, double BLpow, double FRpow, double BRpow) {
-        motorFL.setPower(Range.clip(FLpow, -1, 1));
-        motorBL.setPower(Range.clip(BLpow, -1, 1));
-        motorFR.setPower(Range.clip(FRpow, -1, 1));
-        motorBR.setPower(Range.clip(BRpow, -1, 1));
+        motorFL.setPower(Range.clip(FLpow, -1, 1) / sf);
+        motorBL.setPower(Range.clip(BLpow, -1, 1) / sf);
+        motorFR.setPower(Range.clip(FRpow, -1, 1) / sf);
+        motorBR.setPower(Range.clip(BRpow, -1, 1) / sf);
     }
 
     @Deprecated
@@ -385,7 +387,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors(-power - PIDchange, power - PIDchange, power + PIDchange, -power + PIDchange);
+                setMotors((-power - PIDchange) / sf, (power - PIDchange) / sf, (power + PIDchange) / sf, (-power + PIDchange) / sf);
             }
         }
         else {
@@ -396,13 +398,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors(power - PIDchange, -power - PIDchange, -power + PIDchange, power + PIDchange);
+                setMotors((power - PIDchange) / sf, (-power - PIDchange) / sf, (-power + PIDchange) / sf, (power + PIDchange) / sf);
             }
         }
     }
 
     public void strafeRedAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
-        power = Math.abs(power);
+        power = Math.abs(power) / sf;
         double desiredAngle = angle;
 
 
@@ -443,7 +445,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void strafeBlueAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
-        power = Math.abs(power);
+        power = Math.abs(power) / sf;
         double desiredAngle = angle;
 
         if(getLeftDistance() < stopRangeCM) {
