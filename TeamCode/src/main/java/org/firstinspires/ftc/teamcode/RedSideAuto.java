@@ -47,8 +47,12 @@ public class RedSideAuto extends CustomLinearOpMode {
             //strafe right
             strafeRedAssisted(.4, 20, 90);
         } stopMotors();
+        Thread.sleep(500);
 
-        moveSquares(.15, .20);
+        servoLHug.setPosition(.4);
+        servoRHug.setPosition(.6);
+
+        moveSquares(.25, .20);
         stopMotors();
     }
 }
