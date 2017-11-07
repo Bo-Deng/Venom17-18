@@ -15,13 +15,14 @@ import com.qualcomm.robotcore.util.Range;
 public class MainTeleOp extends CustomOpMode {
 
     double motorScale = 1;
-
-    double leftOpenPos;
-    double leftThreadPos;
-    double leftClampPos;
-    double rightOpenPos;
-    double rightThreadPos;
-    double rightClampPos;
+    //left hug variables
+    double leftOpenPos = .649;
+    double leftThreadPos = .25;
+    double leftClampPos = .0;
+    //right hug variables
+    double rightOpenPos = .424;
+    double rightThreadPos = .8;
+    double rightClampPos = 1.0;
 
     public void init() {
 
@@ -100,7 +101,6 @@ public class MainTeleOp extends CustomOpMode {
         else
             stopMotor();
 
-
         if (gamepad2.dpad_left) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
             servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() - .025, 0, 1));
@@ -111,7 +111,6 @@ public class MainTeleOp extends CustomOpMode {
             servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() + .025, 0, 1));
         }
 
-
         if (gamepad2.dpad_up) {
             servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() + .025, 0, 1));
         }
@@ -119,33 +118,47 @@ public class MainTeleOp extends CustomOpMode {
             servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .025, 0, 1));
         }
 
-        if (gamepad2.x) {
-            servoRHug.setPosition(Range.clip(servoRHug.getPosition() - .025, 0, 1)); //.775
+        if (gamepad2.x) { //left thread, right fully open
+            //servoRHug.setPosition(Range.clip(servoRHug.getPosition() - .025, 0, 1)); //.775
+            servoLHug.setPosition(leftThreadPos);
+            servoRHug.setPosition(rightOpenPos);
         }
-        if (gamepad2.b) {
-            servoRHug.setPosition(Range.clip(servoRHug.getPosition() + .025, 0, 1)); //1
+        if (gamepad2.b) { //right thread, left fully open
+            //servoRHug.setPosition(Range.clip(servoRHug.getPosition() + .025, 0, 1)); //1
+            servoLHug.setPosition(leftOpenPos);
+            servoRHug.setPosition(rightThreadPos);
         }
 
-        if (gamepad2.y) {
+        if (gamepad2.y) { //both thread
+            //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //.775
+            servoLHug.setPosition(leftThreadPos);
+            servoRHug.setPosition(rightThreadPos);
+        }
+
+
+        if(gamepad2.a) { //nothing??? , commented out for now
             servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //.775
-        }
-        if(gamepad2.a) {
-            servoLHug.setPosition(Range.clip(servoLHug.getPosition() + .025, 0, 1)); //.775
+            servoRHug.setPosition(Range.clip(servoRHug.getPosition() + .025, 0, 1));
         }
 
+        //left hug tighten
         if (gamepad2.left_bumper) {
-            servoLHug.setPosition(.25);
-
+            servoLHug.setPosition(leftClampPos);
         }
+
+        //left hug fully open
         else if (gamepad2.left_trigger > .1) {
-            servoLHug.setPosition(.70);
+            servoLHug.setPosition(leftOpenPos);
         }
 
+        //right hug tighten
         if (gamepad2.right_bumper) {
-            servoRHug.setPosition(.8);
+            servoRHug.setPosition(rightClampPos);
         }
+
+        //right hug fully open
         else if (gamepad2.right_trigger > .1) {
-            servoRHug.setPosition(.4);
+            servoRHug.setPosition(rightOpenPos);
         }
 
         //telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
