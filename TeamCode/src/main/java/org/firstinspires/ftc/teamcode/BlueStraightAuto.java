@@ -12,8 +12,10 @@ public class BlueStraightAuto extends CustomLinearOpMode {
     public void runOpMode() throws InterruptedException {
         initStuff(hardwareMap);
 
-    AutoColor = "BLUE";
-    waitForStart();
+        AutoColor = "BLUE";
+
+        waitForStart();
+
         getJewelColor();
         getVuMark();
 

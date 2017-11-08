@@ -35,10 +35,11 @@ public class RedStraightAuto extends CustomLinearOpMode {
         initStuff(hardwareMap);
 
         AutoColor = "RED";
+
         waitForStart();
+
         getJewelColor();
         getVuMark();
-
 
         knockBall(AutoColor);
         Thread.sleep(200);
@@ -55,11 +56,11 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-                strafeRedAssisted(.4, 78, 0);
+            strafeRedAssisted(.4, 78, 0);
 
         } else if (template == 'C') {
             // align with center column
-                strafeRedAssisted(.4, 61, 0);
+            strafeRedAssisted(.4, 61, 0);
 
         } else if (template == 'R') {
             //strafe right
