@@ -18,7 +18,7 @@ public class MainTeleOp extends CustomOpMode {
     //left hug variables
     double leftOpenPos = .649;
     double leftThreadPos = .25;
-    double leftClampPos = .0;
+    double leftClampPos = .15;
     //right hug variables
     double rightOpenPos = .424;
     double rightThreadPos = .8;
