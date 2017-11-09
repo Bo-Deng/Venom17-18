@@ -111,8 +111,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
 
-        servoLHug.setPosition(1);
-        servoRHug.setPosition(0.36);
+        servoLHug.setPosition(.649);
+        servoRHug.setPosition(.424);
         servoUpDownArm.setPosition(.94);
         servoLeftRightArm.setPosition(.45);
 
@@ -551,7 +551,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         Thread.sleep(1000);
         servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(.55);
+        servoUpDownArm.setPosition(.75);
     }
     public void knockWrongBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
@@ -576,7 +576,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         // direction is either 1 or -1, -1 on red 1 on blue
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
-        moveSquares(-.027, .25);
+        moveSquares(-.007, .25);
         //startMotors(-.25);
         Thread.sleep(250);
         stopMotors();
