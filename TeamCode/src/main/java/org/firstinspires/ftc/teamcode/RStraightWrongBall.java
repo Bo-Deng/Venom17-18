@@ -16,19 +16,20 @@ public class RStraightWrongBall extends CustomLinearOpMode {
         AutoColor = "RED";
         waitForStart();
 
+        getJewelColor();
+        getVuMark();
 
         knockWrongBall(AutoColor);
+        Thread.sleep(200);
 
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(.75, .20);
+        moveSquares(.60, .20);
         stopMotors();
         Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
-
-        template = 'R';
 
         if (template == 'L') {
             //strafe left
@@ -43,6 +44,9 @@ public class RStraightWrongBall extends CustomLinearOpMode {
             strafeRedAssisted(.4, 45, 0);
         } stopMotors();
         Thread.sleep(500);
+
+        servoLHug.setPosition(.4);
+        servoRHug.setPosition(.6);
 
         moveSquares(.15, .20);
         stopMotors();

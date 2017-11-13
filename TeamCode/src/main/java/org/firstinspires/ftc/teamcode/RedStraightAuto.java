@@ -35,7 +35,6 @@ public class RedStraightAuto extends CustomLinearOpMode {
         initStuff(hardwareMap);
 
         AutoColor = "RED";
-
         waitForStart();
 
         getJewelColor();
@@ -52,7 +51,6 @@ public class RedStraightAuto extends CustomLinearOpMode {
         Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
-
 
         if (template == 'L') {
             //strafe left
@@ -73,7 +71,5 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         moveSquares(.25, .20);
         stopMotors();
-
-
     }
 }
