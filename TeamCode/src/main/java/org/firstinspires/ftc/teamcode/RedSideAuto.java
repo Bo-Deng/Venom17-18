@@ -17,9 +17,10 @@ public class RedSideAuto extends CustomLinearOpMode {
         getJewelColor();
         getVuMark();
 
-
         knockBall(AutoColor);
+        Thread.sleep(200);
 
+        grabBlock();
         Thread.sleep(200);
 
         moveSquares(.75, .20);

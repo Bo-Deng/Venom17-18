@@ -19,6 +19,9 @@ public class RStraightWrongBall extends CustomLinearOpMode {
 
         knockWrongBall(AutoColor);
 
+        grabBlock();
+        Thread.sleep(200);
+
         moveSquares(.75, .20);
         stopMotors();
         Thread.sleep(500);
