@@ -33,8 +33,6 @@ public class RedSideAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
-        template = 'R';
-
         boolean side = true;
         if (template == 'L') {
             //strafe left
@@ -48,6 +46,7 @@ public class RedSideAuto extends CustomLinearOpMode {
             //strafe right
             strafeRedAssisted(.4, 20, 90);
         } stopMotors();
+
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);

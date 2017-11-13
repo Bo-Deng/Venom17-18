@@ -13,7 +13,6 @@ public class BlueStraightAuto extends CustomLinearOpMode {
         initStuff(hardwareMap);
 
         AutoColor = "BLUE";
-
         waitForStart();
 
         getJewelColor();
@@ -36,7 +35,6 @@ public class BlueStraightAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
-
         if (template == 'L') {
             //strafe left
             strafeBlueAssisted(.4, 50, 180);
@@ -48,15 +46,14 @@ public class BlueStraightAuto extends CustomLinearOpMode {
         } else if (template == 'R') {
             //strafe right
             strafeBlueAssisted(.4, 80, 180);
-        }
-        stopMotors();
+        } stopMotors();
 
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.25, .20);
+        moveSquares(.15, .20);
         stopMotors();
     }
 }

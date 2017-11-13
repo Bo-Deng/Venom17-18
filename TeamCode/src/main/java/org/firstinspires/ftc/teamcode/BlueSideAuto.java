@@ -35,7 +35,6 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         //template = 'R';
 
-
         if (template == 'L') {
             //strafe left
             strafeBlueAssisted(.4, 55, 90);

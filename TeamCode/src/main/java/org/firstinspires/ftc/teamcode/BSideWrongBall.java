@@ -15,7 +15,11 @@ public class BSideWrongBall extends CustomLinearOpMode {
         AutoColor = "BLUE";
         waitForStart();
 
+        getJewelColor();
+        getVuMark();
+
         knockWrongBall(AutoColor);
+        Thread.sleep(200);
 
         grabBlock();
         Thread.sleep(200);
@@ -28,9 +32,6 @@ public class BSideWrongBall extends CustomLinearOpMode {
         Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
-
-        template = 'R';
-
 
         if (template == 'L') {
             //strafe left
@@ -45,6 +46,9 @@ public class BSideWrongBall extends CustomLinearOpMode {
             strafeBlueAssisted(.4, 25, 90);
         } stopMotors();
         Thread.sleep(500);
+
+        servoLHug.setPosition(.4);
+        servoRHug.setPosition(.6);
 
         moveSquares(.15, .20);
         stopMotors();
