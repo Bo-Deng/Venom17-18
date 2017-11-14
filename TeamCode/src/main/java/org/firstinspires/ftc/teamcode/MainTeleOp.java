@@ -18,9 +18,9 @@ public class MainTeleOp extends CustomOpMode {
     //left hug variables
     double leftOpenPos = .649;
     double leftThreadPos = .25;
-    double leftClampPos = .15;
+    double leftClampPos = .18;
     //right hug variables
-    double rightOpenPos = .424;
+    double rightOpenPos = .47;
     double rightThreadPos = .8;
     double rightClampPos = 1.0;
 
@@ -45,23 +45,24 @@ public class MainTeleOp extends CustomOpMode {
         }
 
 
-        if (gamepad1.dpad_up) {
+        /*if (gamepad1.dpad_up) {
             motorBL.setPower(.2);
             motorBR.setPower(.2);
             motorFL.setPower(.2);
             motorFR.setPower(.2);
-        }
+        }*/
 
         // the signs might need to be switched
         if (gamepad2.left_stick_y > 0.1) {
-            motorXLift.setPower(gamepad2.left_stick_y / 1.5);
+            motorXLift.setPower(gamepad2.left_stick_y);
         }
         else if (gamepad2.left_stick_y < -0.1) {
-            motorXLift.setPower(gamepad2.left_stick_y / 1.5);
+            motorXLift.setPower(gamepad2.left_stick_y);
         }
         else {
             motorXLift.setPower(0);
         }
+
         if (gamepad2.right_stick_y > 0.1) {
             motorYLift.setPower(gamepad2.right_stick_y);
         }
@@ -97,6 +98,22 @@ public class MainTeleOp extends CustomOpMode {
             motorFL.setPower(-lt * motorScale);
             motorBR.setPower(-lt * motorScale);
             motorFR.setPower(lt * motorScale);
+        }
+        else if (gamepad1.x) {
+            double kP_FB = .5/90;
+            double kP_LR = .5/90;
+            double diffPitch = imu.getPitch() - 3.3;
+            double diffRoll = imu.getRoll() - 0.4;
+
+            double PIDchangeFB = -kP_FB * diffRoll;
+            double PIDchangeLR = -kP_LR * diffPitch;
+
+            double max = Math.max(Math.abs(PIDchangeFB + PIDchangeLR), Math.abs(PIDchangeFB - PIDchangeLR));
+            max = max > 1 ? max : 1;
+            motorFL.setPower((PIDchangeFB + PIDchangeLR) / max);
+            motorFR.setPower((PIDchangeFB - PIDchangeLR) / max);
+            motorBL.setPower((PIDchangeFB - PIDchangeLR) / max);
+            motorBR.setPower((PIDchangeFB + PIDchangeLR) / max);
         }
         else
             stopMotor();
@@ -159,6 +176,24 @@ public class MainTeleOp extends CustomOpMode {
         //right hug fully open
         else if (gamepad2.right_trigger > .1) {
             servoRHug.setPosition(rightOpenPos);
+        }
+
+
+        if (gamepad1.x) {
+            double kP_FB = .5/90;
+            double kP_LR = .5/90;
+            double diffPitch = imu.getPitch() - 3.3;
+            double diffRoll = imu.getRoll() - 0.4;
+
+            double PIDchangeFB = -kP_FB * diffRoll;
+            double PIDchangeLR = -kP_LR * diffPitch;
+
+            double max = Math.max(Math.abs(PIDchangeFB + PIDchangeLR), Math.abs(PIDchangeFB - PIDchangeLR));
+            max = max > 1 ? max : 1;
+            motorFL.setPower((PIDchangeFB + PIDchangeLR) / max);
+            motorFR.setPower((PIDchangeFB - PIDchangeLR) / max);
+            motorBL.setPower((PIDchangeFB - PIDchangeLR) / max);
+            motorBR.setPower((PIDchangeFB + PIDchangeLR) / max);
         }
 
         //telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
