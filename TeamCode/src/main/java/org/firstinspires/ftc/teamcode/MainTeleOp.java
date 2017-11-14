@@ -100,8 +100,8 @@ public class MainTeleOp extends CustomOpMode {
             motorFR.setPower(lt * motorScale);
         }
         else if (gamepad1.x) {
-            double kP_FB = .5/90;
-            double kP_LR = .5/90;
+            double kP_FB = 5.0/90.0;
+            double kP_LR = 5.0/90.0;
             double diffPitch = imu.getPitch() - 3.3;
             double diffRoll = imu.getRoll() - 0.4;
 

@@ -53,7 +53,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     char template;
     boolean jewelIsRed;
 
-    int squaresToEncoder = 1120; //use motorBL
+    double sf = 1.3;
+
+    int squaresToEncoder = (int) (1120 * sf); //use motorBL
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -61,7 +63,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     ElapsedTime times;
 
-    double sf = 1.3;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -356,13 +357,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double encoderStart = Math.abs(motorFR.getCurrentPosition());
         if (squares > 0) {
             while (Math.abs(motorFR.getCurrentPosition()) < encoderStart +(squares * squaresToEncoder) && opModeIsActive()) {
-                startMotors(power / sf);
+                startMotors(power);
 
             }
         }
         else {
             while (-Math.abs(motorFR.getCurrentPosition()) > encoderStart + (squares * squaresToEncoder) && opModeIsActive()) {
-                startMotors(-power / sf);
+                startMotors(-power);
             }
         }
         stopMotors();
@@ -404,8 +405,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void strafeRedAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
-        power = Math.abs(power) / sf;
-        double desiredAngle = angle;
+        power = Math.abs(power);
+        //double desiredAngle = angle;
 
 
         /*if (isLeft) {
@@ -576,7 +577,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         // direction is either 1 or -1, -1 on red 1 on blue
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
-        moveSquares(-.007, .25);
+        moveSquares(-.009, .25);
         //startMotors(-.25);
         Thread.sleep(250);
         stopMotors();
