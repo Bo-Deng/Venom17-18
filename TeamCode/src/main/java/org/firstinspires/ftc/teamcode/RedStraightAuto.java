@@ -69,7 +69,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.25, .20);
+        moveSquares(.15, .20);
         stopMotors();
     }
 }

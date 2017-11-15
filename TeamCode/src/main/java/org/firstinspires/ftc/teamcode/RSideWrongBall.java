@@ -47,6 +47,8 @@ public class RSideWrongBall extends CustomLinearOpMode {
             strafeRedAssisted(.4, 20, 90);
         } stopMotors();
 
+        Thread.sleep(500);
+
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 

@@ -33,8 +33,6 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
-        //template = 'R';
-
         if (template == 'L') {
             //strafe left
             strafeBlueAssisted(.4, 55, 90);
@@ -52,7 +50,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.25, .20);
+        moveSquares(.15, .20);
         stopMotors();
     }
 }
