@@ -354,15 +354,14 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     public void moveSquares(double squares, double power) throws InterruptedException{
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        double encoderStart = Math.abs(motorFR.getCurrentPosition());
-        if (squares > 0) {
-            while (Math.abs(motorFR.getCurrentPosition()) < encoderStart +(squares * squaresToEncoder) && opModeIsActive()) {
-                startMotors(power);
 
+        if (squares > 0) {
+            while (Math.abs(motorFR.getCurrentPosition()) < (squares * squaresToEncoder) && opModeIsActive()) {
+                startMotors(power);
             }
         }
         else {
-            while (-Math.abs(motorFR.getCurrentPosition()) > encoderStart + (squares * squaresToEncoder) && opModeIsActive()) {
+            while (-Math.abs(motorFR.getCurrentPosition()) > (squares * squaresToEncoder) && opModeIsActive()) {
                 startMotors(-power);
             }
         }
