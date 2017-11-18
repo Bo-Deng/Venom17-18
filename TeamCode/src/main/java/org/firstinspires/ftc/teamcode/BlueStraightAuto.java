@@ -24,7 +24,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(-.75, .20);
+        moveSquares(-.5, .20);
         stopMotors();
         Thread.sleep(500);
 

@@ -368,10 +368,10 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         stopMotors();
     }
     public void setMotors(double FLpow, double BLpow, double FRpow, double BRpow) {
-        motorFL.setPower(Range.clip(FLpow, -1, 1) / sf);
-        motorBL.setPower(Range.clip(BLpow, -1, 1) / sf);
-        motorFR.setPower(Range.clip(FRpow, -1, 1) / sf);
-        motorBR.setPower(Range.clip(BRpow, -1, 1) / sf);
+        motorFL.setPower(Range.clip(FLpow, -1, 1) );
+        motorBL.setPower(Range.clip(BLpow, -1, 1) );
+        motorFR.setPower(Range.clip(FRpow, -1, 1) );
+        motorBR.setPower(Range.clip(BRpow, -1, 1) );
     }
 
     @Deprecated
@@ -387,7 +387,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors((-power - PIDchange) / sf, (power - PIDchange) / sf, (power + PIDchange) / sf, (-power + PIDchange) / sf);
+                setMotors((-power - PIDchange) , (power - PIDchange) , (power + PIDchange) , (-power + PIDchange) );
             }
         }
         else {
@@ -398,7 +398,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
                 PIDchange = kP * diffFromDesired;
 
-                setMotors((power - PIDchange) / sf, (-power - PIDchange) / sf, (-power + PIDchange) / sf, (power + PIDchange) / sf);
+                setMotors((power - PIDchange) , (-power - PIDchange) , (-power + PIDchange) , (power + PIDchange) );
             }
         }
     }
@@ -445,7 +445,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void strafeBlueAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
-        power = Math.abs(power) / sf;
+        power = Math.abs(power) ;
         double desiredAngle = angle;
 
         if(getLeftDistance() < stopRangeCM) {
@@ -576,9 +576,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         // direction is either 1 or -1, -1 on red 1 on blue
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
-        moveSquares(-.009, .25);
-        //startMotors(-.25);
-        Thread.sleep(250);
+        //moveSquares(-.009, .25);
+        startMotors(-.25);
+        Thread.sleep(90);
         stopMotors();
         Thread.sleep(200);
 
@@ -589,7 +589,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             motorYLift.setPower(-.8);
         }
         motorYLift.setPower(0);
-        Thread.sleep(200);
+        Thread.sleep(201);
 
         times.reset();
         while (times.milliseconds() < 140 && opModeIsActive()) {
