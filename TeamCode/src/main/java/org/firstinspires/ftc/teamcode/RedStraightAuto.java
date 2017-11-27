@@ -62,7 +62,7 @@ public class RedStraightAuto extends CustomLinearOpMode {
 
         } else if (template == 'R') {
             //strafe right
-            strafeRedAssisted(.6, 45, 0);
+            strafeRedAssisted(.6, 40, 0);
         } stopMotors();
         Thread.sleep(500);
 

@@ -27,3 +27,8 @@ build/
 *ASUS_PC_01*
 
 libs/opencv/build.gradle
+build.gradle
+FtcRobotController/build.gradle
+gradle/wrapper/gradle-wrapper.properties
+libs/opencv/build.gradle
+TeamCode/build.gradle

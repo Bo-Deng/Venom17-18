@@ -34,7 +34,6 @@ public class MainTeleOp extends CustomOpMode {
     }
     @Override
     public void loop() {
-
         // for testing hardware mapping
         if (gamepad1.a) {
             motorScale = motorScale == .5 ? 1 : .5;
@@ -73,17 +72,24 @@ public class MainTeleOp extends CustomOpMode {
             motorYLift.setPower(0);
         }
 
-        double yL = gamepad1.left_stick_y;
-        double yR = gamepad1.right_stick_y;
+        double yL = -gamepad1.left_stick_y;
+        double yR = -gamepad1.right_stick_y;
         double rt = gamepad1.right_trigger;
         double lt = gamepad1.left_trigger;
 
+
         // forwards and backwards
+
+
+
         if (Math.abs(yL) > .1 || Math.abs(yR) > .1) {
-            motorBL.setPower(-yL * motorScale);
-            motorFL.setPower(-yL * motorScale);
-            motorBR.setPower(-yR * motorScale);
-            motorFR.setPower(-yR * motorScale);
+
+            motorBL.setPower(leftABSMotorVal(-yL));
+            motorFL.setPower(leftABSMotorVal(-yL));
+
+            motorBR.setPower(rightABSMotorVal(-yR));
+            motorFR.setPower(rightABSMotorVal(-yR));
+
         }
         // strafe right
         else if (rt != 0){
@@ -196,6 +202,8 @@ public class MainTeleOp extends CustomOpMode {
             motorBR.setPower((PIDchangeFB + PIDchangeLR) / max);
         }
 
+
+
         //telemetry.addData("MotorFLEncoder", motorFL.getCurrentPosition());
         //telemetry.addData("MotorFREncoder", motorFR.getCurrentPosition());
         //telemetry.addData("MotorBLEncoder", motorBL.getCurrentPosition());
@@ -211,10 +219,5 @@ public class MainTeleOp extends CustomOpMode {
         telemetry.addData("servoUpDown Position: ", servoUpDownArm.getPosition());
     }
 
-    public void stopMotor() {
-        motorFL.setPower(0);
-        motorFR.setPower(0);
-        motorBL.setPower(0);
-        motorBR.setPower(0);
-    }
+
 }

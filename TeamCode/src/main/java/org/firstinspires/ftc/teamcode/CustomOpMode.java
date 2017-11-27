@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -50,6 +51,7 @@ public class CustomOpMode extends OpMode {
     double sf = 1.3;
 
 
+
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -83,6 +85,8 @@ public class CustomOpMode extends OpMode {
 
         servoUpDownArm.setPosition(.78);
         servoLeftRightArm.setPosition(.28);
+
+
 
 
 
@@ -135,5 +139,53 @@ public class CustomOpMode extends OpMode {
             dist = rangeSensorL.getDistance(DistanceUnit.CM);
         }
         return dist;
+    }
+    public double rightABSMotorVal(double joyStickVal) {
+        /*if (Math.abs(joyStickVal - motorBL.getPower()) < 1) {
+            return joyStickVal;
+        }*/
+        if (-joyStickVal > motorBR.getPower()) {
+            return Range.clip(motorBR.getPower() + .05, -1, 1);
+        }
+        else if (-joyStickVal < motorBR.getPower())
+            return Range.clip(motorBR.getPower() - .05, -1, 1);
+        else return -joyStickVal;
+    }
+    public double leftABSMotorVal(double joyStickVal) {
+        /*if (Math.abs(joyStickVal - motorBL.getPower()) < 1) {
+            return joyStickVal;
+        }*/
+        if (-joyStickVal > motorBL.getPower()) {
+            return Range.clip(motorBL.getPower() + .05, -1, 1);
+        }
+        else if (-joyStickVal < motorBL.getPower())
+            return Range.clip(motorBL.getPower() - .05, -1, 1);
+        else return -joyStickVal;
+    }
+
+    public void stopMotor() {
+        if (motorBL.getPower() > 0) {
+            motorBL.setPower(Range.clip(motorBL.getPower() - .05, 0, 1));
+        }
+        else if (motorBL.getPower() < 0) {
+            motorBL.setPower(Range.clip(motorBL.getPower() + .05, -1, 0));
+        }
+
+        if (motorBR.getPower() > 0) {
+            motorBR.setPower(Range.clip(motorBR.getPower() - .05, 0, 1));
+        }
+        else if (motorBR.getPower() < 0) {
+            motorBR.setPower(Range.clip(motorBR.getPower() + .05, -1, 0));
+        }
+
+        if (motorFL.getPower() > 0)
+            motorFL.setPower(Range.clip(motorFL.getPower() - .05, 0, 1));
+        else if (motorFL.getPower() < 0)
+            motorFL.setPower(Range.clip(motorFL.getPower() + .05, -1, 0));
+
+        if (motorFR.getPower() > 0)
+            motorFR.setPower(Range.clip(motorFR.getPower() - .05, 0, 1));
+        else if (motorFR.getPower() < 0)
+            motorFR.setPower(Range.clip(motorFR.getPower() + .05, -1, 0));
     }
 }

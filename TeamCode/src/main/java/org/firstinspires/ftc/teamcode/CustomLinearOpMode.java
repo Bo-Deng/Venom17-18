@@ -73,6 +73,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         times = new ElapsedTime();
 
+
+
         telemetry.addLine("startJewelCamera initialization started");
         telemetry.update();
 
@@ -436,11 +438,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             while (getRightDistance() > stopRangeCM && opModeIsActive()) {
                 strafeRight(power, angle);
             }
+            stopMotors();
         }
         if (getRightDistance() < stopRangeCM) {
             while (getRightDistance() < stopRangeCM && opModeIsActive()) {
                 strafeLeft(power, angle);
             }
+            stopMotors();
         }
     }
 
@@ -452,11 +456,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             while (getLeftDistance() < stopRangeCM && opModeIsActive()) {
                 strafeRight(power, angle);
             }
+            stopMotors();
         }
         if (getLeftDistance() > stopRangeCM) {
             while (getLeftDistance() > stopRangeCM && opModeIsActive()) {
                 strafeLeft(power, angle);
             }
+            stopMotors();
         }
     }
 
