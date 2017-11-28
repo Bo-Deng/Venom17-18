@@ -539,7 +539,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     public void knockBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(.05);
+        servoUpDownArm.setPosition(.08);
 
         Thread.sleep(1000);
 
@@ -582,11 +582,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
     public void grabBlock() throws InterruptedException{
         // direction is either 1 or -1, -1 on red 1 on blue
-        servoLHug.setPosition(.4);
+        /*servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
         //moveSquares(-.009, .25);
         startMotors(-.25);
-        Thread.sleep(90);
+        Thread.sleep(80);
         stopMotors();
         Thread.sleep(200);
 
@@ -610,15 +610,15 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             motorYLift.setPower(.8);
         }
         motorYLift.setPower(0);
-        Thread.sleep(200);
+        Thread.sleep(200);*/
 
         servoLHug.setPosition(.18);
         servoRHug.setPosition(1);
         Thread.sleep(200);
 
         //lift block off ground?
-        while (motorYLift.getCurrentPosition() < 100 && opModeIsActive()) {
-            motorYLift.setPower(-.5);
+        while (motorYLift.getCurrentPosition() < -100 && opModeIsActive()) {
+            motorYLift.setPower(-.8);
         }
         motorYLift.setPower(0);
         Thread.sleep(200);
