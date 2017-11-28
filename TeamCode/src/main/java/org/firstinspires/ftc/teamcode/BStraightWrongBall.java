@@ -24,7 +24,7 @@ public class BStraightWrongBall extends CustomLinearOpMode {
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(-.75, .20);
+        moveSquares(-.5, .20);
         stopMotors();
         Thread.sleep(500);
 
@@ -37,7 +37,7 @@ public class BStraightWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 80, 180);
+            strafeBlueAssisted(.4, 50, 180);
 
         } else if (template == 'C') {
             // align with center column

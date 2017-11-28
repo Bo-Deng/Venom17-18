@@ -38,7 +38,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
             strafeBlueAssisted(.4, 25, 90);
 
         } else if (template == 'C') {
-            // align with center column bv v  g  g
+            // align with center column
             strafeBlueAssisted(.4, 40, 90);
 
         } else if (template == 'R') {

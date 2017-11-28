@@ -561,9 +561,9 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
     public void knockWrongBall(String color) throws InterruptedException {
         servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(0.05);
+        servoUpDownArm.setPosition(.08);
 
-        Thread.sleep(200);
+        Thread.sleep(1000);
 
         if (jewelIsRed && color.equals("RED")) {
             servoLeftRightArm.setPosition(.45);
