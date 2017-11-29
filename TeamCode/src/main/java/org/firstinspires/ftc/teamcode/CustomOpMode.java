@@ -144,10 +144,10 @@ public class CustomOpMode extends OpMode {
         /*if (Math.abs(joyStickVal - motorBL.getPower()) < 1) {
             return joyStickVal;
         }*/
-        if (-joyStickVal > motorBR.getPower()) {
+        if (-joyStickVal > motorBR.getPower() && signsAreDifferent(-joyStickVal, motorBR.getPower())) {
             return Range.clip(motorBR.getPower() + .05, -1, 1);
         }
-        else if (-joyStickVal < motorBR.getPower())
+        else if (-joyStickVal < motorBR.getPower() && signsAreDifferent(-joyStickVal, motorBR.getPower()))
             return Range.clip(motorBR.getPower() - .05, -1, 1);
         else return -joyStickVal;
     }
@@ -155,10 +155,10 @@ public class CustomOpMode extends OpMode {
         /*if (Math.abs(joyStickVal - motorBL.getPower()) < 1) {
             return joyStickVal;
         }*/
-        if (-joyStickVal > motorBL.getPower()) {
+        if (-joyStickVal > motorBL.getPower() && signsAreDifferent(-joyStickVal, motorBL.getPower())) {
             return Range.clip(motorBL.getPower() + .05, -1, 1);
         }
-        else if (-joyStickVal < motorBL.getPower())
+        else if (-joyStickVal < motorBL.getPower() && signsAreDifferent(-joyStickVal, motorBL.getPower()))
             return Range.clip(motorBL.getPower() - .05, -1, 1);
         else return -joyStickVal;
     }
@@ -187,5 +187,13 @@ public class CustomOpMode extends OpMode {
             motorFR.setPower(Range.clip(motorFR.getPower() - .05, 0, 1));
         else if (motorFR.getPower() < 0)
             motorFR.setPower(Range.clip(motorFR.getPower() + .05, -1, 0));
+    }
+
+    public boolean signsAreDifferent(double x, double y) {
+        if (x > 0)
+            return y < 0;
+        if (x < 0)
+            return y > 0;
+        return false;
     }
 }
