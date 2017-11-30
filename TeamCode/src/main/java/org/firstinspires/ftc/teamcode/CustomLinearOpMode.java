@@ -617,7 +617,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         Thread.sleep(200);
 
         //lift block off ground?
-        while (motorYLift.getCurrentPosition() < -100 && opModeIsActive()) {
+        while (motorYLift.getCurrentPosition() < -300 && opModeIsActive()) {
             motorYLift.setPower(-.8);
         }
         motorYLift.setPower(0);

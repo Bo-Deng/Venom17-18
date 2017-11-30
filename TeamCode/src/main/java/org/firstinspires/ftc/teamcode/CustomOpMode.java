@@ -50,7 +50,13 @@ public class CustomOpMode extends OpMode {
 
     double sf = 1.3;
 
-
+    double leftOpenPos = .649;
+    double leftThreadPos = .25;
+    double leftClampPos = .18;
+    //right hug variables
+    double rightOpenPos = .47;
+    double rightThreadPos = .8;
+    double rightClampPos = 1.0;
 
     public static final String TAG = "Vuforia VuMark Sample";
     OpenGLMatrix lastLocation = null;
@@ -164,29 +170,30 @@ public class CustomOpMode extends OpMode {
     }
 
     public void stopMotor() {
+        double c = .1;
         if (motorBL.getPower() > 0) {
-            motorBL.setPower(Range.clip(motorBL.getPower() - .05, 0, 1));
+            motorBL.setPower(Range.clip(motorBL.getPower() - c, 0, 1));
         }
         else if (motorBL.getPower() < 0) {
-            motorBL.setPower(Range.clip(motorBL.getPower() + .05, -1, 0));
+            motorBL.setPower(Range.clip(motorBL.getPower() + c, -1, 0));
         }
 
         if (motorBR.getPower() > 0) {
-            motorBR.setPower(Range.clip(motorBR.getPower() - .05, 0, 1));
+            motorBR.setPower(Range.clip(motorBR.getPower() - c, 0, 1));
         }
         else if (motorBR.getPower() < 0) {
-            motorBR.setPower(Range.clip(motorBR.getPower() + .05, -1, 0));
+            motorBR.setPower(Range.clip(motorBR.getPower() + c, -1, 0));
         }
 
         if (motorFL.getPower() > 0)
-            motorFL.setPower(Range.clip(motorFL.getPower() - .05, 0, 1));
+            motorFL.setPower(Range.clip(motorFL.getPower() - c, 0, 1));
         else if (motorFL.getPower() < 0)
-            motorFL.setPower(Range.clip(motorFL.getPower() + .05, -1, 0));
+            motorFL.setPower(Range.clip(motorFL.getPower() + c, -1, 0));
 
         if (motorFR.getPower() > 0)
-            motorFR.setPower(Range.clip(motorFR.getPower() - .05, 0, 1));
+            motorFR.setPower(Range.clip(motorFR.getPower() - c, 0, 1));
         else if (motorFR.getPower() < 0)
-            motorFR.setPower(Range.clip(motorFR.getPower() + .05, -1, 0));
+            motorFR.setPower(Range.clip(motorFR.getPower() + c, -1, 0));
     }
 
     public boolean signsAreDifferent(double x, double y) {

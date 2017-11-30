@@ -92,14 +92,14 @@ public class MainTeleOp extends CustomOpMode {
 
         }
         // strafe right
-        else if (rt != 0){
+        else if (Math.abs(rt) > .1){
             motorBL.setPower(-rt * motorScale);
             motorFL.setPower(rt * motorScale);
             motorBR.setPower(rt * motorScale);
             motorFR.setPower(-rt * motorScale);
         }
         // strafe left
-        else if (lt != 0){
+        else if (Math.abs(lt) > .1){
             motorBL.setPower(lt * motorScale);
             motorFL.setPower(-lt * motorScale);
             motorBR.setPower(-lt * motorScale);
