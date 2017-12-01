@@ -17,11 +17,11 @@ public class MainTeleOp extends CustomOpMode {
     double motorScale = 1;
     //left hug variables
     double leftOpenPos = .649;
-    double leftThreadPos = .25;
+    double leftThreadPos = .349;
     double leftClampPos = .18;
     //right hug variables
     double rightOpenPos = .47;
-    double rightThreadPos = .8;
+    double rightThreadPos = .77;
     double rightClampPos = 1.0;
 
     public void init() {
@@ -84,11 +84,11 @@ public class MainTeleOp extends CustomOpMode {
 
         if (Math.abs(yL) > .1 || Math.abs(yR) > .1) {
 
-            motorBL.setPower(leftABSMotorVal(-yL));
-            motorFL.setPower(leftABSMotorVal(-yL));
+            motorBL.setPower(leftABSMotorVal(-yL) * motorScale);
+            motorFL.setPower(leftABSMotorVal(-yL) * motorScale);
 
-            motorBR.setPower(rightABSMotorVal(-yR));
-            motorFR.setPower(rightABSMotorVal(-yR));
+            motorBR.setPower(rightABSMotorVal(-yR) * motorScale);
+            motorFR.setPower(rightABSMotorVal(-yR) * motorScale);
 
         }
         // strafe right
