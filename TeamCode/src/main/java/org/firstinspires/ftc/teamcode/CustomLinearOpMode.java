@@ -137,7 +137,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         int blueValue = 0;
         int numFailLoops = 0;
 
-        while (times.seconds() < 3 && opModeIsActive()) {
+        while (times.seconds() < 2 && opModeIsActive()) {
             if (imageReady()) { // only do this if an image has been returned from the camera
 
                 numPics++;
@@ -195,7 +195,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         telemetry.addData("VuMark ", vuMark);
         times.reset();
 
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && times.seconds() < 2 && opModeIsActive()) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && times.seconds() < 1 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
 
@@ -369,6 +369,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
         stopMotors();
     }
+
+    public void moveTime(int ms, double power) throws InterruptedException {
+        startMotors(power);
+        sleep(ms);
+        stopMotors();
+    }
+
     public void setMotors(double FLpow, double BLpow, double FRpow, double BRpow) {
         motorFL.setPower(Range.clip(FLpow, -1, 1) );
         motorBL.setPower(Range.clip(BLpow, -1, 1) );
@@ -458,7 +465,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
             stopMotors();
         }
-        if (getLeftDistance() > stopRangeCM) {
+        else if (getLeftDistance() > stopRangeCM) {
             while (getLeftDistance() > stopRangeCM && opModeIsActive()) {
                 strafeLeft(power, angle);
             }
@@ -507,7 +514,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void Pturn(double angle) throws InterruptedException {
-        double kP = .5/90;
+        double kP = .6/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         times.reset();
@@ -538,8 +545,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void knockBall(String color) throws InterruptedException {
-        servoLeftRightArm.setPosition(.3);
-        servoUpDownArm.setPosition(.08);
+        servoUpDownArm.setPosition(.11);
+        servoLeftRightArm.setPosition(.27);
 
         Thread.sleep(1000);
 
@@ -616,11 +623,21 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         servoRHug.setPosition(1);
         Thread.sleep(200);
 
+        motorYLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         //lift block off ground?
-        while (motorYLift.getCurrentPosition() < -300 && opModeIsActive()) {
-            motorYLift.setPower(-.8);
+        while (motorYLift.getCurrentPosition() > -300 && opModeIsActive()) {
+            motorYLift.setPower(-1);
         }
         motorYLift.setPower(0);
         Thread.sleep(200);
+    }
+
+    public void liftDown() {
+        while (motorYLift.getCurrentPosition() < 0 && opModeIsActive()) {
+            motorYLift.setPower(1);
+        }
+        motorYLift.setPower(0);
     }
 }

@@ -50,12 +50,13 @@ public class CustomOpMode extends OpMode {
 
     double sf = 1.3;
 
+    //left hug variables
     double leftOpenPos = .649;
-    double leftThreadPos = .25;
+    double leftThreadPos = .349;
     double leftClampPos = .18;
     //right hug variables
-    double rightOpenPos = .47;
-    double rightThreadPos = .8;
+    double rightOpenPos = .43;
+    double rightThreadPos = .77;
     double rightClampPos = 1.0;
 
     public static final String TAG = "Vuforia VuMark Sample";

@@ -15,14 +15,6 @@ import com.qualcomm.robotcore.util.Range;
 public class MainTeleOp extends CustomOpMode {
 
     double motorScale = 1;
-    //left hug variables
-    double leftOpenPos = .649;
-    double leftThreadPos = .349;
-    double leftClampPos = .18;
-    //right hug variables
-    double rightOpenPos = .47;
-    double rightThreadPos = .77;
-    double rightClampPos = 1.0;
 
     public void init() {
 
