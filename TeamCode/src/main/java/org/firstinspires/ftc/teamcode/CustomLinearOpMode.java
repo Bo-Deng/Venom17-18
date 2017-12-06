@@ -84,7 +84,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
         startCamera();  // can take a while.
         // best started before waitForStart
-        sleep(2000);
+        sleep(1000);
         telemetry.addLine("Camera ready!");
 
 
@@ -195,7 +195,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         telemetry.addData("VuMark ", vuMark);
         times.reset();
 
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && times.seconds() < 1 && opModeIsActive()) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && times.seconds() < 2 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relicTemplate);
         }
 
@@ -447,7 +447,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             }
             stopMotors();
         }
-        if (getRightDistance() < stopRangeCM) {
+        else if (getRightDistance() < stopRangeCM) {
             while (getRightDistance() < stopRangeCM && opModeIsActive()) {
                 strafeLeft(power, angle);
             }
@@ -514,7 +514,7 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void Pturn(double angle) throws InterruptedException {
-        double kP = .6/90;
+        double kP = .7/90;
         double PIDchange;
         double angleDiff = imu.getTrueDiff(angle);
         times.reset();
@@ -623,11 +623,16 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         servoRHug.setPosition(1);
         Thread.sleep(200);
 
-        motorYLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        times.reset();
+        while (times.milliseconds() < 120 && opModeIsActive()) {
+            motorXLift.setPower(-.75);
+        }
+        motorXLift.setPower(0);
+        sleep(100);
 
         //lift block off ground?
-        while (motorYLift.getCurrentPosition() > -300 && opModeIsActive()) {
+        times.reset();
+        while (times.milliseconds() < 500 && opModeIsActive()) {
             motorYLift.setPower(-1);
         }
         motorYLift.setPower(0);
@@ -639,5 +644,16 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
             motorYLift.setPower(1);
         }
         motorYLift.setPower(0);
+    }
+
+    public void pivot(double desiredAngle) {
+        double currAngle = imu.getYaw();
+        if (currAngle + 5 < desiredAngle) {
+            setMotors(0, 0, .5, .5);
+            sleep(300);
+        }
+        else if (currAngle - 5 > desiredAngle) {
+
+        }
     }
 }

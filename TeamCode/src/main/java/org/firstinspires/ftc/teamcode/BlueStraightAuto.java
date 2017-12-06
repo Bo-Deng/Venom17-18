@@ -28,6 +28,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
         stopMotors();
         Thread.sleep(500);
 
+
         Pturn(-90);
         Pturn(180);
         stopMotors();
@@ -48,6 +49,7 @@ public class BlueStraightAuto extends CustomLinearOpMode {
             strafeBlueAssisted(.5, 77, 180);
         } stopMotors();
 
+        liftDown();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);

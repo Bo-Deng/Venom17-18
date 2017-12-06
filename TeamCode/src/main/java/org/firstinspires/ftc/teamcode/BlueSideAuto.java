@@ -27,7 +27,6 @@ public class BlueSideAuto extends CustomLinearOpMode {
         moveSquares(-.75, .20);
         stopMotors();
 
-        liftDown();
         Thread.sleep(500);
 
         Pturn(90);
@@ -37,22 +36,23 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 25, 90);
+            strafeBlueAssisted(.5, 25, 90);
             DebugLog.LOGE("VuMark: ", "L");
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.4, 40, 90);
+            strafeBlueAssisted(.5, 40, 90);
             DebugLog.LOGE("VuMark: ", "C");
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.4, 55, 90);
+            strafeBlueAssisted(.5, 55, 90);
             DebugLog.LOGE("VuMark: ", "R");
         } stopMotors();
 
         DebugLog.LOGE("End Distance: ", "" + getLeftDistance());
 
+        liftDown();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
