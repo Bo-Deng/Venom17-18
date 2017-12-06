@@ -26,6 +26,7 @@ public class BSideWrongBall extends CustomLinearOpMode {
 
         moveSquares(-.75, .20);
         stopMotors();
+
         Thread.sleep(500);
 
         Pturn(90);
@@ -35,22 +36,22 @@ public class BSideWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 25, 90);
+            strafeBlueAssisted(.5, 25, 90);
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.4, 40, 90);
+            strafeBlueAssisted(.5, 40, 90);
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.4, 55, 90);
+            strafeBlueAssisted(.5, 55, 90);
         } stopMotors();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.15, .20);
+        moveTime(500, .4);
         stopMotors();
     }
 }

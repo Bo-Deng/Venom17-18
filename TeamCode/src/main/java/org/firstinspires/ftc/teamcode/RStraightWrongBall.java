@@ -43,12 +43,14 @@ public class RStraightWrongBall extends CustomLinearOpMode {
             //strafe right
             strafeRedAssisted(.4, 42, 0);
         } stopMotors();
+
+        liftDown();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.15, .20);
+        moveTime(500, .4);
         stopMotors();
     }
 }

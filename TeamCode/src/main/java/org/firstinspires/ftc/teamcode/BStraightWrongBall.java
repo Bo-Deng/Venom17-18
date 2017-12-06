@@ -28,6 +28,7 @@ public class BStraightWrongBall extends CustomLinearOpMode {
         stopMotors();
         Thread.sleep(500);
 
+
         Pturn(-90);
         Pturn(180);
         stopMotors();
@@ -37,23 +38,24 @@ public class BStraightWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.4, 50, 180);
+            strafeBlueAssisted(.5, 50, 180);
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.4, 65, 180);
+            strafeBlueAssisted(.5, 64, 180);
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.4, 50, 180);
+            strafeBlueAssisted(.5, 77, 180);
         } stopMotors();
 
+        liftDown();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveSquares(.15, .20);
+        moveTime(500, .4);
         stopMotors();
     }
 }
