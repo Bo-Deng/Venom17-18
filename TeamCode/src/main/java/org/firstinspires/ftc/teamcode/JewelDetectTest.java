@@ -28,7 +28,6 @@ import java.io.IOException;
 
 //Created by Bo on 9/30/2017.
 
-
 @Autonomous (name = "JewelDetect", group = "test")
 public class JewelDetectTest extends OpModeCamera {
 
@@ -78,47 +77,34 @@ public class JewelDetectTest extends OpModeCamera {
     public void loop() {
         if (imageReady()) { //when image received from camera
 
-            Bitmap img; //creates a bitmap of the image
-
-            img = convertYuvImageToRgb(yuvImage, width, height, 1); //convert image to bitmap
-
-            imgMat = new Mat(new Size(img.getWidth(), img.getHeight()), CvType.CV_8UC1); //put image into a matrix
-
-            Utils.bitmapToMat(img, imgMat); //bitmap to mat conversion
-
-            Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY, 0); //convert mat to grayscale
-
-            CMat = new Mat(imgMat.size(), CvType.CV_8UC1); //creates new mat to store circle data
-
-            //Imgproc.GaussianBlur(imgMat, imgMat, new Size(3, 3), 0); //blur if necessary
-
-            //find circles in image (optimal params for PHONE AT HOME: 50, 25, 75, 125)
-            //at school, circles detected from ~1ft away (70, 35, 100, 175):: May not work on robot (adjust we able to test on robot)
-            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 75, 125);
+            scanCircles();
 
             telemetry.addData("Num of Circles", CMat.cols()); //return number of circles (# of columns = # of circles)
 
-            if (CMat.cols() == 1) {
-                telemetry.addData("x value: " + getCircleData(CMat, 0)[0] + " y value: " + getCircleData(CMat, 0)[1], "radius: " + getCircleData(CMat, 0)[2]); //prints x, y coordinates and radius of the circles detected
-                telemetry.addData("Jewel color RED?", JewelColorRED(CMat, 0));
-            }
-            else if (CMat.cols() == 2) {
+            if (CMat.cols() == 2) {
                 if (JewelColorRED(CMat, 0)) {
-                    if ((getCircleData(CMat, 0)[1]) > (getCircleData(CMat, 1)[1])) {
-                        telemetry.addData("The RED jewel is to the", "LEFT");
+                    if ((getCircleData(CMat, 0)[0]) > (getCircleData(CMat, 1)[0])) {
+                        telemetry.addData("The RED jewel is to the", "RIGHT");
                     }
                     else {
-                        telemetry.addData("The RED jewel is to the", "RIGHT");
+                        telemetry.addData("The RED jewel is to the", "LEFT");
+                    }
+                }
+                else {
+                    if ((getCircleData(CMat, 0)[0]) > (getCircleData(CMat, 1)[0])) {
+                        telemetry.addData("The BLUE jewel is to the", "RIGHT");
+                    }
+                    else {
+                        telemetry.addData("The BLUE jewel is to the", "LEFT");
                     }
                 }
             }
             telemetry.update();
 
-            /*
-            if (loopCount < 10) { //saves first 10 images to phone gallery
+            if (loopCount < 10 && CMat.cols() == 2) { //saves first 10 successful images to phone gallery
                 writeToFile(imgMat, CMat);  // use this method to print circles in CMat onto the image in imgMat before saving to device
                 loopCount++;
-            } *\
+            }
 
         } else {
             telemetry.addData("Image not loaded", "Loop count: " + loopCount);
@@ -224,6 +210,22 @@ public class JewelDetectTest extends OpModeCamera {
         } catch (NullPointerException e){
             telemetry.addData("No Data Found", e);
             return null;
+        }
+    }
+
+    public void scanCircles() { //simplified loop
+        if (imageReady()) {
+            Bitmap img = convertYuvImageToRgb(yuvImage, width, height, 1);
+            imgMat = new Mat(new Size(img.getWidth(), img.getHeight()), CvType.CV_8UC1);
+            Utils.bitmapToMat(img, imgMat);
+            Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY, 0);
+            CMat = new Mat(imgMat.size(), CvType.CV_8UC1);
+            Imgproc.HoughCircles(imgMat, CMat, Imgproc.CV_HOUGH_GRADIENT, dp, minDst, 70, 35, 75, 125);
+            telemetry.addData("Image Scan","Successful");
+            telemetry.update();
+        } else {
+            telemetry.addData("Image Scan","Failure");
+            telemetry.update();
         }
     }
 } */
