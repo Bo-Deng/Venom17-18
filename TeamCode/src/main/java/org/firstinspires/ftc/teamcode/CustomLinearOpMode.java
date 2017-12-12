@@ -63,6 +63,14 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
 
     ElapsedTime times;
 
+    //left hug variables
+    double leftOpenPos = .649;
+    double leftThreadPos = .32;
+    double leftClampPos = .18;
+    //right hug variables
+    double rightOpenPos = .43;
+    double rightThreadPos = .8;
+    double rightClampPos = 1.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -114,13 +122,10 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
         imu.IMUinit(hardwareMap);
 
-        servoLHug.setPosition(.649);
-        servoRHug.setPosition(.424);
+        servoLHug.setPosition(leftOpenPos);
+        servoRHug.setPosition(rightOpenPos);
         servoUpDownArm.setPosition(.94);
         servoLeftRightArm.setPosition(.45);
-
-
-
 
 
         telemetry.addData("PID value = ", ".0275");
@@ -680,8 +685,8 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         motorYLift.setPower(0);
         Thread.sleep(200);*/
 
-        servoLHug.setPosition(.18);
-        servoRHug.setPosition(1);
+        servoLHug.setPosition(leftClampPos);
+        servoRHug.setPosition(rightClampPos);
         Thread.sleep(200);
 
         times.reset();

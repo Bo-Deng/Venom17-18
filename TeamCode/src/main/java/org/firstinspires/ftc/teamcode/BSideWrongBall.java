@@ -46,6 +46,8 @@ public class BSideWrongBall extends CustomLinearOpMode {
             //strafe right
             strafeBlueAssisted(.5, 59, 90);
         } stopMotors();
+
+        liftDown();
         Thread.sleep(500);
 
         servoLHug.setPosition(.4);
