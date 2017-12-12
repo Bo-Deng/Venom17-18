@@ -24,7 +24,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(-.75, .20);
+        moveSquares(-.85, .20);
         stopMotors();
 
         Thread.sleep(500);
@@ -46,7 +46,7 @@ public class BlueSideAuto extends CustomLinearOpMode {
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.5, 55, 90);
+            strafeBlueAssisted(.5, 59, 90);
             DebugLog.LOGE("VuMark: ", "R");
         } stopMotors();
 
@@ -58,7 +58,9 @@ public class BlueSideAuto extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveTime(500, .4);
+        wiggleNoRight(.4, 90);
         stopMotors();
+        sleep(250);
+        backUp();
     }
 }

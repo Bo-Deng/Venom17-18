@@ -52,11 +52,11 @@ public class CustomOpMode extends OpMode {
 
     //left hug variables
     double leftOpenPos = .649;
-    double leftThreadPos = .349;
+    double leftThreadPos = .32;
     double leftClampPos = .18;
     //right hug variables
     double rightOpenPos = .43;
-    double rightThreadPos = .77;
+    double rightThreadPos = .8;
     double rightClampPos = 1.0;
 
     public static final String TAG = "Vuforia VuMark Sample";

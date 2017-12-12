@@ -370,17 +370,58 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         stopMotors();
     }
 
-    public void moveTime(int ms, double power) throws InterruptedException {
-        startMotors(power);
-        sleep(ms);
+    public void wiggle(double power, double angle) throws InterruptedException {
+        setMotors(power, power, power, power);
+        sleep(400);
+        stopMotors();
+
+
+        strafeLeft(.4, angle);
+        //setMotors(motorFL.getPower() + .3, motorBL.getPower() + .3, motorFR.getPower() + .3, motorBR.getPower() + .3);
+        sleep(500);
+        stopMotors();
+
+        setMotors(power, power, power, power);
+        sleep(400);
+        stopMotors();
+
+
+        strafeRight(.4, angle);
+        //setMotors(motorFL.getPower() + .3, motorBL.getPower() + .3, motorFR.getPower() + .3, motorBR.getPower() + .3);
+        sleep(1000);
+        stopMotors();
+
+        setMotors(power, power, power, power);
+        sleep(400);
+        stopMotors();
+
+        strafeLeft(.4, angle);
+        sleep(500);
         stopMotors();
     }
 
+    public void wiggleNoRight(double power, double angle) throws InterruptedException {
+        setMotors(power, power, power, power);
+        sleep(400);
+        stopMotors();
+
+
+        strafeLeft(.4, angle);
+        //setMotors(motorFL.getPower() + .3, motorBL.getPower() + .3, motorFR.getPower() + .3, motorBR.getPower() + .3);
+        sleep(500);
+        stopMotors();
+
+        setMotors(power, power, power, power);
+        sleep(400);
+        stopMotors();
+
+    }
+
     public void setMotors(double FLpow, double BLpow, double FRpow, double BRpow) {
-        motorFL.setPower(Range.clip(FLpow, -1, 1) );
-        motorBL.setPower(Range.clip(BLpow, -1, 1) );
-        motorFR.setPower(Range.clip(FRpow, -1, 1) );
-        motorBR.setPower(Range.clip(BRpow, -1, 1) );
+        motorFL.setPower(Range.clip(FLpow, -1, 1));
+        motorBL.setPower(Range.clip(BLpow, -1, 1));
+        motorFR.setPower(Range.clip(FRpow, -1, 1));
+        motorBR.setPower(Range.clip(BRpow, -1, 1));
     }
 
     @Deprecated
@@ -455,8 +496,30 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         }
     }
 
+    public void strafeRedAssistedPID(double targetRange, double angle) {
+        double kP = .1;
+        double PIDchange;
+
+        while(Math.abs(getRightDistance() - targetRange) > .5 && opModeIsActive()) {
+            PIDchange = Range.clip(kP * (getRightDistance() - targetRange), -.6, .6);
+            strafeRight(PIDchange, angle);
+        }
+        stopMotors();
+    }
+
+    public void strafeBlueAssistedPID(double targetRange, double angle) {
+        double kP = .1;
+        double PIDchange;
+
+        while(Math.abs(getLeftDistance() - targetRange) > .5 && opModeIsActive()) {
+            PIDchange = Range.clip(kP * (getLeftDistance() - targetRange), -.6, .6);
+            strafeLeft(PIDchange, angle);
+        }
+        stopMotors();
+    }
+
     public void strafeBlueAssisted(double power, double stopRangeCM, double angle) { //pass true to strafe left, false to strafe right
-        power = Math.abs(power) ;
+        power = Math.abs(power);
         double desiredAngle = angle;
 
         if(getLeftDistance() < stopRangeCM) {
@@ -474,7 +537,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void strafeRight(double power, double angle) {
-        power = Math.abs(power);
         double desiredAngle = angle;
 
         double diffFromDesired = imu.getTrueDiff(desiredAngle);
@@ -487,7 +549,6 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
     }
 
     public void strafeLeft(double power, double angle) {
-        power = Math.abs(power);
         double desiredAngle = angle;
 
         double diffFromDesired = imu.getTrueDiff(desiredAngle);
@@ -655,5 +716,11 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         else if (currAngle - 5 > desiredAngle) {
 
         }
+    }
+
+    public void backUp() {
+        setMotors(-.4, -.4, -.4, -.4);
+        sleep(100);
+        stopMotors();
     }
 }
