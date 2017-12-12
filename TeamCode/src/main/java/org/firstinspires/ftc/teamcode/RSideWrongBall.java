@@ -54,7 +54,9 @@ public class RSideWrongBall extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveTime(500, .4);
+        wiggle(.4, 90);
         stopMotors();
+        sleep(250);
+        backUp();
     }
 }

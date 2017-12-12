@@ -33,15 +33,15 @@ public class RStraightWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeRedAssisted(.4, 78, 0);
+            strafeRedAssisted(.5, 78, 0);
 
         } else if (template == 'C') {
             // align with center column
-            strafeRedAssisted(.4, 61, 0);
+            strafeRedAssisted(.5, 61, 0);
 
         } else if (template == 'R') {
             //strafe right
-            strafeRedAssisted(.4, 42, 0);
+            strafeRedAssisted(.5, 42, 0);
         } stopMotors();
 
         liftDown();
@@ -50,7 +50,9 @@ public class RStraightWrongBall extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveTime(500, .4);
+        wiggle(.4, 0);
         stopMotors();
+        sleep(250);
+        backUp();
     }
 }

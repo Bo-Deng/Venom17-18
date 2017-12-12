@@ -24,13 +24,14 @@ public class BStraightWrongBall extends CustomLinearOpMode {
         grabBlock();
         Thread.sleep(200);
 
-        moveSquares(-.5, .20);
+        moveSquares(-.4, .20);
         stopMotors();
         Thread.sleep(500);
 
 
         Pturn(-90);
         Pturn(180);
+        moveSquares(-.2, .20);
         stopMotors();
         Thread.sleep(500);
 
@@ -46,7 +47,7 @@ public class BStraightWrongBall extends CustomLinearOpMode {
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.5, 77, 180);
+            strafeBlueAssistedPID(77, 180);
         } stopMotors();
 
         liftDown();
@@ -55,7 +56,9 @@ public class BStraightWrongBall extends CustomLinearOpMode {
         servoLHug.setPosition(.4);
         servoRHug.setPosition(.6);
 
-        moveTime(500, .4);
+        wiggle(.4, 180);
         stopMotors();
+        sleep(250);
+        backUp();
     }
 }
