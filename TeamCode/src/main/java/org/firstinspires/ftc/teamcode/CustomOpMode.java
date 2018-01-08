@@ -46,6 +46,12 @@ public class CustomOpMode extends OpMode {
     DcMotor motorXLift;
     DcMotor motorYLift;
 
+    DcMotor motorRelicTop;
+    DcMotor motorRelicBottom;
+
+    Servo servoRelicRot;
+    Servo servoRelicGrab;
+
     String AutoColor;
 
     double sf = 1.3;
@@ -90,10 +96,14 @@ public class CustomOpMode extends OpMode {
         servoLHug.setPosition(leftOpenPos);
         servoRHug.setPosition(rightOpenPos);
 
-        servoUpDownArm.setPosition(.78);
+        servoUpDownArm.setPosition(.73);
         servoLeftRightArm.setPosition(.28);
 
+        servoRelicGrab.setPosition(0);
+        servoRelicRot.setPosition(0);
 
+        motorRelicBottom = map.dcMotor.get("motorRelicBottom");
+        motorRelicTop = map.dcMotor.get("motorRelicTop");
 
 
 
@@ -109,6 +119,8 @@ public class CustomOpMode extends OpMode {
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorXLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorYLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRelicBottom.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRelicTop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -116,6 +128,8 @@ public class CustomOpMode extends OpMode {
         motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorXLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRelicBottom.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRelicTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));

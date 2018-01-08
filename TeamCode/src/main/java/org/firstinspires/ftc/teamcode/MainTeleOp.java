@@ -116,7 +116,7 @@ public class MainTeleOp extends CustomOpMode {
         else
             stopMotor();
 
-        if (gamepad2.dpad_left) {
+        /*if (gamepad2.dpad_left) {
             //servoLHug.setPosition(Range.clip(servoLHug.getPosition() - .025, 0, 1)); //0
             servoLeftRightArm.setPosition(Range.clip(servoLeftRightArm.getPosition() - .025, 0, 1));
         }
@@ -131,6 +131,33 @@ public class MainTeleOp extends CustomOpMode {
         }
         else if (gamepad2.dpad_down) {
             servoUpDownArm.setPosition(Range.clip(servoUpDownArm.getPosition() - .025, 0, 1));
+        }*/
+
+        if (gamepad2.dpad_up) {
+            motorRelicBottom.setPower(-1);
+            motorRelicTop.setPower(1);
+        }
+        else if (gamepad2.dpad_down) {
+            motorRelicBottom.setPower(1);
+            motorRelicTop.setPower(-1);
+        }
+        else {
+            motorRelicBottom.setPower(0);
+            motorRelicTop.setPower(0);
+        }
+
+        if (gamepad1.dpad_down) {
+            servoRelicRot.setPosition(Range.clip(servoRelicRot.getPosition() - .025, 0, 1));
+        }
+        else if (gamepad1.dpad_up) {
+            servoRelicRot.setPosition(Range.clip(servoRelicRot.getPosition() + .025, 0, 1));
+        }
+
+        if (gamepad1.left_bumper) {
+            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() - .025, 0, 1));
+        }
+        else if (gamepad1.right_bumper) {
+            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() + .025, 0, 1));
         }
 
         if (gamepad2.x) { //left thread, right fully open
@@ -177,22 +204,7 @@ public class MainTeleOp extends CustomOpMode {
         }
 
 
-        if (gamepad1.x) {
-            double kP_FB = .5/90;
-            double kP_LR = .5/90;
-            double diffPitch = imu.getPitch() - 3.3;
-            double diffRoll = imu.getRoll() - 0.4;
 
-            double PIDchangeFB = -kP_FB * diffRoll;
-            double PIDchangeLR = -kP_LR * diffPitch;
-
-            double max = Math.max(Math.abs(PIDchangeFB + PIDchangeLR), Math.abs(PIDchangeFB - PIDchangeLR));
-            max = max > 1 ? max : 1;
-            motorFL.setPower((PIDchangeFB + PIDchangeLR) / max);
-            motorFR.setPower((PIDchangeFB - PIDchangeLR) / max);
-            motorBL.setPower((PIDchangeFB - PIDchangeLR) / max);
-            motorBR.setPower((PIDchangeFB + PIDchangeLR) / max);
-        }
 
 
 
