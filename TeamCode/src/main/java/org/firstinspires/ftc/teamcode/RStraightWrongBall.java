@@ -29,6 +29,7 @@ public class RStraightWrongBall extends CustomLinearOpMode {
         stopMotors();
         Thread.sleep(500);
 
+
         DebugLog.LOGE("startDistance ", "" + getRightDistance());
 
         if (template == 'L') {

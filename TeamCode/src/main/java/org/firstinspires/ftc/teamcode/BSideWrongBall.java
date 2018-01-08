@@ -36,16 +36,21 @@ public class BSideWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.5, 25, 90);
+            strafeBlueAssistedPID(25, 90);
+            DebugLog.LOGE("VuMark: ", "L");
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.5, 40, 90);
+            strafeBlueAssistedPID(40, 90);
+            DebugLog.LOGE("VuMark: ", "C");
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssisted(.5, 59, 90);
+            strafeBlueAssistedPID(57.5, 90);
+            DebugLog.LOGE("VuMark: ", "R");
         } stopMotors();
+
+        DebugLog.LOGE("End Distance: ", "" + getLeftDistance());
 
         liftDown();
         Thread.sleep(500);

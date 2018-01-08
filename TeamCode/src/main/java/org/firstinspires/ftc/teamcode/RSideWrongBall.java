@@ -38,14 +38,17 @@ public class RSideWrongBall extends CustomLinearOpMode {
         if (template == 'L') {
             //strafe left
             strafeRedAssisted(.5, 50, 90);
+            DebugLog.LOGE("Template: ", "L");
 
         } else if (template == 'C') {
             // align with center column
             strafeRedAssisted(.5, 35, 90);
+            DebugLog.LOGE("Template: ", "C");
 
         } else if (template == 'R') {
             //strafe right
-            strafeRedAssisted(.5, 20, 90);
+            strafeRedAssistedPID(20.7, 90);
+            DebugLog.LOGE("Template: ", "R");
         } stopMotors();
 
         liftDown();

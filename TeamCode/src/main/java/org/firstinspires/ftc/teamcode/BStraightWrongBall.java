@@ -31,23 +31,25 @@ public class BStraightWrongBall extends CustomLinearOpMode {
 
         Pturn(-90);
         Pturn(180);
-        moveSquares(-.2, .20);
+        moveTime(200, -.30);
         stopMotors();
         Thread.sleep(500);
 
         DebugLog.LOGE("startDistance ", "" + getLeftDistance());
 
+
         if (template == 'L') {
             //strafe left
-            strafeBlueAssisted(.5, 50, 180);
+            strafeBlueAssistedPID(45.5, 180);
 
         } else if (template == 'C') {
             // align with center column
-            strafeBlueAssisted(.5, 64, 180);
+            strafeBlueAssistedPID(63.7, 180);
 
         } else if (template == 'R') {
             //strafe right
-            strafeBlueAssistedPID(77, 180);
+            //strafeBlueAssisted(.5, 77, 180);
+            strafeBlueAssistedPID(79.7, 180);
         } stopMotors();
 
         liftDown();
