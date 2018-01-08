@@ -99,6 +99,9 @@ public class CustomOpMode extends OpMode {
         servoUpDownArm.setPosition(.73);
         servoLeftRightArm.setPosition(.28);
 
+        servoRelicGrab = map.servo.get("servoRelicGrab");
+        servoRelicRot = map.servo.get("servoRelicRot");
+
         servoRelicGrab.setPosition(0);
         servoRelicRot.setPosition(0);
 
