@@ -134,12 +134,30 @@ public class MainTeleOp extends CustomOpMode {
         }*/
 
         if (gamepad2.dpad_up) {
-            motorRelicBottom.setPower(-1);
-            motorRelicTop.setPower(1);
+            int encoderDiff = Math.abs(motorRelicTop.getCurrentPosition()) - Math.abs(motorRelicBottom.getCurrentPosition());
+            double kP = .001;
+            double PIDchange = Range.clip(kP * encoderDiff, -1, 1);
+            if (PIDchange > 0) {
+                motorRelicTop.setPower(1 - PIDchange);
+                motorRelicBottom.setPower(-1);
+            }
+            else if (PIDchange < 0) {
+                motorRelicTop.setPower(1);
+                motorRelicBottom.setPower(-1 - PIDchange);
+            }
         }
         else if (gamepad2.dpad_down) {
-            motorRelicBottom.setPower(1);
-            motorRelicTop.setPower(-1);
+            int encoderDiff = Math.abs(motorRelicTop.getCurrentPosition()) - Math.abs(motorRelicBottom.getCurrentPosition());
+            double kP = .001;
+            double PIDchange = Range.clip(kP * encoderDiff, -1, 1);
+            if (PIDchange > 0) {
+                motorRelicTop.setPower(-1 + PIDchange);
+                motorRelicBottom.setPower(1);
+            }
+            else if (PIDchange < 0) {
+                motorRelicTop.setPower(-1);
+                motorRelicBottom.setPower(1 + PIDchange);
+            }
         }
         else {
             motorRelicBottom.setPower(0);
