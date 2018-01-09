@@ -137,12 +137,12 @@ public class MainTeleOp extends CustomOpMode {
             int encoderDiff = Math.abs(motorRelicTop.getCurrentPosition()) - Math.abs(motorRelicBottom.getCurrentPosition());
             double kP = .001;
             double PIDchange = Range.clip(kP * encoderDiff, -1, 1);
-            if (PIDchange > 0) {
-                motorRelicTop.setPower(1 - PIDchange);
+            if (PIDchange >= 0) {
+                motorRelicTop.setPower(-1 + PIDchange);
                 motorRelicBottom.setPower(-1);
             }
             else if (PIDchange < 0) {
-                motorRelicTop.setPower(1);
+                motorRelicTop.setPower(-1);
                 motorRelicBottom.setPower(-1 - PIDchange);
             }
         }
@@ -150,12 +150,12 @@ public class MainTeleOp extends CustomOpMode {
             int encoderDiff = Math.abs(motorRelicTop.getCurrentPosition()) - Math.abs(motorRelicBottom.getCurrentPosition());
             double kP = .001;
             double PIDchange = Range.clip(kP * encoderDiff, -1, 1);
-            if (PIDchange > 0) {
-                motorRelicTop.setPower(-1 + PIDchange);
+            if (PIDchange >= 0) {
+                motorRelicTop.setPower(1 - PIDchange);
                 motorRelicBottom.setPower(1);
             }
             else if (PIDchange < 0) {
-                motorRelicTop.setPower(-1);
+                motorRelicTop.setPower(1);
                 motorRelicBottom.setPower(1 + PIDchange);
             }
         }
@@ -172,10 +172,10 @@ public class MainTeleOp extends CustomOpMode {
         }
 
         if (gamepad1.left_bumper) {
-            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() - .025, 0, 1));
+            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() + .025, 0, 1));
         }
         else if (gamepad1.right_bumper) {
-            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() + .025, 0, 1));
+            servoRelicGrab.setPosition(Range.clip(servoRelicGrab.getPosition() - .025, 0, 1));
         }
 
         if (gamepad2.x) { //left thread, right fully open
@@ -239,6 +239,8 @@ public class MainTeleOp extends CustomOpMode {
         telemetry.addData("servoRHug Position: ", servoRHug.getPosition());
         telemetry.addData("servoLeftRight Position: ", servoLeftRightArm.getPosition());
         telemetry.addData("servoUpDown Position: ", servoUpDownArm.getPosition());
+        telemetry.addData("motorRelicTop", motorRelicTop.getCurrentPosition());
+        telemetry.addData("motorRelicBottom", motorRelicBottom.getCurrentPosition());
     }
 
 
