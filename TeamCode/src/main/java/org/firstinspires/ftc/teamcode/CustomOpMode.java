@@ -131,8 +131,11 @@ public class CustomOpMode extends OpMode {
         motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorXLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorYLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorRelicBottom.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorRelicTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //motorRelicBottom.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //motorRelicTop.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorRelicBottom.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRelicTop.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         imu = new IMU(hardwareMap.get(BNO055IMU.class, "imu"));
@@ -169,10 +172,10 @@ public class CustomOpMode extends OpMode {
             return joyStickVal;
         }*/
         if (-joyStickVal > motorBR.getPower() && signsAreDifferent(-joyStickVal, motorBR.getPower())) {
-            return Range.clip(motorBR.getPower() + .05, -1, 1);
+            return Range.clip(motorBR.getPower() + .1, -1, 1);
         }
         else if (-joyStickVal < motorBR.getPower() && signsAreDifferent(-joyStickVal, motorBR.getPower()))
-            return Range.clip(motorBR.getPower() - .05, -1, 1);
+            return Range.clip(motorBR.getPower() - .1, -1, 1);
         else return -joyStickVal;
     }
     public double leftABSMotorVal(double joyStickVal) {
@@ -180,10 +183,10 @@ public class CustomOpMode extends OpMode {
             return joyStickVal;
         }*/
         if (-joyStickVal > motorBL.getPower() && signsAreDifferent(-joyStickVal, motorBL.getPower())) {
-            return Range.clip(motorBL.getPower() + .05, -1, 1);
+            return Range.clip(motorBL.getPower() + .1, -1, 1);
         }
         else if (-joyStickVal < motorBL.getPower() && signsAreDifferent(-joyStickVal, motorBL.getPower()))
-            return Range.clip(motorBL.getPower() - .05, -1, 1);
+            return Range.clip(motorBL.getPower() - .1, -1, 1);
         else return -joyStickVal;
     }
 

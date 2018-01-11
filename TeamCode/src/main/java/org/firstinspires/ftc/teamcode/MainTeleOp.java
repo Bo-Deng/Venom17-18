@@ -241,6 +241,8 @@ public class MainTeleOp extends CustomOpMode {
         telemetry.addData("servoUpDown Position: ", servoUpDownArm.getPosition());
         telemetry.addData("motorRelicTop", motorRelicTop.getCurrentPosition());
         telemetry.addData("motorRelicBottom", motorRelicBottom.getCurrentPosition());
+        telemetry.addData("servoRelicRot", servoRelicRot.getPosition());
+        telemetry.addData("servoRelicGrab", servoRelicGrab.getPosition());
     }
 
 

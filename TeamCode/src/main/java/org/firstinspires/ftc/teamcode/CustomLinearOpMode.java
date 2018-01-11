@@ -511,12 +511,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double kP = .05;
         double PIDchange;
 
-        while(Math.abs(getRightDistance() - targetRange) > .5 && opModeIsActive()) {
+        times.reset();
+        while(Math.abs(getRightDistance() - targetRange) > .5 && opModeIsActive() && times.seconds() < 4) {
             PIDchange = Range.clip(kP * (getRightDistance() - targetRange), -.6, .6);
             if (PIDchange > 0)
-                PIDchange = PIDchange < .30 ? .30 : PIDchange;
+                PIDchange = PIDchange < .32 ? .32 : PIDchange;
             else if (PIDchange < 0)
-                PIDchange = PIDchange > -.30 ? -.30 : PIDchange;
+                PIDchange = PIDchange > -.32 ? -.32 : PIDchange;
             strafeRight(PIDchange, angle);
         }
         stopMotors();
@@ -526,12 +527,13 @@ public class CustomLinearOpMode extends LinearOpModeCamera {
         double kP = .05;
         double PIDchange;
 
-        while(Math.abs(getLeftDistance() - targetRange) > .5 && opModeIsActive()) {
+        times.reset();
+        while(Math.abs(getLeftDistance() - targetRange) > .5 && opModeIsActive() && times.seconds() < 4) {
             PIDchange = Range.clip(kP * (getLeftDistance() - targetRange), -.6, .6);
             if (PIDchange > 0)
-                PIDchange = PIDchange < .30 ? .30 : PIDchange;
+                PIDchange = PIDchange < .32 ? .32 : PIDchange;
             else if (PIDchange < 0)
-                PIDchange = PIDchange > -.30 ? -.30 : PIDchange;
+                PIDchange = PIDchange > -.32 ? -.32 : PIDchange;
             strafeLeft(PIDchange, angle);
         }
         stopMotors();
