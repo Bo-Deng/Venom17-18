@@ -34,15 +34,15 @@ public class RStraightWrongBall extends CustomLinearOpMode {
 
         if (template == 'L') {
             //strafe left
-            strafeRedAssisted(.5, 78, 0);
+            strafeRedAssistedPID(78, 0);
 
         } else if (template == 'C') {
             // align with center column
-            strafeRedAssisted(.5, 61, 0);
+            strafeRedAssistedPID(61, 0);
 
         } else if (template == 'R') {
             //strafe right
-            strafeRedAssisted(.5, 42, 0);
+            strafeRedAssistedPID(42, 0);
         } stopMotors();
 
         liftDown();
