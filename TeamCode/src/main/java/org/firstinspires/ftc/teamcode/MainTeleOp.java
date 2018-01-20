@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="Main teleop", group="opMode")
 public class MainTeleOp extends CustomOpMode {
 
-    double motorScale = 1;
+    double motorScale = -1;
 
     public void init() {
 
